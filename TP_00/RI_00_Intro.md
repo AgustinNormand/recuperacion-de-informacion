@@ -7,12 +7,65 @@ https://forms.gle/kPUE3VaduvV6uBW18 el cual se encontrará habilitado hasta la f
 Bibliografı́a sugerida: MIR [1] Capı́tulo 1, SE [2] Capı́tulo 1.
 
 ### 1. A partir de las siguientes necesidades de información defina una consulta en cada caso (entre 2 y 5 términos).
-Ejecútelas luego en dos motores de búsqueda comerciales y compare los 10 primeros resultados determinando
-si cada respuesta satisface o no la necesidad de información. Explique los resultados considerando la calidad
+Ejecútelas luego en dos motores de búsqueda comerciales y compare los 10 primeros resultados determinando si cada respuesta satisface o no la necesidad de información. Explique los resultados considerando la calidad
 (de acuerdo a su criterio) de las respuestas obtenidas.
 
 a) Motores de base de datos sql con soporte para full text search.
+
+Consulta: "full text search database solutions"
+
+Google: 
+- [x] Best Database Software with Full Text Search | GetApp 
+- [x] 15 Open-source Full-Text Search Engine Solutions for ...
+- [x] Best Full-Text Search Engines to Maximize ... - TechStory
+- [x] Full-text search - Wikipedia
+- [ ] Document Database Built-In Full-Text Search - RavenDB
+- [ ] What is Full-Text Search and How Does it Work? - MongoDB
+- [ ] Full-text search | Firestore | Google Cloud
+- [ ] Effective full-text search: go simple | The Startup - Medium
+- [ ] Full-Text Search - SQL Server | Microsoft Docs
+- [ ] Comparison of full text search engine - Lucene, Sphinx ...
+
+Bing:
+- [x] 15 Open-source Full-Text Search Engine Solutions for ...
+- [ ] Full-Text Search (FTS) – Index Tool | Couchbase
+- [ ] Full-text search | Firebase Documentation
+- [ ] Enable and Disable Full Text Search for SQL Server Databases
+- [ ] Full-Text Search Engines vs. Relational Databases - Lucidworks
+- [ ] Full-text search | Firestore | Google Cloud
+- [ ] how to implement full text search in database - Genera Codice
+- [ ] Introduction to MySQL Full-Text Search | Database Expert
+- [ ] 12.10 Full-Text Search Functions - MySQL
+- [ ] Full-Text Search and Solution Database | SAP Community
+
 b) Jugadores de basquet bonaerenses que jugaron en Europa y la NBA.
+
+Consulta:
+
+Google:
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+
+Bing:
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+
 c) ¿Cuál es el mejor algoritmo de ordenamiento?
 d ) ¿Cuántos idiomas oficiales existen entre los paı́ses de América?
 ¿Qué diferencias encuentra entre las necesidades de información 1 y 2 respecto de las 3 y 4?
