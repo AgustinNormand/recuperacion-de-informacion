@@ -7,10 +7,12 @@ https://forms.gle/kPUE3VaduvV6uBW18 el cual se encontrará habilitado hasta la f
 Bibliografı́a sugerida: MIR [1] Capı́tulo 1, SE [2] Capı́tulo 1.
 
 ### 1. A partir de las siguientes necesidades de información defina una consulta en cada caso (entre 2 y 5 términos).
-Ejecútelas luego en dos motores de búsqueda comerciales y compare los 10 primeros resultados determinando si cada respuesta satisface o no la necesidad de información. Explique los resultados considerando la calidad
-(de acuerdo a su criterio) de las respuestas obtenidas.
+##### Ejecútelas luego en dos motores de búsqueda comerciales y compare los 10 primeros resultados determinando si cada respuesta satisface o no la necesidad de información. Explique los resultados considerando la calidad (de acuerdo a su criterio) de las respuestas obtenidas.
 
-a) Motores de base de datos sql con soporte para full text search.
+Se muetra a continuación un listado, de los 10 primeros resultados obtenidos, marcando con un tilde las paginas que aportaron información útil relacionada con la necesidad de información planteada.
+Luego de cada listado, se cuenta la cantidad de resultados correctos, pudiendo utilizar esto como un puntaje.
+
+##### a) Motores de base de datos sql con soporte para full text search.
 
 Consulta: "full text search database solutions"
 
@@ -26,6 +28,8 @@ Google:
 - [ ] Full-Text Search - SQL Server | Microsoft Docs
 - [ ] Comparison of full text search engine - Lucene, Sphinx ...
 
+Puntaje: 4
+
 Bing:
 - [x] 15 Open-source Full-Text Search Engine Solutions for ...
 - [ ] Full-Text Search (FTS) – Index Tool | Couchbase
@@ -38,37 +42,122 @@ Bing:
 - [ ] 12.10 Full-Text Search Functions - MySQL
 - [ ] Full-Text Search and Solution Database | SAP Community
 
-b) Jugadores de basquet bonaerenses que jugaron en Europa y la NBA.
+Puntaje: 1
 
-Consulta:
+La calidad de las respuestas obtenidas en el caso de Google es baja, y la calidad de Bing es muy baja. Muchos resultados estan relacionados con Full text search y bases de datos, pero muy pocos responden concretamente a la necesidad de información, es decir, brindar opciones de motores de base de datos con soporte para full text search.
+
+
+##### b) Jugadores de basquet bonaerenses que jugaron en Europa y la NBA.
+
+Consulta: jugadores basquet bonaerenses europa nba
 
 Google:
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
+- [ ] Club Atlético San Lorenzo de Almagro (baloncesto) - Wikipedia
+- [ ] La historia de Luca Vildoza: un distinto, antes y hoy, en el ...
+- [ ] Básquet: los jugadores argentinos para seguir en España y ...
+- [ ] Histórico: Florencia Chagas es la primera argentina elegida ...
+- [ ] Campazzo a la NBA: será jugador de los Denver Nuggets
+- [ ] Instituto gritó campeón en el Súper 20 de la Liga Nacional de ...
+- [ ] Argentinos en la NBA: La lista histórica de todos los jugadores
+- [ ] Gregg Popovich, el técnico con más triunfos en la ... - Infobae
+- [ ] Basquet Plus
+- [ ] Luca Vildoza, una historia de talento y resiliencia que dejó su ...
+
+Puntaje: 0
 
 Bing:
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
-- [ ]
+- [ ] NBA League Pass - Stream Every NBA Game Live
+- [ ] Anexo:Jugadores extranjeros en la historia de la NBA ...
+- [ ] Los 15 mejores europeos de la historia en la NBA - AS.com
+- [ ] Equipos de la NBA 2021 - 2022 - Plantillas y jugadores ...
+- [ ] Los diez mejores jugadores europeos en la NBA a lo largo ...
+- [ ] NBA League Pass - Stream Every NBA Game Live - watch.nba.com
+- [ ] NBA League Pass - Sign Up Now at a New Low Price
+- [ ] LOS BONAERENSES - Primera División - Basquet Rosario
+- [ ] J&J NBA: LOS JUGADORES NBA EN EUROPA (PARTE I)
+- [ ] 10 jugadores de la Euroliga que están ... - Basquet Plus
 
-c) ¿Cuál es el mejor algoritmo de ordenamiento?
-d ) ¿Cuántos idiomas oficiales existen entre los paı́ses de América?
-¿Qué diferencias encuentra entre las necesidades de información 1 y 2 respecto de las 3 y 4?
+Puntaje: 0
+
+Ambos motores de búsqueda tienen muy mala calidad en las respuestas, no fue posible encontrar una lista de jugadores bonaerenses que hayan jugado en Europa y en la NBA, sino todas noticias, articulos, etc. relacionados con el basquet, la NBA, jugadores europeos, etc.
+
+##### c) ¿Cuál es el mejor algoritmo de ordenamiento?
+
+Consulta: best sorting algorithm
+
+Google:
+- [X] Sorting Algorithms | Brilliant Math & Science Wiki
+- [X] Sorting Algorithms - LAMFO
+- [X] Sorting Algorithms - InterviewBit
+- [X] 10 Best Sorting Algorithms You Must Know About - Crio.Do
+- [X] Sorting algorithm - Wikipedia
+- [X] Quicksort — The Best Sorting Algorithm? - Medium
+- [X] Sorting Algorithms - GeeksforGeeks
+- [X] 5 Factors to Consider Before Choosing a Sorting Algorithm
+- [X] What are the best sorting algorithms in industry use? - Quora
+- [X] 8 must-know sorting algorithms - DEV Community
+
+Puntaje: 10
+
+Bing:
+- [X] Sorting Algorithms - InterviewBit
+- [X] 10 Best Sorting Algorithms You Must Know About - Crio Blog
+- [X] Which Sorting Algorithm Is Best?. There are tons of ...
+- [X] Sorting Algorithms: Slowest to Fastest! | by Dhanam Parekh ...
+- [X] Best Sorting Algorithm - c-sharpcorner.com
+- [X] Interview Question: Which Sorting Algorithm Is Best? With ...
+- [X] Quicksort — The Best Sorting Algorithm? | by Esha Wang ...
+- [X] 5 Most used Sorting Algorithms in Java (with Code)| FavTutor
+- [X] Sorting Algorithms - javatpoint
+- [X] What are some of the best algorithms? - Quora
+
+Puntaje: 10
+
+En ambos motores de búsqueda se obtuvieron respuestas excelentes, información de los diferentes algoritmos de ordenamiento, complejidades algoritmicas de cada uno para realizar comparaciones, situaciones en donde se adaptan mejor cada uno de los algoritmos, etc.
+
+##### d ) ¿Cuántos idiomas oficiales existen entre los paı́ses de América?
+
+Consulta: idiomas oficiales paises de america
+
+Google:
+- [X] Resultados personalizados de Google
+- [X] Idiomas oficiales de los países de América - Saber es práctico
+- [ ] Anexo:Idiomas por número de países donde es idioma oficial
+- [X] Idiomas de los países de América y las religiones que profesan.
+- [ ] Idiomas oficiales de cada país - Consejos para Viajeros - FAQ
+- [X] Idiomas en América Latina - LANIC - Español
+- [X] Los idiomas más hablados en América después del español ...
+- [ ] Lista de lenguas oficiales y reconocidas - Wikilengua
+- [X] Las lenguas de América Latina - Hueber Verlag
+- [ ] RankingCNN: Países con más de un idioma oficial - CNN en ...
+
+Puntaje: 6
+
+Bing:
+- [X] Resultados personalizados de Bing
+- [X] Idiomas oficiales de los países de América - Saber es práctico
+- [X] Todos los idiomas oficiales de América - Somos turismo
+- [ ] Vídeos de idiomas oficiales paises de america
+- [X] Idiomas oficiales de cada uno de los países ...
+- [X] ¿Qué idiomas se hablan en América? - ViajarFull
+- [X] Idiomas predominantes de los países de américa | Idiomas ...
+- [X] Idiomas Oficiales de Los Países de América | PDF | Lengua ...
+- [X] Idiomas Oficiales de Cada Uno de Los Países de América
+- [ ] Países e idiomas de América Central - Saber es práctico
+
+Puntaje: 8
+
+Para ambos casos, se obtuvieron respuestas muy buenas, se podía responder muy bien a la necesidad de información planteada.
+
+Los casos erroneos, eran debido a que no se trataba de América en su totalidad, sino por ejemplo, solo de América Central. O no era solo de América sino del mundo entero.
+
+En todos los resultados: Hay muchos anuncios, hay muchos resultados que "La gente tambien buscó...".
+
+##### ¿Qué diferencias encuentra entre las necesidades de información 1 y 2 respecto de las 3 y 4?
+
+Las necesidades de información 1 y 2, estan solicitando una lista de elementos, que cumplan requerimientos especificos, cuyas respuestas puede que sean mas dinámicas, dado que se pueden incorporar nuevos motores de bases de datos que soporten full text search, o nuevos jugadores pueden jugar en Europa y en la NBA.
+
+Mientras que las 3 y 4, son preguntas mas concretas, mas estaticas, con menos tendencia a cambios, por lo que encontrarlas puede resultar mas sencillo.
 
 ### 2. A partir de la lectura del artı́culo ”Google Search is Dying”2 escriba un resumen de la situación planteada y los argumentos que la sostienen. Además, describa el problema que se plantea con el operador exact match y los posibles motivos.
 
