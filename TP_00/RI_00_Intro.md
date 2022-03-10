@@ -159,7 +159,28 @@ Las necesidades de información 1 y 2, estan solicitando una lista de elementos,
 
 Mientras que las 3 y 4, son preguntas mas concretas, mas estaticas, con menos tendencia a cambios, por lo que encontrarlas puede resultar mas sencillo.
 
-### 2. A partir de la lectura del artı́culo ”Google Search is Dying”2 escriba un resumen de la situación planteada y los argumentos que la sostienen. Además, describa el problema que se plantea con el operador exact match y los posibles motivos.
+### 2. A partir de la lectura del artı́culo ”Google Search is Dying” escriba un resumen de la situación planteada y los argumentos que la sostienen.
+
+Se plantea que Reddit esta siendo un motor de busqueda mas popular que Google. Los resultados de Google son cada vez peores, menos confiables, con mas anuncios, optimizados por gente especializada en SEO para escalar en el ranking de Google.
+
+Los resultados están refinados para matchear el 80% de las veces, pero para querys tecnicas las respuestas son muy malas, y contiene sinonimos forzados o resultados del tipo "la gente tambien buscó..." y que cuando se accede a paginas que no sean la primera o la segunda, los resultados son cada vez peores. Muchos resultados son de paginas populares como YouTube, y muchos sitios clickbait.
+
+Google ya no es un producto que ofrece busquedas de alta calidad. Probablemente, debido a los anuncios, SEO, y la Inteligencia Artificial.
+
+Los usuarios de Google agregamos la palabra "reddit" al final de nuestras busquedas para encontrar resultados de humanos, que den opiniones autenticas, y no obtener anuncios, paginas escritas por bots, debido a que todo essta comercializado, siempre alguien esta intentando venderte algo.
+
+#### Además, describa el problema que se plantea con el operador exact match y los posibles motivos.
+
+El problema que se plantea con el operador exact match (" "), es que Google ya no retorna paginas que efectivamente matcheen con lo que se pide.
+
+Pero, leyendo el Apendice 1, se muestra una respuesta de un empleado de Google, que trabaja especificamente en Google Search, que indica que si se retornan paginas que matcheen con lo que se pide, solo que la gente puede estar confundiendose por 4 motivos.
+
+* Google matchea texto alternativo.
+* Matchean texto que no está facilmente visible, como texto en un menú o texto pequeño.
+* La pagina puede haber cambiado desde que Google la indexó.
+* La puntuación puede confundir. Ejemplo: Si uno busca "perro gato", y la pagina dice "perro, gato", Google va a matchear ignorando la puntuación.
+
+En esto último, aunque no parece un problema grave, estan tratando de mejorar.
 
 ### 3. Revise las capacidades de búsqueda de Gmail e indique tres ejemplos concretos de búsquedas que incluyan una condición de tiempo junto con otra a su elección.
 
