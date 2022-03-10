@@ -184,6 +184,30 @@ En esto último, aunque no parece un problema grave, estan tratando de mejorar.
 
 ### 3. Revise las capacidades de búsqueda de Gmail e indique tres ejemplos concretos de búsquedas que incluyan una condición de tiempo junto con otra a su elección.
 
+* Operador older_than: Mensajes anteriores o posteriores a un período expresado en días (d), meses (m) o años (y)
+
+* Operador larger: Mensajes de tamaño superior o inferior a determinada cantidad de bytes
+
+Realicé la siguiente consulta: older_than:7y larger:1M 
+
+Que corresponde a emails enviados o recibidos hace mas de 7 años, que tengan un tamaño superior a 1 Megabyte.
+
+* Operador AROUND: Mensajes con palabras cercanas entre sí; usa un número para establecer a cuántas palabras de distancia puede estar la otra en cuestión.
+Agrega comillas para encontrar los mensajes en los que la palabra que colocaste primero esté en primer lugar
+
+Utilizando este operador, hice la consulta: older_than:1y buenas AROUND 50 pregunta 
+
+Obteniendo mails enviados o recibidos hace mas de un año, en donde haya escrito la palabra "Buenas" y la palabra "pregunta" a una longitud inferior a 50 caracteres.
+
+Intentando identificar mails en donde realizo consultas a algún profesor, dado que suelo arrancar los mails de preguntas de una forma similar. "**Buenas** tardes, escribo este correo para realizar una **pregunta**."
+
+* Operador has: Pudiendo buscar mensajes que incluyan un archivo adjunto o vínculo de Google Drive, Documentos, Hojas de cálculo o Presentaciones. Ejemplo: has:spreadsheet.
+
+* Operador before: Mensajes enviados durante determinado período
+
+Haciendo uso de estos operadores, realicé la siguiente consulta: before:2015/04/16 has:spreadsheet 
+
+Obteniendo los mails enviados o recibidos antes del 16/04/2015, que tengan adjunto una hoja de cálculo.
 
 ### 4. Revise y resuma en una tabla comparativa las caracterı́sticas de los siguientes motores de búsqueda:
 Duck Duck Go
