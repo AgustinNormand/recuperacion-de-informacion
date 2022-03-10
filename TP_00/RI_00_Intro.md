@@ -157,7 +157,7 @@ En todos los resultados: Hay muchos anuncios, hay muchos resultados que "La gent
 
 Las necesidades de información 1 y 2, están solicitando una lista de elementos, que cumplan requerimientos específicos, cuyas respuestas puede que sean más dinámicas, dado que se pueden incorporar nuevos motores de bases de datos que soporten full text search, o nuevos jugadores pueden jugar en Europa y en la NBA.
 
-Mientras que las 3 y 4, son preguntas más concretas, más estáticas, con menos tendencia a cambios, por lo que encontrarlas puede resultar más sencillo.
+Mientras que las 3 y 4, son preguntas más concretas, con respuestas más estáticas, con menos tendencia a cambios, por lo que encontrarlas puede resultar más sencillo.
 
 ### 2. A partir de la lectura del artículo ”Google Search is Dying” escriba un resumen de la situación planteada y los argumentos que la sostienen.
 
