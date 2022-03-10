@@ -1,6 +1,10 @@
 ## Introducción a la RI
 ##### Fecha entrega: 18/03/2022
 
+###### Normand Agustín
+
+###### Legajo: 156649
+
 Para la entrega del TP resuelto arme un único archivo (.pdf) y envíelo a través del siguiente formulario:
 https://forms.gle/kPUE3VaduvV6uBW18 el cual se encontrará habilitado hasta la fecha de entrega establecida.
 
@@ -9,7 +13,7 @@ Bibliografía sugerida: MIR [1] Capítulo 1, SE [2] Capítulo 1.
 ### 1. A partir de las siguientes necesidades de información defina una consulta en cada caso (entre 2 y 5 términos).
 ##### Ejecútelas luego en dos motores de búsqueda comerciales y compare los 10 primeros resultados determinando si cada respuesta satisface o no la necesidad de información. Explique los resultados considerando la calidad (de acuerdo a su criterio) de las respuestas obtenidas.
 
-Se muestra a continuación un listado, de los 10 primeros resultados obtenidos, marcando con un tilde las páginas que aportaron información útil relacionada con la necesidad de información planteada.
+Se muestra a continuación un listado, de los 10 primeros resultados obtenidos, marcando con **negrita** las páginas que aportaron información útil relacionada con la necesidad de información planteada.
 Luego de cada listado, se cuenta la cantidad de resultados correctos, pudiendo utilizar esto como un puntaje.
 
 ##### a) Motores de base de datos sql con soporte para full text search.
@@ -17,30 +21,32 @@ Luego de cada listado, se cuenta la cantidad de resultados correctos, pudiendo u
 Consulta: full text search database solutions
 
 Google:
-- [x] Best Database Software with Full Text Search | GetApp
-- [x] 15 Open-source Full-Text Search Engine Solutions for ...
-- [x] Best Full-Text Search Engines to Maximize ... - TechStory
-- [x] Full-text search - Wikipedia
-- [ ] Document Database Built-In Full-Text Search - RavenDB
-- [ ] What is Full-Text Search and How Does it Work? - MongoDB
-- [ ] Full-text search | Firestore | Google Cloud
-- [ ] Effective full-text search: go simple | The Startup - Medium
-- [ ] Full-Text Search - SQL Server | Microsoft Docs
-- [ ] Comparison of full text search engine - Lucene, Sphinx ...
+
+* **Best Database Software with Full Text Search | GetApp**
+* **15 Open-source Full-Text Search Engine Solutions for ...**
+* **Best Full-Text Search Engines to Maximize ... - TechStory**
+* **Full-text search - Wikipedia**
+* Document Database Built-In Full-Text Search - RavenDB
+* What is Full-Text Search and How Does it Work? - MongoDB
+* Full-text search | Firestore | Google Cloud
+* Effective full-text search: go simple | The Startup - Medium
+* Full-Text Search - SQL Server | Microsoft Docs
+* Comparison of full text search engine - Lucene, Sphinx ...
 
 Puntaje: 4
 
 Bing:
-- [x] 15 Open-source Full-Text Search Engine Solutions for ...
-- [ ] Full-Text Search (FTS) – Index Tool | Couchbase
-- [ ] Full-text search | Firebase Documentation
-- [ ] Enable and Disable Full Text Search for SQL Server Databases
-- [ ] Full-Text Search Engines vs. Relational Databases - Lucidworks
-- [ ] Full-text search | Firestore | Google Cloud
-- [ ] how to implement full text search in database - Genera Codice
-- [ ] Introduction to MySQL Full-Text Search | Database Expert
-- [ ] 12.10 Full-Text Search Functions - MySQL
-- [ ] Full-Text Search and Solution Database | SAP Community
+
+* **15 Open-source Full-Text Search Engine Solutions for ...**
+* Full-Text Search (FTS) – Index Tool | Couchbase
+* Full-text search | Firebase Documentation
+* Enable and Disable Full Text Search for SQL Server Databases
+* Full-Text Search Engines vs. Relational Databases - Lucidworks
+* Full-text search | Firestore | Google Cloud
+* how to implement full text search in database - Genera Codice
+* Introduction to MySQL Full-Text Search | Database Expert
+* 12.10 Full-Text Search Functions - MySQL
+* Full-Text Search and Solution Database | SAP Community
 
 Puntaje: 1
 
@@ -52,30 +58,32 @@ La calidad de las respuestas obtenidas en el caso de Google es baja, y la calida
 Consulta: jugadores basquet bonaerenses europa nba
 
 Google:
-- [ ] Club Atlético San Lorenzo de Almagro (baloncesto) - Wikipedia
-- [ ] La historia de Luca Vildoza: un distinto, antes y hoy, en el ...
-- [ ] Básquet: los jugadores argentinos para seguir en España y ...
-- [ ] Histórico: Florencia Chagas es la primera argentina elegida ...
-- [ ] Campazzo a la NBA: será jugador de los Denver Nuggets
-- [ ] Instituto gritó campeón en el Súper 20 de la Liga Nacional de ...
-- [ ] Argentinos en la NBA: La lista histórica de todos los jugadores
-- [ ] Gregg Popovich, el técnico con más triunfos en la ... - Infobae
-- [ ] Básquet Plus
-- [ ] Luca Vildoza, una historia de talento y resiliencia que dejó su ...
+
+* Club Atlético San Lorenzo de Almagro (baloncesto) - Wikipedia
+* La historia de Luca Vildoza: un distinto, antes y hoy, en el ...
+* Básquet: los jugadores argentinos para seguir en España y ...
+* Histórico: Florencia Chagas es la primera argentina elegida ...
+* Campazzo a la NBA: será jugador de los Denver Nuggets
+* Instituto gritó campeón en el Súper 20 de la Liga Nacional de ...
+* Argentinos en la NBA: La lista histórica de todos los jugadores
+* Gregg Popovich, el técnico con más triunfos en la ... - Infobae
+* Básquet Plus
+* Luca Vildoza, una historia de talento y resiliencia que dejó su ...
 
 Puntaje: 0
 
 Bing:
-- [ ] NBA League Pass - Stream Every NBA Game Live
-- [ ] Anexo:Jugadores extranjeros en la historia de la NBA ...
-- [ ] Los 15 mejores europeos de la historia en la NBA - AS.com
-- [ ] Equipos de la NBA 2021 - 2022 - Plantillas y jugadores ...
-- [ ] Los diez mejores jugadores europeos en la NBA a lo largo ...
-- [ ] NBA League Pass - Stream Every NBA Game Live - watch.nba.com
-- [ ] NBA League Pass - Sign Up Now at a New Low Price
-- [ ] LOS BONAERENSES - Primera División - Basquet Rosario
-- [ ] J&J NBA: LOS JUGADORES NBA EN EUROPA (PARTE I)
-- [ ] 10 jugadores de la Euroliga que están ... - Básquet Plus
+
+* NBA League Pass - Stream Every NBA Game Live
+* Anexo:Jugadores extranjeros en la historia de la NBA ...
+* Los 15 mejores europeos de la historia en la NBA - AS.com
+* Equipos de la NBA 2021 - 2022 - Plantillas y jugadores ...
+* Los diez mejores jugadores europeos en la NBA a lo largo ...
+* NBA League Pass - Stream Every NBA Game Live - watch.nba.com
+* NBA League Pass - Sign Up Now at a New Low Price
+* LOS BONAERENSES - Primera División - Basquet Rosario
+* J&J NBA: LOS JUGADORES NBA EN EUROPA (PARTE I)
+* 10 jugadores de la Euroliga que están ... - Básquet Plus
 
 Puntaje: 0
 
@@ -86,30 +94,32 @@ Ambos motores de búsqueda tienen muy mala calidad en las respuestas, no fue pos
 Consulta: best sorting algorithm
 
 Google:
-- [X] Sorting Algorithms | Brilliant Math & Science Wiki
-- [X] Sorting Algorithms - LAMFO
-- [X] Sorting Algorithms - InterviewBit
-- [X] 10 Best Sorting Algorithms You Must Know About - Crio.Do
-- [X] Sorting algorithm - Wikipedia
-- [X] Quicksort — The Best Sorting Algorithm? - Medium
-- [X] Sorting Algorithms - GeeksforGeeks
-- [X] 5 Factors to Consider Before Choosing a Sorting Algorithm
-- [X] What are the best sorting algorithms in industry use? - Quora
-- [X] 8 must-know sorting algorithms - DEV Community
+
+* **Sorting Algorithms | Brilliant Math & Science Wiki**
+* **Sorting Algorithms - LAMFO**
+* **Sorting Algorithms - InterviewBit**
+* **10 Best Sorting Algorithms You Must Know About - Crio.Do**
+* **Sorting algorithm - Wikipedia**
+* **Quicksort — The Best Sorting Algorithm? - Medium**
+* **Sorting Algorithms - GeeksforGeeks**
+* **5 Factors to Consider Before Choosing a Sorting Algorithm**
+* **What are the best sorting algorithms in industry use? - Quora**
+* **8 must-know sorting algorithms - DEV Community**
 
 Puntaje: 10
 
 Bing:
-- [X] Sorting Algorithms - InterviewBit
-- [X] 10 Best Sorting Algorithms You Must Know About - Crio Blog
-- [X] Which Sorting Algorithm Is Best?. There are tons of ...
-- [X] Sorting Algorithms: Slowest to Fastest! | by Dhanam Parekh ...
-- [X] Best Sorting Algorithm - c-sharpcorner.com
-- [X] Interview Question: Which Sorting Algorithm Is Best? With ...
-- [X] Quicksort — The Best Sorting Algorithm? | by Esha Wang ...
-- [X] 5 Most used Sorting Algorithms in Java (with Code)| FavTutor
-- [X] Sorting Algorithms - javatpoint
-- [X] What are some of the best algorithms? - Quora
+
+* **Sorting Algorithms - InterviewBit**
+* **10 Best Sorting Algorithms You Must Know About - Crio Blog**
+* **Which Sorting Algorithm Is Best?. There are tons of ...**
+* **Sorting Algorithms: Slowest to Fastest! | by Dhanam Parekh ...**
+* **Best Sorting Algorithm - c-sharpcorner.com**
+* **Interview Question: Which Sorting Algorithm Is Best? With ...**
+* **Quicksort — The Best Sorting Algorithm? | by Esha Wang ...**
+* **5 Most used Sorting Algorithms in Java (with Code)| FavTutor**
+* **Sorting Algorithms - javatpoint**
+* **What are some of the best algorithms? - Quora**
 
 Puntaje: 10
 
@@ -120,30 +130,32 @@ En ambos motores de búsqueda se obtuvieron respuestas excelentes, información 
 Consulta: idiomas oficiales paises de america
 
 Google:
-- [X] Resultados personalizados de Google
-- [X] Idiomas oficiales de los países de América - Saber es práctico
-- [ ] Anexo:Idiomas por número de países donde es idioma oficial
-- [X] Idiomas de los países de América y las religiones que profesan.
-- [ ] Idiomas oficiales de cada país - Consejos para Viajeros - FAQ
-- [X] Idiomas en América Latina - LANIC - Español
-- [X] Los idiomas más hablados en América después del español ...
-- [ ] Lista de lenguas oficiales y reconocidas - Wikilengua
-- [X] Las lenguas de América Latina - Hueber Verlag
-- [ ] RankingCNN: Países con más de un idioma oficial - CNN en ...
+
+* **Resultados personalizados de Google**
+* **Idiomas oficiales de los países de América - Saber es práctico**
+* Anexo:Idiomas por número de países donde es idioma oficial
+* **Idiomas de los países de América y las religiones que profesan.**
+* Idiomas oficiales de cada país - Consejos para Viajeros - FAQ
+* **Idiomas en América Latina - LANIC - Español**
+* **Los idiomas más hablados en América después del español ...**
+* Lista de lenguas oficiales y reconocidas - Wikilengua
+* **Las lenguas de América Latina - Hueber Verlag**
+* RankingCNN: Países con más de un idioma oficial - CNN en ...
 
 Puntaje: 6
 
 Bing:
-- [X] Resultados personalizados de Bing
-- [X] Idiomas oficiales de los países de América - Saber es práctico
-- [X] Todos los idiomas oficiales de América - Somos turismo
-- [ ] Vídeos de idiomas oficiales paises de america
-- [X] Idiomas oficiales de cada uno de los países ...
-- [X] ¿Qué idiomas se hablan en América? - ViajarFull
-- [X] Idiomas predominantes de los países de américa | Idiomas ...
-- [X] Idiomas Oficiales de Los Países de América | PDF | Lengua ...
-- [X] Idiomas Oficiales de Cada Uno de Los Países de América
-- [ ] Países e idiomas de América Central - Saber es práctico
+
+- **Resultados personalizados de Bing**
+- **Idiomas oficiales de los países de América - Saber es práctico**
+- **Todos los idiomas oficiales de América - Somos turismo**
+- Vídeos de idiomas oficiales paises de america
+- **Idiomas oficiales de cada uno de los países ...**
+- **¿Qué idiomas se hablan en América? - ViajarFull**
+- **Idiomas predominantes de los países de américa | Idiomas ...**
+- **Idiomas Oficiales de Los Países de América | PDF | Lengua ...**
+- **Idiomas Oficiales de Cada Uno de Los Países de América**
+- Países e idiomas de América Central - Saber es práctico
 
 Puntaje: 8
 
@@ -211,11 +223,7 @@ Obteniendo los mails enviados o recibidos antes del 16/04/2015, que tengan adjun
 
 ### 4. Revise y resuma en una tabla comparativa las caracterı́sticas de los siguientes motores de búsqueda:
 
-##### Duck Duck Go
-##### Yandex
-##### Baidu
-##### Indeed
-##### Google
+##### Duck Duck Go, Yandex, Baidu, Indeed y Google.
 
 |              | Lanzamiento | Caracteristicas                                                                                                                                                                                                                                                                                                        | Origen |
 |--------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
