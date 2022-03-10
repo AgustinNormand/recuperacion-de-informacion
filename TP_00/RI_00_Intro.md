@@ -14,7 +14,7 @@ Luego de cada listado, se cuenta la cantidad de resultados correctos, pudiendo u
 
 ##### a) Motores de base de datos sql con soporte para full text search.
 
-Consulta: "full text search database solutions"
+Consulta: full text search database solutions
 
 Google: 
 - [x] Best Database Software with Full Text Search | GetApp 
@@ -210,10 +210,43 @@ Haciendo uso de estos operadores, realicé la siguiente consulta: before:2015/04
 Obteniendo los mails enviados o recibidos antes del 16/04/2015, que tengan adjunto una hoja de cálculo.
 
 ### 4. Revise y resuma en una tabla comparativa las caracterı́sticas de los siguientes motores de búsqueda:
-Duck Duck Go
-Yandex
-Baidu
-Indeed
-Google
+
+##### Duck Duck Go
+##### Yandex
+##### Baidu
+##### Indeed
+##### Google
+
+|              | Lanzamiento | Caracteristicas                                                                                                                                                                                                                                                                                                        | Origen |
+|--------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| Duck Duck Go | 2008        | Sencillo, Privado, Sin perfiles, Usa codigo propietario y codigo abierto, Fuentes: Wikipedia , Wolfram Alpha, Yahoo!, Buscador popular, Continuo crecimiento, Comunidad con participacion activa                                                                                                                       | EEUU   |
+| Yandex       | 2000        | Mayor motor de busqueda de Rusia, cuarto mayor motor de búsqueda en todo el mundo, buscador de imágenes inverso, mucho más potente que el de Google, mayor capacidad para la búsqueda en ruso, ya que Google no es tan efectivo en idiomas distintos al inglés, muy eficaz con el spam, politica estricta con enlaces. | Rusia  |
+| Baidu        | 2012        | Permite búsquedas de archivos de audio con resultados sorprendentemente precisos, SEO muy estricta debido a las politicas Chinas,                                                                                                                                                                                      | China  |
+| Indeed       | 2004        | Motor de busqueda de empleos, tendencias del mercado de empleo, almacenamiento y búsqueda de curriculum, tendencias de industrias, búsqueda de salario, índices de competencia laboral y páginas de empresas.                                                                                                          | EEUU   |
+| Google       | 1998        | Facil de utilizar, Buscador mas usado en el mundo, no es privado, crea perfiles de sus usuarios para personalizar los anuncios.                                                                                                                                                                                        | EEUU   |
 
 ### 5. ¿Qué aporta la técnica de búsquedas por facetas (faceted search)? Brinde un ejemplo de un escenario en el cual resulte apropiado su uso (discuta ventajas/desventajas).
+
+Un sinonimo de faceta que tal vez ayude para comprender de que se trata esta busqueda, es "aspectos", se trata de buscar por los aspectos de lo que quiero encontrar.
+
+Consta de un conjunto de categorías, generalmente organizadas en una jerarquía, junto con un grupo de facetas que describen las propiedades importantes asociadas con la categoría.
+
+El escenario en el cual resulta mas apropiado su uso es en sitios de e-commerce.
+
+Ventajas:
+
+* Muy beneficiosa para los usuarios, a la hora de buscar un producto especifico en un catalogo grande.
+* Mejora la experiencia de usuario.
+* Reduce los resultados vacios o nulos.
+* Los resultados provistos son de mayor valor.
+* Mayor probabilidad de encontrar lo que se está buscando.
+* Mejora la visibilidad de una amplia gama de productos/contenido
+
+Desventajas:
+
+* Si las facetas no son claras, puede lidiar a búsquedas mas confusas.
+* Si las facetas son muchas, puede resultar excesivo para el usuario.
+* Crea una gran cantidad de páginas web con contenido idéntico
+* Crea una gran cantidad de páginas vacías.
+* Causa problemas de SEO si no estan optimizadas correctamente.
+* Mas dificil de desarrollar y de mantener.
