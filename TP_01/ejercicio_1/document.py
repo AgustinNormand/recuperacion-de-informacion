@@ -22,6 +22,9 @@ class Document:
 	def set_tokens(self, tokens):
 		self.token_list.extend(tokens)
 
+	def set_terms(self, terms):
+		self.term_list.extend(terms)
+
 	#def get_token_count(self, token_type="all"):
 	#	return len(self.token_dictionary[token_type])
 
