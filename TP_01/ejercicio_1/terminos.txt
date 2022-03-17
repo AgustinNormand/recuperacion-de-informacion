@@ -1,0 +1,16 @@
+ah 1 1
+boludo 1 1
+casa 4 4
+digo 2 2
+en 4 4
+estoy 3 3
+gato 1 1
+malvado 1 1
+medio 1 1
+no 1 1
+perro 1 1
+que 2 2
+salame 1 1
+si 1 1
+sos 1 1
+te 2 2
