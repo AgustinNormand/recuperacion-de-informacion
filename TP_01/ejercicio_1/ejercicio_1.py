@@ -4,41 +4,38 @@ import matplotlib.pyplot as plt
 from normalizer import Normalizer
 from collection import Collection
 from document import Document
+from exporter import Exporter
 
-class Text_analyzer:
-
+class Tokenizer:
 	def __init__(self, dirpath, empty_words_path):
 		self.palabras_vacias = []
-		self.min_length = 0
-		self.max_length = 10
+		self.min_length = 3
+		self.max_length = 20
 
 		self.term_frequencies = {}
+		self.token_list = []
 
-		#self.load_empty_words()
+		self.term_length_acumulator = 0
+
+		self.load_empty_words(empty_words_path)
 
 		self.collection = Collection(dirpath)
 
 		self.process_collection()
 
-		print(self.term_frequencies)
+		Exporter(self.term_frequencies, self.token_list, self.term_length_acumulator, self.collection).generate_files()
 
-	#def load_empty_words(self):
-		#if delete_empty_words == "True":
-		#	with open(empty_words_path, "r") as f:
-		#		for line in f.readlines():
-		#			self.palabras_vacias.extend(line.split(","))
+	def load_empty_words(self, empty_words_path):
+		if empty_words_path:
+			with open(empty_words_path, "r") as f:
+				for line in f.readlines():
+					self.palabras_vacias.extend(line.split(","))
 
 	def valid_length(self, token): 
 		return (len(token) > self.min_length and len(token) < self.max_length)
 
 	def is_term(self, token):
-		if token not in self.palabras_vacias:
-			if self.valid_length(token):
-				return True
-			else:
-				return False
-		else:
-			return False
+		return token not in self.palabras_vacias and self.valid_length(token)
 
 	def process_collection(self):
 		n = Normalizer()
@@ -55,12 +52,16 @@ class Text_analyzer:
 					
 				document_tokens.append(document_token)
 
+				self.token_list.append(document_token)
+
 				is_valid_term = self.is_term(document_token)
 
-				self.increment_term_collection_frequency(document_token)
-
-				if is_valid_term and document_token not in unique_document_terms:
-					unique_document_terms.append(document_token)
+				if is_valid_term:
+					self.increment_term_collection_frequency(document_token)
+					
+					if document_token not in unique_document_terms:
+						unique_document_terms.append(document_token)
+					
 
 			self.increment_document_frequency(unique_document_terms)
 
@@ -71,8 +72,11 @@ class Text_analyzer:
 
 	def increment_term_collection_frequency(self, term):
 		if term in self.term_frequencies.keys():
+			# Incremento la frecuencia de la colección
 			self.term_frequencies[term][0] += 1
 		else:
+			# Inicializo con frecuencia de la colección en 1 y DF en 0
+			self.term_length_acumulator += len(term)
 			self.term_frequencies[term] = [1, 0]  
 
 
@@ -82,27 +86,22 @@ class Text_analyzer:
 			self.term_frequencies[term][1] += 1
 
 if __name__ == '__main__':
-	if len(sys.argv) < 3:
+	if len(sys.argv) < 2:
 		print('Es necesario pasar los siguientes argumentos:')
-		print('Path al directorio de la coleccion')
+		print('Obligatorio: Path al directorio de la coleccion')
 		print("Opcional: Path al archivo de palabras vacias.")
 		sys.exit(0)
 
-	empty_words_path = None
-	#if (sys.argv[2] == 'True'):
-		#if len(sys.argv) < 4:
-			#print('Indicar el Path al archivo de palabras vacias')
-			#sys.exit(0)
-		#else:
-			#empty_words_path = sys.argv[3]
+	if len(sys.argv) == 3:
+		empty_words_path = sys.argv[2]
+	else:
+		empty_words_path = None
 
 	dirpath = sys.argv[1]
-	#delete_empty_words = sys.argv[2]
 
 	import time
-
 	start = time.time()
-	ta = Text_analyzer(dirpath, empty_words_path)
+	ta = Tokenizer(dirpath, empty_words_path)
 	end = time.time()
 	print("\r\nExecution time: {} seconds.".format(end - start))
 

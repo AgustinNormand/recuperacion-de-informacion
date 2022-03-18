@@ -25,15 +25,11 @@ class Document:
 	def set_terms(self, terms):
 		self.term_list.extend(terms)
 
-	#def get_token_count(self, token_type="all"):
-	#	return len(self.token_dictionary[token_type])
+	def get_token_count(self):
+		return len(self.token_list)
 
-	#def get_tokens(self, token_type="all"):
-	#	return self.token_dictionary[token_type]
+	def get_term_count(self):
+		return len(self.term_list)
 
 	def get_path(self):
 		return self.path
-
-	#def get_file_content(self):
-	#	with open(self.path, "r") as f:
-	#		return f.read()
