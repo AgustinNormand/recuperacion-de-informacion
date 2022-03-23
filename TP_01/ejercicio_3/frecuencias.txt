@@ -1,0 +1,21 @@
+univers 2416
+nacional 1586
+cienci 1422
+estudi 1294
+carrer 1289
+facult 1251
+academ 1017
+curs 1015
+2012 944
+public 937
+
+convivencial 1
+vallecit 1
+elkin 1
+fouill 1
+revivi 1
+run 1
+options 1
+imagecrop 1
+transitionsp 1
+thumbcrop 1
