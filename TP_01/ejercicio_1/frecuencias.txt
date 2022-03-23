@@ -2,12 +2,12 @@ universidad 2240
 nacional 1447
 facultad 1246
 ciencias 1030
-como 980
 2012 944
 educacion 874
 investigacion 829
 carreras 784
-esta 781
+argentina 774
+informacion 729
 
 prestes 1
 fabricados 1
@@ -17,5 +17,5 @@ entrenadores 1
 elkin 1
 fouiller 1
 revivi 1
+run 1
 options 1
-imagecrop 1

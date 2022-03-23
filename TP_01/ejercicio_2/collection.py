@@ -43,3 +43,6 @@ class Collection:
 		for document in self.documents:
 			counter += document.get_token_count(token_type)
 		return counter
+
+	#def get_average_term_length(self):
+		#for document in documents

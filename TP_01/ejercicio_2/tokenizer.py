@@ -5,6 +5,7 @@ from normalizer import Normalizer
 from collection import Collection
 from document import Document
 from exporter import Exporter
+import re
 
 class Tokenizer:
 	def __init__(self, dirpath, empty_words_path):
@@ -23,7 +24,7 @@ class Tokenizer:
 
 		self.process_collection()
 
-		Exporter(self.term_frequencies, self.token_list, self.term_length_acumulator, self.collection).generate_files()
+		#Exporter(self.term_frequencies, self.token_list, self.term_length_acumulator, self.collection).generate_files()
 
 	def load_empty_words(self, empty_words_path):
 		if empty_words_path:
@@ -48,6 +49,10 @@ class Tokenizer:
 			unique_document_terms = []
 
 			for document_word in document_word_list:
+
+				if self.get_token_type(document_word) == "test":
+					print(document_word)
+
 				document_token = n.normalize(document_word)
 					
 				document_tokens.append(document_token)
@@ -68,6 +73,28 @@ class Tokenizer:
 			document.set_tokens(document_tokens)
 			document.set_terms(unique_document_terms)
 
+	def get_token_type(self, document_word):
+		regular_expressions = [
+			["([A-Z]{3})", "test"]
+			#["([a-zA-Z0-9]+@[a-z.]+)", "email"],
+			#["(https?://[a-zA-Z./0-9-_?=]+)", "url"],
+			#["([A-Z][a-z]+\.)", "abbreviation"], # Dr. Lic.
+			#["([A-Z]\.)", "abbreviation"], #S.A. #Este tiene que ir antes del de "etc."
+			#["([a-z]+\.)", "abbreviation"], # etc.
+			#["([A-Z]{4})", "abbreviation"], # NASA Esto no matchea solo4  veces, ASESINADO PARTICIPARON DECLARACION
+			#["([a-zA-Z]+[0-9]*[^A-Za-z0-9]*)", "general"], # Matcheo todo lo que no sea numeros
+			#["([0-9]+)", "number"], # Estoo matchea fisica1 docente1 economicas1 #Este no funcaba bien ( [0-9]+ ) matchea solo si tiene espacios adelante y atrás
+			#["([0-9]+\.[0-9]+)", "number"], # Decimales "(\b[0-9]+\.[0-9]+\b)" Tambien matchea 2.0"].description  16.30hs 
+
+			#([a-zA-Z0-9$&+,:;=?@#|'<>.^*()%!-/]+)
+		]
+		 
+		for regular_expression, token_type in regular_expressions:
+			m = re.search(regular_expression, document_word)
+			if m != None:
+				return token_type
+
+		return "general"
 			
 
 	def increment_term_collection_frequency(self, term):
