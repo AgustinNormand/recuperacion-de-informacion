@@ -286,11 +286,31 @@ El accuracy de langdetect es de 0.66, de 300 lineas del conjunto de test, el idi
 
 # Propiedades del Texto (En notebook Jupyter).
 
-## 6. En este ejercicio se propone verificar la predicción de ley de Zipf. Para ello, descargue desde Project Gutenberg el texto del Quijote de Cervantes7 y escriba un programa que extraiga los términos y calcule sus frecuencias (el programa debe generar la lista ordenada por frecuencia descencente). Calcule la curva de ajuste utilizando la función Polyfit del módulo NumPy. Con los datos crudos y los estimados grafique en la notebook ambas distribuciones (haga 2 gráficos, uno en escala lineal y otro en log-log). ¿Cómo se comporta la predicción? ¿Qué conclusiones puede obtener?
+## 6. En este ejercicio se propone verificar la predicción de ley de Zipf. Para ello, descargue desde Project Gutenberg el texto del Quijote de Cervantes y escriba un programa que extraiga los términos y calcule sus frecuencias (el programa debe generar la lista ordenada por frecuencia descencente). Calcule la curva de ajuste utilizando la función Polyfit del módulo NumPy. Con los datos crudos y los estimados grafique en la notebook ambas distribuciones (haga 2 gráficos, uno en escala lineal y otro en log-log). ¿Cómo se comporta la predicción? ¿Qué conclusiones puede obtener?
+
+<!-- Como lo resolví? -->
+
+En primer lugar, eliminé una sección en inglés que tenía el quijote, probablemente agregada por la página de la cual fué descargado el libro.
+
+Luego procesé linea a linea, palabra a palabra el texto, transformandolas a minusculas, removiendo acentos y caracteres no alfanumericos, para luego, en un diccionario, contar las ocurrencias de cada uno de los tokens, obteniendo de esta forma los términos, con su collection frecuency.
+
+Una vez finalizado este procesamiento, obtuve a partir del diccionario una lista ordenada por frecuencia de forma descendente. Con esta, y la lista de rankings, calculé la curva de ajuste usando Polyfit.
+
+Utilizando los datos crudos y los estimados, cree el siguente gráfico en escala lineal:
+
+![lineal](https://raw.githubusercontent.com/AgustinNormand/recuperacion-de-informacion/main/TP_01/ejercicio_6/lineal.png)
+
+Y otro en escala log-log:
 
 ![log-log](https://raw.githubusercontent.com/AgustinNormand/recuperacion-de-informacion/main/TP_01/ejercicio_6/log-log.png)
 
-![lineal](https://raw.githubusercontent.com/AgustinNormand/recuperacion-de-informacion/main/TP_01/ejercicio_6/lineal.png)
+Para poder indicar con una medida estadistica como se comporta la predicción utilicé el coeficiente de determinacion, dado que este se utiliza en contextos de modelos estadisticos cuyo principal proposito es predecir futuros resultados.
+
+Aplicandolo en los datos reales y los estimados en escala lineal, utilizando una curva como función de ajuste, el valor resultante es de 0.9236733223632114.
+
+Mientras que en escala logaritmica, utilizando una recta como funcion de ajuste el valor de este coeficiente es 0.9776427799102992.
+
+A modo de conclusion, apoyandonos sobre los valores de los coeficientes, podemos afirmar que este no se trata de un contraejemplo a la ley de Zipf, hay muy pocos terminos con una ocurrencia muy alta, y muchos términos que ocurren pocas veces.
 
 
 ## 7
