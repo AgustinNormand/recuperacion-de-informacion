@@ -1,4 +1,4 @@
-## Análisis de Texto
+# Análisis de Texto
 ##### Fecha entrega: 25/03/2021
 
 ###### Normand Agustín
@@ -10,9 +10,9 @@ https://forms.gle/enizkPdDeA25AotC7 el cual se encontrará habilitado hasta la f
 
 Bibliografı́a sugerida: MIR [1] Capı́tulo 7, TOL [5] Capı́tulo 3, MAN [4] Capı́tulo 6, Grefenstette et al. [2], Ha et al. [3].
 
-##### 1. Escriba un programa que realice análisis léxico sobre la colección RI-tknz-data. El programa debe recibir como parámetros el directorio donde se encuentran los documentos y un argumento que indica si se deben eliminar las palabras vacı́as (y en tal caso, el nombre del archivo que las contiene). Defina, además, una longitud mı́nima y máxima para los términos. Como salida, el programa debe generar:
-##### a) Un archivo (terminos.txt) con la lista de términos a indexar (ordenado), su frecuencia en la colección y su DF (Document Frequency). Formato de salida: < termino > [ESP ] < CF > [ESP ] < DF >.
-##### Ejemplo:
+### 1. Escriba un programa que realice análisis léxico sobre la colección RI-tknz-data. El programa debe recibir como parámetros el directorio donde se encuentran los documentos y un argumento que indica si se deben eliminar las palabras vacı́as (y en tal caso, el nombre del archivo que las contiene). Defina, además, una longitud mı́nima y máxima para los términos. Como salida, el programa debe generar:
+### a) Un archivo (terminos.txt) con la lista de términos a indexar (ordenado), su frecuencia en la colección y su DF (Document Frequency). Formato de salida: < termino > [ESP ] < CF > [ESP ] < DF >.
+### Ejemplo:
 casa 238 3
 perro 644 6
 ...
@@ -36,7 +36,7 @@ Para correr el programa, python3 tokenizer.py path_coleccion path_archivo_palabr
 
 En caso de no querer utilizar un archivo de palabras vacias, simplemente correr python3 tokenizer.py path_coleccion
 
-##### b) Un segundo archivo (estadisticas.txt) con los siguientes datos (un punto por lı́nea y separados por espacio cuando sean más de un valor) :
+### b) Un segundo archivo (estadisticas.txt) con los siguientes datos (un punto por lı́nea y separados por espacio cuando sean más de un valor) :
 
 1) Cantidad de documentos procesados
 2) Cantidad de tokens y términos extraı́dos
@@ -45,7 +45,7 @@ En caso de no querer utilizar un archivo de palabras vacias, simplemente correr 
 5) Cantidad de tokens y términos del documento más corto y del más largo
 6) Cantidad de términos que aparecen sólo 1 vez en la colección
 
-##### c) Un tercer archivo (frecuencias.txt, con un término y su CF por lı́nea) con:
+### c) Un tercer archivo (frecuencias.txt, con un término y su CF por lı́nea) con:
 
 1) La lista de los 10 términos más frecuentes y su CF (Collection Frequency)
 2) La lista de los 10 términos menos frecuentes y su CF.
@@ -60,7 +60,7 @@ Decisiones que tome.
 
 
 
-2. Tomando como base el programa anterior, escriba un segundo T okenizer que implemente los criterios del artı́culo de Grefenstette y Tapanainen para definir qué es una “palabra” (o término) y cómo tratar números y signos de puntuación. Además, extraiga en listas separadas utilizando en cada caso una función especı́fica.
+### 2. Tomando como base el programa anterior, escriba un segundo T okenizer que implemente los criterios del artı́culo de Grefenstette y Tapanainen para definir qué es una “palabra” (o término) y cómo tratar números y signos de puntuación. Además, extraiga en listas separadas utilizando en cada caso una función especı́fica.
 
 <!-- 
 
@@ -112,7 +112,7 @@ Genere y almacene la misma información que en el caso anterior.
 
 
 
-## 3. A partir del programa del ejercicio 1, incluya un proceso de stemming, use la librerı́a NLTK (Natural Language Toolkit) y revise qué algoritmos soporta para español e inglés.
+### 3. A partir del programa del ejercicio 1, incluya un proceso de stemming, use la librerı́a NLTK (Natural Language Toolkit) y revise qué algoritmos soporta para español e inglés.
 
 De la librería NLTK utilicé el módulo nltk.stem.snowball, ya que tiene soporte tanto para español como para inglés.
 
@@ -130,7 +130,7 @@ Además, se guarda en un diccionario para cada raiz obtenida con el Stemmer, de 
 Ejemplo: competent->{'competencia': 22, 'competencias': 44, 'competente': 9, 'competentes': 1}
 La raiz "competent", fue obtenida de los tokens: "competencia" 22 veces, "competencias" 44 veces, "competente" 9 veces y "competentes" 1 vez.
 
-## Luego de modificar su programa, corra nuevamente el proceso del ejercicio 1 y analice los cambios en la colección. ¿Qué implica este resultado?
+### Luego de modificar su programa, corra nuevamente el proceso del ejercicio 1 y analice los cambios en la colección. ¿Qué implica este resultado?
 
 Luego de correr el programa del ejercicio 1, y el del ejercicio 3, ambos con el mismo archivo de palabras vacías y la misma longitud minima y máxima permitida para los términos, noté las siguientes diferencias:
 
@@ -152,7 +152,7 @@ Esto explica por qué el contador del ejercicio 3 es inferior al contador del ej
     * Dado que en este ultimo ejercicio, este termino incluye a los tokens: "argentina" 774 veces, "argentino" 89 veces, "argentine" 1 vez, "argentinas" 30 veces y "argentinos" 27 veces.
 
 
-## Busque ejemplos de pares de términos que tienen la misma raı́z pero que el stemmer los trató diferente y términos que son diferentes y se los trató igual.
+### Busque ejemplos de pares de términos que tienen la misma raı́z pero que el stemmer los trató diferente y términos que son diferentes y se los trató igual.
 
 En cuanto a ejemplos donde el stemmer trato de igual forma a términos que son diferentes, encontré:
 * Para uno de los términos más frecuentes "univers" con una CF de 2416.
@@ -175,13 +175,13 @@ Fueron tratados de forma distinta que los términos: "ciencias" y "ciencia".
 
 * El término "enamorado" fué tratado de forma distinta que el los términos: "amor", "amorosas" y "amorosamente"
 
-## 4. Sobre la colección CISI3 , ejecute los stemmers de Porter y Lancaster provistos en el módulo nltk.stem. Compare: cantidad de términos resultantes
+### 4. Sobre la colección CISI3 , ejecute los stemmers de Porter y Lancaster provistos en el módulo nltk.stem. Compare: cantidad de términos resultantes
 
 La cantidad de términos del stemmer Lancaster es 17251. Mientras que la cantidad del Porter es de 18074. Este último tiene 823 términos más.
 
 Sometiendo a cada token a un procesamiento, eliminando acentos y caracteres no alfanumericos, la cantidad de términos obtenidos por Lancaster es de 8890, mientras que la de porter es de 9962. Una cantidad de términos significativamente menor, pero mayor diferencia entre los diferentes Stemmers, concretamente 1072 términos.
 
-## Compare: Resultado 1 a 1
+### Compare: Resultado 1 a 1
 
 Como era de esperarse, ambos stemmers tratan de igual forma a los numeros, no realizan ninguna modificación.
 
@@ -240,7 +240,7 @@ Las palabras que los stemmers tratan de manera diferente:
 
 Vemos que en ambos casos, tanto en palabras que tratan de igual forma, como de manera diferente, hay palabras con "ing", hay palabras terminadas con "ed", hay palabras que hacen referencia a numeros.
 
-## Compare: tiempo de ejecución para toda la colección
+### Compare: tiempo de ejecución para toda la colección
 
 Simplifiqué el tokenizador con respecto a los puntos anteriores para no agregar tiempos de procesamiento adicionales y ver reflejado lo mejor posible los tiempos de cada Stemmer.
 
@@ -250,14 +250,14 @@ Unicamente leyendo linea a linea cada uno de los archivos de la colección, sepa
 
 Se puede observar que el stemmer Lancaster corre casi en la mitad de tiempo que el Porter.
 
-## ¿Qué conclusiones puede obtener de la ejecución de uno y otro?
+### ¿Qué conclusiones puede obtener de la ejecución de uno y otro?
 
 <!--- Ampliar con algún exprimento más, cosas que diga el articulo o el libro-->
 
 
-## 5. Escriba un programa que realice la identificación del lenguaje de un texto a partir de un conjunto de entrenamiento. Pruebe dos métodos sencillos:
+### 5. Escriba un programa que realice la identificación del lenguaje de un texto a partir de un conjunto de entrenamiento. Pruebe dos métodos sencillos:
 
-## a) Uno basado en la distribución de la frecuencia de las letras.
+### a) Uno basado en la distribución de la frecuencia de las letras.
 
 Cree un diccionario para cada uno de los archivos de train y las claves de este, son las letras de la "a" a la  "z". Lo inicialicé en 0, y luego conté la frecuencia de caracteres para cada uno de los 3 archivos.
 Por ultimo, leí linea a linea el archivo de test, contando la frecuencia de caracteres en cada una de estas, y verificando con cuales de los diciccionarios de train, tenia mayor coeficiente de correlación, siendo este el idioma estimado de la linea leida.
@@ -266,7 +266,7 @@ Utilizando este método la precision del modelo es de 0.87.
 De 300 lineas, solo estimó de forma erronea 39.
 
 
-## b) El segundo, basado en calcular la probabilidad de que una letra x preceda a una y (calcule una  matriz de probabilidades con todas las combinaciones).
+### b) El segundo, basado en calcular la probabilidad de que una letra x preceda a una y (calcule una  matriz de probabilidades con todas las combinaciones).
 
 Para este otro método, conté como válidas unicamente las combinaciones de caracteres donde ambos eran letras, o, una letra con un espacio, es decir, descarté numeros y simbolos.
 
@@ -280,13 +280,13 @@ Hay un grupo de caracteres que fué leido en el conjunto de test, que no había 
 
 Una aclaración que tiene valor para ambos modelos, además de la ventaja de su sencillez, tienen muy buena precision para realizar la identificacion del lenguaje de un texto, más teniendo en cuenta que el largo promedio de las lineas del conjunto de test, es de unicamente 164 caracteres.
 
-## Compare los resultados contra el módulo Python langdetect y la solución provista.
+### Compare los resultados contra el módulo Python langdetect y la solución provista.
 
 El accuracy de langdetect es de 0.66, de 300 lineas del conjunto de test, el idioma de 100 fué detectado de forma incorrecta. Se puede observar una precision significativamente menor a la de los dos modelos provistos anteriormente.
 
-# Propiedades del Texto (En notebook Jupyter).
+## Propiedades del Texto (En notebook Jupyter).
 
-## 6. En este ejercicio se propone verificar la predicción de ley de Zipf. Para ello, descargue desde Project Gutenberg el texto del Quijote de Cervantes y escriba un programa que extraiga los términos y calcule sus frecuencias (el programa debe generar la lista ordenada por frecuencia descencente). Calcule la curva de ajuste utilizando la función Polyfit del módulo NumPy. Con los datos crudos y los estimados grafique en la notebook ambas distribuciones (haga 2 gráficos, uno en escala lineal y otro en log-log). ¿Cómo se comporta la predicción? ¿Qué conclusiones puede obtener?
+### 6. En este ejercicio se propone verificar la predicción de ley de Zipf. Para ello, descargue desde Project Gutenberg el texto del Quijote de Cervantes y escriba un programa que extraiga los términos y calcule sus frecuencias (el programa debe generar la lista ordenada por frecuencia descencente). Calcule la curva de ajuste utilizando la función Polyfit del módulo NumPy. Con los datos crudos y los estimados grafique en la notebook ambas distribuciones (haga 2 gráficos, uno en escala lineal y otro en log-log). ¿Cómo se comporta la predicción? ¿Qué conclusiones puede obtener?
 
 <!-- Como lo resolví? -->
 
@@ -313,7 +313,7 @@ Mientras que en escala logaritmica, utilizando una recta como funcion de ajuste 
 A modo de conclusion, apoyandonos sobre los valores de los coeficientes, podemos afirmar que este no se trata de un contraejemplo a la ley de Zipf, hay muy pocos terminos con una ocurrencia muy alta, y muchos términos que ocurren pocas veces.
 
 
-## 7
+### 7. Usando los datos del ejercicios anterior y de acuerdo a la ley de Zipf, calcule la proporción del total de términos para aquellos que tienen frecuencia f = {100, 1000, 10000}. Verifique respecto de los valores reales. ¿Qué conclusión puede obtener?
 
 Valores reales:
 
@@ -321,11 +321,22 @@ Valores reales:
 * Proporción de terminos con frecuencia >= a 1000 = 0.002069946957609211
 * Proporción de terminos con frecuencia >= a 10000 = 0.0001724955798007676
 
-Valores estimados:
+Valores estimados curve_fit, curva, escala lineal:
+
+* Proporción de terminos con frecuencia >= a 100 = 0.04187330199663634
+* Proporción de terminos con frecuencia >= a 1000 = 0.0024580620121609385
+* Proporción de terminos con frecuencia >= a 10000 = 0.0001293716848505757
+
+Valores estimados polyfit, recta, escala logaritmica:
 
 * Proporción de terminos con frecuencia >= a 100 = 0.0170339385053258
 * Proporción de terminos con frecuencia >= a 1000 = 0.00250118590711113
 * Proporción de terminos con frecuencia >= a 10000 = 0.0003449911596015352
+
+
+Se puede observar que la estimación realizada por curve_fit, estima de forma aceptable los términos con frecuencias bajas, pero sitúa en frecuencias altas una gran proporción de términos, (0.418), alejandose de lo planteado por la ley de Zipf, que los términos con frecuencias altas, ocurren una cantidad reducida de veces.
+
+Tal vez por este motivo el modelo de polyfit haya sido el más exitoso para este experimento, ajustando los términos en las 3 frecuencias diferentes, con una muy buena precisión.
 
 
 
