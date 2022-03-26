@@ -4,6 +4,7 @@ import re
 from nltk.stem import *
 
 
+
 class Tokenizer:
 	def __init__(self, dirpath, empty_words_path):
 		self.corpus_path = pathlib.Path(dirpath)
