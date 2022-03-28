@@ -338,7 +338,31 @@ Se puede observar que la estimación realizada por curve_fit, estima de forma ac
 
 Tal vez por este motivo el modelo de polyfit haya sido el más exitoso para este experimento, ajustando los términos en las 3 frecuencias diferentes, con una muy buena precisión.
 
+### 8. Codifique un script que reciba como parámetro el nombre de un archivo de texto, tokenize y calcule y escriba a un archivo los pares (#términos totales procesados, #términos únicos). Verifique en qué medida satisface la ley de Heaps. Grafique en la notebook los ajustes variando los parámetros de la expresión. Puede inicialmente probar con los archivos de los puntos anteriores.
 
+
+Utilice el Quijote para hacer el experimento, lo leí linea a linea y extraje terminos y tokens. 
+Además, agregue dos listas, para ir guardando la cantidad de terminos en un momento determindo, y la otra, para guardar el "step" actual. Definí una variable "step", que indica, cada cuantos tokens encontrados, debe agregar a la lista la cantidad de términos actuales. 
+Si el step es de 1, por cada token que encuentra, va a agregar a la lista, la cantidad de términos encontrados hasta el momento, el step actual, e incrementa el step en 1.
+
+Escribí el archivo de pares, que para el Quijote es de 384260 tokens y 23201 términos.
+
+Luego, ajusté una curva utilizando la funcion de ajuste de la ley de Heaps, utilizando los dos arrays comentados anteriormente, el de steps, y el de cantidad de términos. Graficando la recta ajustada, y los valores originales, obtuve el siguiente gráfico:
+
+![heaps-uno](https://raw.githubusercontent.com/AgustinNormand/recuperacion-de-informacion/main/TP_01/ejercicio_8/heaps_original.png)
+
+Vemos al final un incremento significativo de tokens que llama la atención, que se desvía significativamente de lo estimado por la ley de Heaps. Lo que significa es que al final del texto, encuentra muchos términos nuevos.
+Si observamos el final del texto, efectivamente vemos que hay un gran texto escrito en idioma ingés, de 2665 palabras, que al estar en un idioma diferente, el tokenizer encuentra muchos términos en esa seccion de texto.
+
+Eliminando lo comentado anteriormente, y corriendo el código nuevamente, obtenemos el siguiente gráfico:
+
+![heaps-dos](https://raw.githubusercontent.com/AgustinNormand/recuperacion-de-informacion/main/TP_01/ejercicio_8/heaps.png)
+
+En donde vemos que este pico al final desapareció, logrando que la recta se ajuste aun mejor a la distribución de los datos crudos.
+
+Por ultimo, para verificar en que medida se satisface la ley de Heaps, calculé el coeficiente de determinación, dado que al igual que en casos anteriores, seguimos en un contexto de predicción de datos futuros. 
+
+Este coeficiente tiene el valor de 0.9991511720407505, confirmando lo que se ve en el gráfico, que la ley de Heaps se satisface ampliamente. La longitud del vocabulario, está en funcion de la longitud del documento, cuanto más avancemos en el procesamiento del texto, mayor dificultad tendremos en encontrar nuevos términos.
 
 <!---
 
