@@ -175,13 +175,12 @@ Fueron tratados de forma distinta que los términos: "ciencias" y "ciencia".
 
 * El término "enamorado" fué tratado de forma distinta que el los términos: "amor", "amorosas" y "amorosamente"
 
-### 4. Sobre la colección CISI3 , ejecute los stemmers de Porter y Lancaster provistos en el módulo nltk.stem. Compare: cantidad de términos resultantes
+### 4. Sobre la colección CISI3 , ejecute los stemmers de Porter y Lancaster provistos en el módulo nltk.stem. Compare: cantidad de tokens resultantes, resultado 1 a 1 y tiempo de ejecución para toda la colección. Qué conclusiones puede obtener de la ejecución de uno y otro?
 
 La cantidad de términos del stemmer Lancaster es 17251. Mientras que la cantidad del Porter es de 18074. Este último tiene 823 términos más.
 
-Sometiendo a cada token a un procesamiento, eliminando acentos y caracteres no alfanumericos, la cantidad de términos obtenidos por Lancaster es de 8890, mientras que la de porter es de 9962. Una cantidad de términos significativamente menor, pero mayor diferencia entre los diferentes Stemmers, concretamente 1072 términos.
 
-### Compare: Resultado 1 a 1
+Sometiendo a cada token a un procesamiento, eliminando acentos y caracteres no alfanumericos, la cantidad de términos obtenidos por Lancaster es de 8890, mientras que la de porter es de 9962. Una cantidad de términos significativamente menor, pero mayor diferencia entre los diferentes Stemmers, concretamente 1072 términos.
 
 Como era de esperarse, ambos stemmers tratan de igual forma a los numeros, no realizan ninguna modificación.
 
@@ -240,7 +239,6 @@ Las palabras que los stemmers tratan de manera diferente:
 
 Vemos que en ambos casos, tanto en palabras que tratan de igual forma, como de manera diferente, hay palabras con "ing", hay palabras terminadas con "ed", hay palabras que hacen referencia a numeros.
 
-### Compare: tiempo de ejecución para toda la colección
 
 Simplifiqué el tokenizador con respecto a los puntos anteriores para no agregar tiempos de procesamiento adicionales y ver reflejado lo mejor posible los tiempos de cada Stemmer.
 
@@ -248,11 +246,9 @@ Unicamente leyendo linea a linea cada uno de los archivos de la colección, sepa
 * Porter: 8.350780248641968 segundos.
 * Lancaster: 4.523569583892822 segundos.
 
-Se puede observar que el stemmer Lancaster corre casi en la mitad de tiempo que el Porter.
+Si bien se puede observar que el stemmer Porter corre casi en el doble de tiempo que Lancaster, este útlimo es un altorimo de stemming muy agresivo, que resulta en una longitud menor del vocabulario, dado que muchos tokens terminan correspondiendo al mismo término debido a la gran poda que hace en las palabras.
 
-### ¿Qué conclusiones puede obtener de la ejecución de uno y otro?
-
-<!--- Ampliar con algún exprimento más, cosas que diga el articulo o el libro-->
+Por otro lado, Porter es un algoritmo computacionalmente más intensivo que la otra alternativa, pero que nos brinda mas precisión en el proceso de stemming. Es razonable que sea el algoritmo más utilizado para esta finalidad.
 
 
 ### 5. Escriba un programa que realice la identificación del lenguaje de un texto a partir de un conjunto de entrenamiento. Pruebe dos métodos sencillos:
@@ -282,13 +278,11 @@ Una aclaración que tiene valor para ambos modelos, además de la ventaja de su 
 
 ### Compare los resultados contra el módulo Python langdetect y la solución provista.
 
-El accuracy de langdetect es de 0.66, de 300 lineas del conjunto de test, el idioma de 100 fué detectado de forma incorrecta. Se puede observar una precision significativamente menor a la de los dos modelos provistos anteriormente.
+El accuracy de langdetect es de 0.99, de 300 lineas del conjunto de test, el idioma de 3 fué detectado de forma incorrecta. Tan solo 2 lineas más del conjunto de test debemos estimar de forma correcta para igualar la solución de langdetect.
 
 ## Propiedades del Texto (En notebook Jupyter).
 
 ### 6. En este ejercicio se propone verificar la predicción de ley de Zipf. Para ello, descargue desde Project Gutenberg el texto del Quijote de Cervantes y escriba un programa que extraiga los términos y calcule sus frecuencias (el programa debe generar la lista ordenada por frecuencia descencente). Calcule la curva de ajuste utilizando la función Polyfit del módulo NumPy. Con los datos crudos y los estimados grafique en la notebook ambas distribuciones (haga 2 gráficos, uno en escala lineal y otro en log-log). ¿Cómo se comporta la predicción? ¿Qué conclusiones puede obtener?
-
-<!-- Como lo resolví? -->
 
 En primer lugar, eliminé una sección en inglés que tenía el quijote, probablemente agregada por la página de la cual fué descargado el libro.
 
@@ -311,6 +305,12 @@ Aplicandolo en los datos reales y los estimados en escala lineal, utilizando una
 Mientras que en escala logaritmica, utilizando una recta como funcion de ajuste el valor de este coeficiente es 0.9776427799102992.
 
 A modo de conclusion, apoyandonos sobre los valores de los coeficientes, podemos afirmar que este no se trata de un contraejemplo a la ley de Zipf, hay muy pocos terminos con una ocurrencia muy alta, y muchos términos que ocurren pocas veces.
+
+Si en una escala lineal, ajustamos un modelo que sea recta vemos que este resulta en el siguiente gráfico:
+
+![recta](https://raw.githubusercontent.com/AgustinNormand/recuperacion-de-informacion/main/TP_01/ejercicio_6/recta.png)
+
+Por lo que confirma lo dicho anteriormente, muy pocos términos tienen una frecuencia muy alta, dado que la recta se ajustó a los términos que ocurren pocas veces.
 
 
 ### 7. Usando los datos del ejercicios anterior y de acuerdo a la ley de Zipf, calcule la proporción del total de términos para aquellos que tienen frecuencia f = {100, 1000, 10000}. Verifique respecto de los valores reales. ¿Qué conclusión puede obtener?

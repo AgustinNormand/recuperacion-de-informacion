@@ -58,7 +58,7 @@ class LangDetect():
 		if lang_detected == "it":
 			return "Italian"
 		if lang_detected == "en":
-			return "Enligsh"
+			return "English"
 		if lang_detected == "fr":
 			return "French"
 			
