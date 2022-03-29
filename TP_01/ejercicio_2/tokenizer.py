@@ -10,8 +10,8 @@ import re
 class Tokenizer:
 	def __init__(self, dirpath, empty_words_path):
 		self.palabras_vacias = []
-		self.min_length = 3
-		self.max_length = 20
+		self.min_length = 0
+		self.max_length = 200000
 
 		self.term_frequencies = {}
 		self.token_list = []
@@ -42,40 +42,61 @@ class Tokenizer:
 		n = Normalizer()
 		documents = self.collection.get_documents()
 
+		test = []
+
 		for document in documents:
-			document_word_list = document.get_words_list()
+			with open(document.get_path(), "r") as f:
+				entities = {}
+				document_lines = f.readlines()
+				previous = None
+				for i in range(0, len(document_lines)):
+					if(i != len(document_lines)-1):
+						further = document_lines[i+1]
+					else:
+						further = None
 
-			document_tokens = []
-			unique_document_terms = []
+					self.process_line(entities, previous, document_lines[i], further)
+					previous = document_lines[i]
 
-			for document_word in document_word_list:
+				if entities != {}:
+					print(document.get_path())
+					print(entities)
+					print("\r\n")
+					for entity in entities["abbreviation4"]:
+						if entity not in test:
+							test.append(entity)
+		print("Total len: {}".format(len(test)))
 
-				if self.get_token_type(document_word) == "test":
-					print(document_word)
-
-				document_token = n.normalize(document_word)
-					
-				document_tokens.append(document_token)
-
-				self.token_list.append(document_token)
-
-				is_valid_term = self.is_term(document_token)
-
-				if is_valid_term:
-					self.increment_term_collection_frequency(document_token)
-					
-					if document_token not in unique_document_terms:
-						unique_document_terms.append(document_token)
-					
-
-			self.increment_document_frequency(unique_document_terms)
-
-			document.set_tokens(document_tokens)
-			document.set_terms(unique_document_terms)
-
-	def get_token_type(self, document_word):
+	def process_line(self, entities, previous_line, actual_line, further_line):
 		regular_expressions = [
-			["([A-Z]{3})", "test"]
+			#[r'(?:[A-Z][bcdfghj-np-tvxz]\.)|(?:[A-Z][a-z]{2}\.)', "abbreviation1"], #Dr. Lic.
+			#[r'(?:\b[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.)', "abbreviation2"], #U.S.A N.A.S.A S.A.
+			#[r'(?:\b[A-Z]{2}\b)|(?:\b[A-Z]{3}\b)|(?:\b[A-Z]{4}\b)|(?:\b[A-Z]{5}\b)', "abbreviation3"],
+			#[r'(?:\b[a-z]{3}\.\s)|(?:\s[a-z]{3}\.\s)', "abbreviation4"] # lic. nac. ing. dra. etc.
+			#[r'(?:\b[a-z]{2}\.\s)|(?:\s[a-z]{2}\.\s)', "abbreviation4"] # dr. mg. sr. dr. ud.
+		]
+
+		for regular_expression, token_type in regular_expressions:
+			""" 
+			m = re.search(regular_expression, actual_line)
+			if m != None:
+				try:
+					entities[token_type].append(m)
+				except:
+					entities[token_type] = [m]
+			"""
+			""" """
+			m = re.findall(regular_expression, actual_line)
+			if m != []:
+				try:
+					entities[token_type].extend(m)
+				except:
+					entities[token_type] = m
+			""" """
+
+	"""def get_token_type(self, document_word):
+		regular_expressions = [
+			["([A-Z][A-Z][A-Z])", "test"]
 			#["([a-zA-Z0-9]+@[a-z.]+)", "email"],
 			#["(https?://[a-zA-Z./0-9-_?=]+)", "url"],
 			#["([A-Z][a-z]+\.)", "abbreviation"], # Dr. Lic.
@@ -95,6 +116,7 @@ class Tokenizer:
 				return token_type
 
 		return "general"
+	"""
 			
 
 	def increment_term_collection_frequency(self, term):

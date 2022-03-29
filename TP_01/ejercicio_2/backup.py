@@ -1,3 +1,45 @@
+			"""break
+				try:
+					if result["test"] != [None]:
+						print(result["test"])
+					except:
+						pass
+			break
+				for line in f.readlines():
+					self.evaluate_re(line)
+					self.word_list.extend(line.strip().split())
+
+			document_word_list = document.get_words_list()
+
+			document_tokens = []
+			unique_document_terms = []
+
+			for document_word in document_word_list:
+
+				if self.get_token_type(document_word) == "test":
+					print(document_word)
+
+				document_token = n.normalize(document_word)
+					
+				document_tokens.append(document_token)
+
+				self.token_list.append(document_token)
+
+				is_valid_term = self.is_term(document_token)
+
+				if is_valid_term:
+					self.increment_term_collection_frequency(document_token)
+					
+					if document_token not in unique_document_terms:
+						unique_document_terms.append(document_token)
+					
+
+			self.increment_document_frequency(unique_document_terms)
+
+			document.set_tokens(document_tokens)
+			document.set_terms(unique_document_terms)"""
+
+
 def check_email_consistency(self):
 		"""
 		Verifico si la cantidad de @ del documento, coincide con la cantidad de tokens de email reconocidos.

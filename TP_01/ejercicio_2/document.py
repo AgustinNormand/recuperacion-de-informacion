@@ -3,7 +3,7 @@ class Document:
 
 		self.path = path
 		self.word_list = []
-		self.parse_words()
+		#self.parse_words()
 
 		self.token_list = []
 		self.term_list = []

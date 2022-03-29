@@ -62,6 +62,31 @@ Decisiones que tome.
 
 ### 2. Tomando como base el programa anterior, escriba un segundo T okenizer que implemente los criterios del artı́culo de Grefenstette y Tapanainen para definir qué es una “palabra” (o término) y cómo tratar números y signos de puntuación. Además, extraiga en listas separadas utilizando en cada caso una función especı́fica.
 
+Todas las lineas las procesé buscando los match de las expresiones regulares, pero no evité que se produzca un proceso de normalización en estas, y que posiblemente se agreguen al indice.
+Si detecto "N.A.S.A" como una abrebiatura, también se le van a eliminar alfanumericos, pasar a minuscula, resultando en "nasa" y si ese token no está en el vocabulario, se va a agregar.
+
+En cuanto a las abrebiaturas como "Dr." o "Lic.":
+Una letra mayuscula seguida de una minuscula y un punto, la unica en la colección es:
+* As.
+
+A partir de tres letras minusculas en adelante, ya no hay ninguna abreviatura válida.
+
+Si buscamos palabras que contengan todos los caracteres en mayusculas, en busca de abreviaturas, encontramos:
+* 12 caracteres: PARTICIPARON
+* 10: KILOMETROS
+* 9: ASESINADO
+* 8: HANDBALL, GIMNASTA, PERSONAS
+* 7: HIRPACE, JUGADOR, TOMARLE, YAKARTA
+* 6: BUENOS, HABANA, MADRID, FISCAL, QUIERE, HINCHA, ADIDAS
+* 5: AIRES, RUMBO, RIVER, BANDO, CINCO, INDEC, IDESA
+* 4: ANSA, FOTO, UEFA, JEFE, NASA, AYER, SPAM
+* 3: DNI, HIV, VIH, USB, SON, RIO, AFP, DPA, CBN, UBA, DEL, AFA, OMS, EFE, AFP, MAS, MIL, LOS, PDF
+* 2: DT, PC, UN, DE, LA, AP, EL, AL, MS
+
+Opté por elegir abreviaturas de este tipo, de longitud 2 a 5, y luego de haber procesado todo el documento, eliminar las que esten en el diccionario de términos, por encima de X humbral de frecuencia, o sean palabras vacías. Para eliminar UN, LA, DE, y también, AIRES, RUMBO, JEFE.
+
+No existen en la colección abreviaturas del tipo "S.A." o "U.S.A", es decir, letras en mayúsculas separadas por puntos, finalizadas o no con un punto.
+
 <!-- 
 
 Falta terminar 
