@@ -50,16 +50,6 @@ En caso de no querer utilizar un archivo de palabras vacias, simplemente correr 
 1) La lista de los 10 términos más frecuentes y su CF (Collection Frequency)
 2) La lista de los 10 términos menos frecuentes y su CF.
 
-<!--
-
-Contar de donde saque las palabras vacías
-Por arriba como resolvi el código??
-Decisiones que tome.
-
- -->
-
-
-
 ### 2. Tomando como base el programa anterior, escriba un segundo Tokenizer que implemente los criterios del artı́culo de Grefenstette y Tapanainen para definir qué es una “palabra” (o término) y cómo tratar números y signos de puntuación. Además, extraiga en listas separadas utilizando en cada caso una función específica.
 
 Todas las líneas las procesé buscando los match de las expresiones regulares, pero no evité que se produzca un proceso de normalización en estas, y que posiblemente se agreguen al índice.
@@ -83,59 +73,9 @@ Si buscamos palabras que contengan todos los caracteres en mayúsculas, en busca
 * 3: DNI, HIV, VIH, USB, SON, RIO, AFP, DPA, CBN, UBA, DEL, AFA, OMS, EFE, AFP, MAS, MIL, LOS, PDF
 * 2: DT, PC, UN, DE, LA, AP, EL, AL, MS
 
-Opté por elegir abreviaturas de este tipo, de longitud 2 a 5, y luego de haber procesado todo el documento, eliminar las que estén en el diccionario de términos, por encima de X umbral de frecuencia, o sean palabras vacías. Para eliminar UN, LA, DE, y también, AIRES, RUMBO, JEFE.
+Opté por elegir abreviaturas de este tipo, de longitud 2 a 5. <!--, y luego de haber procesado todo el documento, eliminar las que estén en el diccionario de términos, por encima de X umbral de frecuencia, o sean palabras vacías. Para eliminar UN, LA, DE, y también, AIRES, RUMBO, JEFE.-->
 
 No existen en la colección abreviaturas del tipo "S.A." o "U.S.A", es decir, letras en mayúsculas separadas por puntos, finalizadas o no con un punto.
-
-<!--
-
-Falta terminar
-
--->
-
-<!--
-
-a) Abreviaturas tal cual están escritas (por ejemplo, Dr., Lic., S.A., NASA, etc.)
-
-Si quiero matchear abreviaturas como NASA, es inevitable que la expresión regular también matchee:
-
-* JEFE
-* FOTO
-* SPAM
-* UEFA
-* AYER
-* ANSA
-
-Abreviaturas con 3 letras mayúsculas:
-
-* PDF
-* AFA
-* CIA
-* UBA
-* USB
-* VIH
-* HIV
-* DNI
-* OMS
-
-No válidas
-
-* SON
-* DEL
-* MAS
-* MIL
-* LOS
-* RIO
-
-b) Direcciones de correo electrónico y URLs
-c) Números (por ejemplo, cantidades, teléfonos)
-d ) Nombres propios (por ejemplo, Villa Carlos Paz, Manuel Belgrano, etc.) y los trate como un único
-token.
-Genere y almacene la misma información que en el caso anterior.
--->
-
-
-
 
 ### 3. A partir del programa del ejercicio 1, incluya un proceso de stemming, use la librerı́a NLTK (Natural Language Toolkit) y revise qué algoritmos soporta para español e inglés.
 
@@ -479,8 +419,6 @@ Lo del largo del termino, debería ser despues de haber normaliado, traducido, e
 academicasfcfmnfchficesipaudedainformesdepartamentosareascargosdedicacioncaracterinscripcionresolucion
 Porque no se limito ese termino? Resuelto
 
-
-
 Elegir longitud minima y maxima tokens, documentar porque esa decision.
 
 Cantidad de terminos es cantidaad univoca de terminos? Sería como las claves del diccionario?
@@ -490,16 +428,43 @@ Promedio de terminos de los documentos? Sumo todas las frecuencias de terminos y
 
 
 
+a) Abreviaturas tal cual están escritas (por ejemplo, Dr., Lic., S.A., NASA, etc.)
 
+Si quiero matchear abreviaturas como NASA, es inevitable que la expresión regular también matchee:
 
+* JEFE
+* FOTO
+* SPAM
+* UEFA
+* AYER
+* ANSA
 
+Abreviaturas con 3 letras mayúsculas:
 
+* PDF
+* AFA
+* CIA
+* UBA
+* USB
+* VIH
+* HIV
+* DNI
+* OMS
 
+No válidas
 
+* SON
+* DEL
+* MAS
+* MIL
+* LOS
+* RIO
 
-
-Quijote:
-Elimine la primera parte en inglés, hasta el titulo.
+b) Direcciones de correo electrónico y URLs
+c) Números (por ejemplo, cantidades, teléfonos)
+d ) Nombres propios (por ejemplo, Villa Carlos Paz, Manuel Belgrano, etc.) y los trate como un único
+token.
+Genere y almacene la misma información que en el caso anterior.
 -->
 
 

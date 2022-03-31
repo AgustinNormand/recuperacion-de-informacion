@@ -89,7 +89,7 @@ class LangDetect():
 			if corrcoef > mayor:
 				mayor = corrcoef
 				language = train_filename
-
+				
 		return language
 
 
@@ -111,7 +111,7 @@ class LangDetect():
 
 
 	def initialize_character_frequency(self, character_frequency):
-		for i in range(97,122):
+		for i in range(97,123):
 			character_frequency[chr(i)] = 0
 
 	def initialize_character_frequencies(self):

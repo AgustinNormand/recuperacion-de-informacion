@@ -1,43 +1,34 @@
-			"""break
-				try:
-					if result["test"] != [None]:
-						print(result["test"])
-					except:
-						pass
-			break
-				for line in f.readlines():
-					self.evaluate_re(line)
-					self.word_list.extend(line.strip().split())
+			#previous = None
 
-			document_word_list = document.get_words_list()
+			#for i in range(0, len(document_lines)):
+				#if(i != len(document_lines)-1):
+					#further = document_lines[i+1]
+				#else:
+					#further = None
 
-			document_tokens = []
-			unique_document_terms = []
+				#self.process_line(entities, previous, document_lines[i], further)
+				#previous = document_lines[i]
 
-			for document_word in document_word_list:
 
-				if self.get_token_type(document_word) == "test":
-					print(document_word)
+if entities != {}:
+					#print(document.get_path())
+					#print(entities)
+				#print("\r\n")
+				for entity in entities["prueba"]:
+					if entity not in test:
+						test.append(entity)
 
-				document_token = n.normalize(document_word)
-					
-				document_tokens.append(document_token)
-
-				self.token_list.append(document_token)
-
-				is_valid_term = self.is_term(document_token)
-
-				if is_valid_term:
-					self.increment_term_collection_frequency(document_token)
-					
-					if document_token not in unique_document_terms:
-						unique_document_terms.append(document_token)
-					
-
-			self.increment_document_frequency(unique_document_terms)
-
-			document.set_tokens(document_tokens)
-			document.set_terms(unique_document_terms)"""
+		new_list = []
+		for test_word in test:
+			normalized_test = n.normalize(test_word)
+			if normalized_test not in self.palabras_vacias:
+				#print(self.term_frequencies[normalized_test])
+				#break
+				new_list.append(test_word)
+		#print(new_list)
+		for value1 in new_list:
+			print("{} -> {}".format(value1, self.term_frequencies[n.normalize(value1)]))
+		print("Total len: {}".format(len(test)))
 
 
 def check_email_consistency(self):

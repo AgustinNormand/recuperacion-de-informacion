@@ -1,8 +1,9 @@
 class Exporter:
-	def __init__(self, term_frequencies, token_list, term_length_acumulator, collection):
+	def __init__(self, term_frequencies, token_list, term_length_acumulator, entities, collection):
 		self.collection = collection
 		self.term_frequencies = term_frequencies
 		self.term_length_acumulator = term_length_acumulator
+		self.entities = entities
 
 		self.token_list = token_list
 
@@ -15,6 +16,7 @@ class Exporter:
 		self.generate_term_file()
 		self.generate_statistics_file()
 		self.generate_frequencies_file()
+		self.generate_entities_files()
 
 	def generate_term_file(self):
 		sort_frequencies = sorted(self.term_frequencies.items(), key=lambda x: x[0])
@@ -44,7 +46,10 @@ class Exporter:
 			###
 
 			### 4) Largo promedio de un término
-			f.write("{}\r\n".format(self.term_length_acumulator / term_amount))
+			try:
+				f.write("{}\r\n".format(self.term_length_acumulator / term_amount))
+			except:
+				f.write("{}\r\n".format(0))
 			###
 
 			### 5) Cantidad de tokens y términos del documento más corto y del más largo
@@ -89,8 +94,41 @@ class Exporter:
 
 			
 	
-			
-			
+	def generate_entities_files(self):
+		try:
+			with open("abbreviations.csv", "w") as f:
+				for abbr in self.entities["abbreviation"]:
+					f.write("{},\r\n".format(abbr.strip()))
+		except:
+			pass
+
+		try:	
+			with open("mails.csv", "w") as f:
+				for mail in self.entities["mail"]:
+					f.write("{},\r\n".format(mail.strip()))
+		except:
+			pass
+
+		try:
+			with open("urls.csv", "w") as f:
+				for url in self.entities["url"]:
+					f.write("{},\r\n".format(url.strip()))
+		except:
+			pass
+
+		try:
+			with open("numbers.csv", "w") as f:
+				for number in self.entities["number"]:
+					f.write("{},\r\n".format(number.strip()))
+		except:
+			pass
+
+		try:
+			with open("proper_names.csv", "w") as f:
+				for proper_name in self.entities["proper_name"]:
+					f.write("{},\r\n".format(proper_name.strip()))
+		except:
+			pass	
 
 		"""
 		print("\r\n")

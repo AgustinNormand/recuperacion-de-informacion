@@ -9,8 +9,8 @@ from exporter import Exporter
 class Tokenizer:
 	def __init__(self, dirpath, empty_words_path):
 		self.palabras_vacias = []
-		self.min_length = 0
-		self.max_length = 100000
+		self.min_length = 2
+		self.max_length = 20
 
 
 		self.term_frequencies = {}
@@ -50,7 +50,7 @@ class Tokenizer:
 
 			for document_word in document_word_list:
 				document_token = n.normalize(document_word)
-					
+
 				document_tokens.append(document_token)
 
 				self.token_list.append(document_token)
