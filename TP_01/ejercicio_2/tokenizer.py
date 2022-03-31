@@ -46,14 +46,13 @@ class Tokenizer:
 		documents = self.collection.get_documents()
 		
 		for document in documents:
+			document_entities = {}
 			document_tokens = []
 			unique_document_terms = []
 			document_lines = document.get_lines()
 			for i in range(0, len(document_lines)):
-				actual_line = self.process_line(document_lines[i])
-				print(actual_line)
-
-				for document_word in actual_line.strip().split():
+				processed_line = self.process_line(document_entities, document_lines[i])
+				for document_word in processed_line.strip().split():
 
 					document_token = self.normalizer.normalize(document_word)
 					
@@ -67,23 +66,34 @@ class Tokenizer:
 						self.increment_term_collection_frequency(document_token)
 						if document_token not in unique_document_terms:
 							unique_document_terms.append(document_token)
-					
+
+		for key in document_entities:
+			for document_entity in document_entities[key]:
+				try:
+					self.entities[key].append(document_entity)
+				except:
+					self.entities[key] = [document_entity]
+				document_tokens.append(document_entity)
+				self.token_list.append(document_entity)
+				self.increment_term_collection_frequency(document_entity)
+				if document_entity not in unique_document_terms:
+					unique_document_terms.append(document_entity)
 
 		self.increment_document_frequency(unique_document_terms)
 		document.set_tokens(document_tokens)
 		document.set_terms(unique_document_terms)
 
-	def process_line(self, actual_line):
+	def process_line(self, document_entities, actual_line):
 		regular_expressions = [
+			[r'(\b[\w]+@[A-Za-z0-9]+\.[\.|A-Z|a-z]{2,}\b)', "mail"],
 			[r'(?:[A-Z][bcdfghj-np-tvxz]\.)|(?:[A-Z][a-z]{2}\.)', "abbreviation"], #Dr. Lic.
-			[r'(?:\b[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.)', "abbreviation"], #U.S.A N.A.S.A S.A.
+			[r'(?:\b[A-Z]\.[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.)', "abbreviation"], #U.S.A N.A.S.A S.A.
 			[r'(?:\b[A-Z]{2}\b)|(?:\b[A-Z]{3}\b)|(?:\b[A-Z]{4}\b)|(?:\b[A-Z]{5}\b)', "abbreviation"],
 			[r'(?:\b[a-z]{3}\.\s)|(?:\s[a-z]{3}\.\s)', "abbreviation"], # lic. nac. ing. dra. etc.
 			[r'(?:\b[a-z]{2}\.\s)|(?:\s[a-z]{2}\.\s)', "abbreviation"], # dr. mg. sr. dr. ud.
-			[r'(\b[\w]+@[A-Za-z0-9]+\.[\.|A-Z|a-z]{2,}\b)', "mail"],
 			[r"((?:(?:https?://)|(?:www\.))(?:[a-zA-Z./0-9-_?=]+))", "url"],
 			[r'((?:\b[0-9]+[\.,][0-9]+\b)|(?:\b[0-9]+\b))', "number"],
-			[r'((?:(?:[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})|(?:[A-ZÁÉÍÚÓ][a-záéíóú]+))', "proper_name"], # El Quinto, Agustin Normand
+			[r'((?:(?:[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})|(?:(?!\A)[A-ZÁÉÍÚÓ][a-záéíóú]+))', "proper_name"], # El Quinto, Agustin Normand
 		]
 
 		for regular_expression, token_type in regular_expressions:
@@ -91,10 +101,11 @@ class Tokenizer:
 			actual_line = re.sub(regular_expression, "", actual_line)
 
 			if m != []:
-				try:
-					self.entities[token_type].extend(m)
-				except:
-					self.entities[token_type] = m
+				for value in m:
+					try:
+						document_entities[token_type].append(value.strip())
+					except:
+						document_entities[token_type] = [value.strip()]
 		return actual_line
 
 

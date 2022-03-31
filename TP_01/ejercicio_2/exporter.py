@@ -98,35 +98,35 @@ class Exporter:
 		try:
 			with open("abbreviations.csv", "w") as f:
 				for abbr in self.entities["abbreviation"]:
-					f.write("{},\r\n".format(abbr.strip()))
+					f.write("{},\r\n".format(abbr))
 		except:
 			pass
 
 		try:	
 			with open("mails.csv", "w") as f:
 				for mail in self.entities["mail"]:
-					f.write("{},\r\n".format(mail.strip()))
+					f.write("{},\r\n".format(mail))
 		except:
 			pass
 
 		try:
 			with open("urls.csv", "w") as f:
 				for url in self.entities["url"]:
-					f.write("{},\r\n".format(url.strip()))
+					f.write("{},\r\n".format(url))
 		except:
 			pass
 
 		try:
 			with open("numbers.csv", "w") as f:
 				for number in self.entities["number"]:
-					f.write("{},\r\n".format(number.strip()))
+					f.write("{},\r\n".format(number))
 		except:
 			pass
 
 		try:
 			with open("proper_names.csv", "w") as f:
 				for proper_name in self.entities["proper_name"]:
-					f.write("{},\r\n".format(proper_name.strip()))
+					f.write("{},\r\n".format(proper_name))
 		except:
 			pass	
 

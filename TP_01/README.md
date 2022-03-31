@@ -77,6 +77,8 @@ Opté por elegir abreviaturas de este tipo, de longitud 2 a 5. <!--, y luego de 
 
 No existen en la colección abreviaturas del tipo "S.A." o "U.S.A", es decir, letras en mayúsculas separadas por puntos, finalizadas o no con un punto.
 
+Casos que me resultaron interesantes que conocí gracias al procesamiento que hice en este ejercicio para detectar entidades son por ejemplo, la pelicula "2012" o el nombre de un restaurant que es "Sutton 212".
+
 ### 3. A partir del programa del ejercicio 1, incluya un proceso de stemming, use la librerı́a NLTK (Natural Language Toolkit) y revise qué algoritmos soporta para español e inglés.
 
 De la librería NLTK utilicé el módulo nltk.stem.snowball, ya que tiene soporte tanto para español como para inglés.
