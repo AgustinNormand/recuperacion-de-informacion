@@ -13,10 +13,34 @@ Bibliografı́a sugerida: MIR [1] Capı́tulo 7, TOL [5] Capı́tulo 3, MAN [4] 
 ### 1. Escriba un programa que realice análisis léxico sobre la colección RI-tknz-data. El programa debe recibir como parámetros el directorio donde se encuentran los documentos y un argumento que indica si se deben eliminar las palabras vacı́as (y en tal caso, el nombre del archivo que las contiene). Defina, además, una longitud mínima y máxima para los términos. Como salida, el programa debe generar:
 ### a) Un archivo (terminos.txt) con la lista de términos a indexar (ordenado), su frecuencia en la colección y su DF (Document Frequency). Formato de salida: < termino > [ESP ] < CF > [ESP ] < DF >.
 ### Ejemplo:
+
 casa 238 3
+
 perro 644 6
+
 ...
+
 zorro 12 1
+
+### b) Un segundo archivo (estadisticas.txt) con los siguientes datos (un punto por lı́nea y separados por espacio cuando sean más de un valor) :
+
+1) Cantidad de documentos procesados
+
+2) Cantidad de tokens y términos extraı́dos
+
+3) Promedio de tokens y términos de los documentos
+
+4) Largo promedio de un término
+
+5) Cantidad de tokens y términos del documento más corto y del más largo
+
+6) Cantidad de términos que aparecen sólo 1 vez en la colección
+
+### c) Un tercer archivo (frecuencias.txt, con un término y su CF por lı́nea) con:
+
+1) La lista de los 10 términos más frecuentes y su CF (Collection Frequency)
+
+2) La lista de los 10 términos menos frecuentes y su CF.
 
 Para resolver este ejercicio cree las siguientes clases:
 
@@ -26,7 +50,7 @@ Para resolver este ejercicio cree las siguientes clases:
 * Tokenizer
 * Exporter
 
-Dichas clases se encuentran en el directorio ejercicio_1. Junto con el archivo emptywords.csv donde cargué las palabras vacías. Y además, también podemos encontrar los archivos de salida del programa:
+Dichas clases se encuentran en el directorio ejercicio_1. Junto con el archivo emptywords.txt donde cargué las palabras vacías. Y además, también podemos encontrar los archivos de salida del programa:
 
 * terminos.txt
 * estadisticas.txt
@@ -35,20 +59,6 @@ Dichas clases se encuentran en el directorio ejercicio_1. Junto con el archivo e
 Para correr el programa, python3 tokenizer.py path_coleccion path_archivo_palabras_vacias
 
 En caso de no querer utilizar un archivo de palabras vacias, simplemente correr python3 tokenizer.py path_coleccion
-
-### b) Un segundo archivo (estadisticas.txt) con los siguientes datos (un punto por lı́nea y separados por espacio cuando sean más de un valor) :
-
-1) Cantidad de documentos procesados
-2) Cantidad de tokens y términos extraı́dos
-3) Promedio de tokens y términos de los documentos
-4) Largo promedio de un término
-5) Cantidad de tokens y términos del documento más corto y del más largo
-6) Cantidad de términos que aparecen sólo 1 vez en la colección
-
-### c) Un tercer archivo (frecuencias.txt, con un término y su CF por lı́nea) con:
-
-1) La lista de los 10 términos más frecuentes y su CF (Collection Frequency)
-2) La lista de los 10 términos menos frecuentes y su CF.
 
 ### 2. Tomando como base el programa anterior, escriba un segundo Tokenizer que implemente los criterios del artı́culo de Grefenstette y Tapanainen para definir qué es una “palabra” (o término) y cómo tratar números y signos de puntuación. Además, extraiga en listas separadas utilizando en cada caso una función específica.
 
@@ -99,6 +109,7 @@ Expresión regulares para nombres propios:
 ```
 
 Si buscamos palabras que contengan todos los caracteres en mayúsculas, en busca de abreviaturas, encontramos:
+
 * 12 caracteres: PARTICIPARON
 * 10: KILOMETROS
 * 9: ASESINADO
@@ -112,7 +123,9 @@ Si buscamos palabras que contengan todos los caracteres en mayúsculas, en busca
 
 Opté por elegir abreviaturas de este tipo, de longitud 2 a 5.
 
-Casos que me resultaron interesantes que conocí gracias al procesamiento que hice en este ejercicio para detectar entidades son por ejemplo, la pelicula "2012" o el nombre de un restaurant que es "Sutton 212".
+Casos que me resultaron interesantes que conocí gracias al procesamiento que hice en este ejercicio para detectar entidades son por ejemplo, la pelicula "2012" o el nombre de un restaurant que es "Sutton 212", ambos me resultaron casos interesantes para evaluar el reconocimiento de entidades.
+
+Por falta de tiempo recorté el alcance de este ejercicio, pero hubiera resultado interesante continuar haciendo un analisis mas exhaustivo.
 
 ### 3. A partir del programa del ejercicio 1, incluya un proceso de stemming, use la librerı́a NLTK (Natural Language Toolkit) y revise qué algoritmos soporta para español e inglés.
 
