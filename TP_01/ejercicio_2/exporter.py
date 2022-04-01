@@ -96,22 +96,25 @@ class Exporter:
 	
 	def generate_entities_files(self):
 		try:
+			abbrs = list(set(self.entities["abbreviation"]))
 			with open("abbreviations.csv", "w") as f:
-				for abbr in self.entities["abbreviation"]:
+				for abbr in abbrs:
 					f.write("{},\r\n".format(abbr))
 		except:
 			pass
 
 		try:	
+			mails = list(set(self.entities["mail"]))
 			with open("mails.csv", "w") as f:
-				for mail in self.entities["mail"]:
+				for mail in mails:
 					f.write("{},\r\n".format(mail))
 		except:
 			pass
 
 		try:
+			urls = list(set(self.entities["url"]))
 			with open("urls.csv", "w") as f:
-				for url in self.entities["url"]:
+				for url in urls:
 					f.write("{},\r\n".format(url))
 		except:
 			pass

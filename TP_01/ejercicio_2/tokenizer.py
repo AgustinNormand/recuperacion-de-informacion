@@ -11,7 +11,7 @@ class Tokenizer:
 	def __init__(self, dirpath, empty_words_path):
 		self.palabras_vacias = []
 		self.min_length = 2
-		self.max_length = 200
+		self.max_length = 20
 
 		self.term_frequencies = {}
 		self.token_list = []
@@ -55,6 +55,9 @@ class Tokenizer:
 				for document_word in processed_line.strip().split():
 
 					document_token = self.normalizer.normalize(document_word)
+
+					if document_token == "":
+						continue
 					
 					document_tokens.append(document_token)
 
@@ -67,21 +70,21 @@ class Tokenizer:
 						if document_token not in unique_document_terms:
 							unique_document_terms.append(document_token)
 
-		for key in document_entities:
-			for document_entity in document_entities[key]:
-				try:
-					self.entities[key].append(document_entity)
-				except:
-					self.entities[key] = [document_entity]
-				document_tokens.append(document_entity)
-				self.token_list.append(document_entity)
-				self.increment_term_collection_frequency(document_entity)
-				if document_entity not in unique_document_terms:
-					unique_document_terms.append(document_entity)
+			for key in document_entities:
+				for document_entity in document_entities[key]:
+					try:
+						self.entities[key].append(document_entity)
+					except:
+						self.entities[key] = [document_entity]
+					document_tokens.append(document_entity)
+					self.token_list.append(document_entity)
+					self.increment_term_collection_frequency(document_entity)
+					if document_entity not in unique_document_terms:
+						unique_document_terms.append(document_entity)
 
-		self.increment_document_frequency(unique_document_terms)
-		document.set_tokens(document_tokens)
-		document.set_terms(unique_document_terms)
+			self.increment_document_frequency(unique_document_terms)
+			document.set_tokens(document_tokens)
+			document.set_terms(unique_document_terms)
 
 	def process_line(self, document_entities, actual_line):
 		regular_expressions = [
@@ -89,8 +92,7 @@ class Tokenizer:
 			[r'(?:[A-Z][bcdfghj-np-tvxz]\.)|(?:[A-Z][a-z]{2}\.)', "abbreviation"], #Dr. Lic.
 			[r'(?:\b[A-Z]\.[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.)', "abbreviation"], #U.S.A N.A.S.A S.A.
 			[r'(?:\b[A-Z]{2}\b)|(?:\b[A-Z]{3}\b)|(?:\b[A-Z]{4}\b)|(?:\b[A-Z]{5}\b)', "abbreviation"],
-			[r'(?:\b[a-z]{3}\.\s)|(?:\s[a-z]{3}\.\s)', "abbreviation"], # lic. nac. ing. dra. etc.
-			[r'(?:\b[a-z]{2}\.\s)|(?:\s[a-z]{2}\.\s)', "abbreviation"], # dr. mg. sr. dr. ud.
+			[r'((?:\b[a-z]{2,3}\.\s)|(?:\s[a-z]{2,3}\.\s))', "abbreviation"], # lic. nac. ing. dra. etc.
 			[r"((?:(?:https?://)|(?:www\.))(?:[a-zA-Z./0-9-_?=]+))", "url"],
 			[r'((?:\b[0-9]+[\.,][0-9]+\b)|(?:\b[0-9]+\b))', "number"],
 			[r'((?:(?:[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})|(?:(?!\A)[A-ZÁÉÍÚÓ][a-záéíóú]+))', "proper_name"], # El Quinto, Agustin Normand
@@ -102,6 +104,9 @@ class Tokenizer:
 
 			if m != []:
 				for value in m:
+					if token_type == "abbreviation":
+						if self.normalizer.normalize(value) in self.palabras_vacias:
+							continue
 					try:
 						document_entities[token_type].append(value.strip())
 					except:
@@ -144,4 +149,3 @@ if __name__ == '__main__':
 	end = time.time()
 	print("\r\nExecution time: {} seconds.".format(end - start))
 
-	#4.8, 5.62 segundos tiempo ejecución

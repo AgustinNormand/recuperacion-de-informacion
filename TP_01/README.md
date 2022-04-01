@@ -52,14 +52,51 @@ En caso de no querer utilizar un archivo de palabras vacias, simplemente correr 
 
 ### 2. Tomando como base el programa anterior, escriba un segundo Tokenizer que implemente los criterios del artı́culo de Grefenstette y Tapanainen para definir qué es una “palabra” (o término) y cómo tratar números y signos de puntuación. Además, extraiga en listas separadas utilizando en cada caso una función específica.
 
-Todas las líneas las procesé buscando los match de las expresiones regulares, pero no evité que se produzca un proceso de normalización en estas, y que posiblemente se agreguen al índice.
-Si detecto "N.A.S.A" como una abrebiatura, también se le van a eliminar alfanuméricos, pasar a minúscula, resultando en "nasa" y si ese token no está en el vocabulario, se va a agregar.
+A diferencia del ejercicio anterior, que procesaba documento a documento, luego linea a linea, haciendo un split por espacios, para finalmente leer palabra a palabra. En este caso, antes de hacer el split por espacios, evalué una serie de expresiones regulares, luego eliminé de las lienas los match de dichas expresiones regulares, para finalmente hacer el mismo procesamiento que el ejercicio anterior.
 
-En cuanto a las abreviaturas como "Dr." o "Lic.":
-Una letra mayúscula seguida de una minúscula y un punto, la única en la colección es:
-* As.
+Se deben evaluar las expresiones regulares antes de hacer tratamientos a los strings para no perdér caracteres importantes para detectar emails, urls, abreviaturas, etc. Y fué necesario hacer el procesamiento liena a linea y no palabra a palabra para facilitar la busqueda de nombres propios que tengan más de una palabra, separados por espacios, como también, brindar la posibilidad en un futuro refactor, de utilizar las lineas anteriores y posteriores para detectar entidades en la linea actual.
 
-A partir de tres letras minúsculas en adelante, ya no hay ninguna abreviatura válida.
+Expresión regular para emails: 
+``` python
+(\b[\w]+@[A-Za-z0-9]+\.[\.|A-Z|a-z]{2,}\b)
+```
+
+Expresiones regulares para abreviaturas:
+
+Una letra mayuscula seguida de una o dos minusculas, finalizadas con un punto.
+``` python
+(?:[A-Z][bcdfghj-np-tvxz]\.)|(?:[A-Z][a-z]{2}\.)
+```
+
+2, 3 o 4 letras mayusculas separadas por puntos.
+``` python
+(?:\b[A-Z]\.[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.)
+```
+
+2, 3, 4, o 5 letras mayusculas.
+``` python
+(?:\b[A-Z]{2}\b)|(?:\b[A-Z]{3}\b)|(?:\b[A-Z]{4}\b)|(?:\b[A-Z]{5}\b)
+```
+
+2 o 3 letras minusculas seguidas por un punto.
+``` python
+((?:\b[a-z]{2,3}\.\s)|(?:\s[a-z]{2,3}\.\s))
+```
+
+Expresión regulares para urls:
+``` python
+((?:(?:https?://)|(?:www\.))(?:[a-zA-Z./0-9-_?=]+))
+```
+
+Expresión regulares para numeros:
+``` python
+((?:\b[0-9]+[\.,][0-9]+\b)|(?:\b[0-9]+\b))
+```
+
+Expresión regulares para nombres propios:
+``` python
+((?:(?:[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})|(?:(?!\A)[A-ZÁÉÍÚÓ][a-záéíóú]+))
+```
 
 Si buscamos palabras que contengan todos los caracteres en mayúsculas, en busca de abreviaturas, encontramos:
 * 12 caracteres: PARTICIPARON
@@ -73,9 +110,7 @@ Si buscamos palabras que contengan todos los caracteres en mayúsculas, en busca
 * 3: DNI, HIV, VIH, USB, SON, RIO, AFP, DPA, CBN, UBA, DEL, AFA, OMS, EFE, AFP, MAS, MIL, LOS, PDF
 * 2: DT, PC, UN, DE, LA, AP, EL, AL, MS
 
-Opté por elegir abreviaturas de este tipo, de longitud 2 a 5. <!--, y luego de haber procesado todo el documento, eliminar las que estén en el diccionario de términos, por encima de X umbral de frecuencia, o sean palabras vacías. Para eliminar UN, LA, DE, y también, AIRES, RUMBO, JEFE.-->
-
-No existen en la colección abreviaturas del tipo "S.A." o "U.S.A", es decir, letras en mayúsculas separadas por puntos, finalizadas o no con un punto.
+Opté por elegir abreviaturas de este tipo, de longitud 2 a 5.
 
 Casos que me resultaron interesantes que conocí gracias al procesamiento que hice en este ejercicio para detectar entidades son por ejemplo, la pelicula "2012" o el nombre de un restaurant que es "Sutton 212".
 
