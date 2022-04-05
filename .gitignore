@@ -1,5 +1,7 @@
 *.book
 collection_test/
+TP_02/ejercicio_6/wiki-small/*
+TP_02/ejercicio_6/test/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
