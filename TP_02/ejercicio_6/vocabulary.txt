@@ -10,3 +10,4 @@ term_id	IDF	term
 9	0	perro
 10	0	dog
 11	0	doggy
+12	0	canino

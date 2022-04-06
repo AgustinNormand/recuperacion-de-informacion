@@ -1,9 +1,9 @@
 class Exporter:
 	def __init__(self, docnames_ids, document_vectors, vocabulary):
 
-		self.docnames_ids_file(docnames_ids, "docnames_ids.txt")
-		self.document_vectors_file(document_vectors, "document_vectors.txt")
-		self.vocabulary_file(vocabulary, "vocabulary.txt")
+		self.docnames_ids_file(docnames_ids, "./output/docnames_ids.txt")
+		self.document_vectors_file(document_vectors, "./output/document_vectors.txt")
+		self.vocabulary_file(vocabulary, "./output/vocabulary.txt")
 
 
 	def docnames_ids_file(self, docnames_ids, filepath):
@@ -20,6 +20,6 @@ class Exporter:
 
 	def vocabulary_file(self, vocabulary, filepath):
 		with open(filepath, "w") as f:
-			f.write("{}\t{}\t{}\r\n".format("term_id", "IDF", 'term'))
+			f.write("{}\t{}\r\n".format('term', "idf"))
 			for value in vocabulary:
-				f.write("{}\t{}\t{}\r\n".format(value, vocabulary[value][0], vocabulary[value][1]))
+				f.write("{}\t{}\r\n".format(value, vocabulary[value]))
