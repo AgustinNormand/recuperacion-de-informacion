@@ -1,29 +1,104 @@
+import math
+from tabulate import tabulate
+
 class Model:
 	def __init__(self, vocabulary, document_vectors, docnames_ids, relevants = None):
 		self.vocabulary = vocabulary
 		self.document_vectors = document_vectors
 		self.docnames_ids = docnames_ids
 
-		#vocabulary = {id = term}
+		#print(document_vectors)
+
+		#vocabulary = {term = [id, df, idf]}
 		#document_vectors = {id_doc = {id_term: cant, id_term: cant}}
 		#docnames_ids = {id_doc = name}
 
+		self.documents_count = len(self.document_vectors.keys())
 		self.calculate_idf()
 
-	"""def get_df(self, term_id):
-		counter = 0
-		for key in self.document_vectors:
-			if term_id in list(self.document_vectors[key].keys()):
-				counter += 1
-		return counter
-	"""
-	def calculate_idf(self):
+		self.document_norm = {}
+
+		self.calculate_documents_norm()
+
+	def calculate_idf(self): ## Se podría refactorizar, Calcular antes.
 		for key in self.vocabulary:
-			print(key)
-			print(self.vocabulary[key])
-			#self.get_df(key)
-			break
-			#break
+			self.vocabulary[key].append(math.log(self.documents_count/self.vocabulary[key][1]))
+
+	def build_query_vector(self, query_terms):
+		#Soportar multiple frecuencia en los terminos TODO
+		self.query_vector = {}
+		acum = 0
+		for term in query_terms:
+			try:
+				term_idf = self.vocabulary[term][2]
+				self.query_vector[term] = term_idf
+				acum += math.pow(term_idf, 2)
+			except:
+				pass
+		self.query_norm = math.sqrt(acum)
+		self.query_terms_set = set(self.query_vector.keys())	
+
+	def calculate_document_norm(self, document_vector):
+		acum = 0
+		for term in document_vector:
+			tf = document_vector[term]
+			idf = self.vocabulary[term][2]
+			acum += math.pow(tf*idf, 2)
+
+		return math.sqrt(acum)
+
+	def calculate_documents_norm(self):
+		for key in self.document_vectors:
+			self.document_norm[key] = self.calculate_document_norm(self.document_vectors[key])
+
+	def get_score(self, document_id, document_vector):
+		document_terms_set = set(document_vector.keys())
+		intersection = self.query_terms_set.intersection(document_terms_set)
+		if len(intersection) != 0 :
+			#print("document_id = {}, document_norm = {}".format(document_id, self.document_norm[document_id]))
+			acum = 0
+			for common_value in intersection:
+				document_weight = document_vector[common_value] * self.vocabulary[common_value][2]
+				query_weight = self.query_vector[common_value]
+				acum += document_weight*query_weight
+				#print("value = {}, doc_w = {}, query_w = {}".format(common_value, document_weight, query_weight))
+				#print(common_value)
+			try:
+				return acum / (self.document_norm[document_id]*self.query_norm)
+			except:
+				return 0 #Esto estoy casi seguro que resuelve cuando el idf es 0
+		else:
+			return 0
+
+	def get_document_scores(self):
+		self.result = {}
+		for key in self.document_vectors:
+			score = self.get_score(key, self.document_vectors[key])
+			if score != 0:
+				self.result[key] = score
+		#return result
+				#print(score)
+			#for common_term in intersection
+		#print(result)
+	
+		#for term in self.query_vector:
+			
+	
+	def query(self, query_terms):
+		self.build_query_vector(query_terms)
+		self.get_document_scores()
+
+		final_ordered_result = []
+		for value in self.result:
+			doc_name = list(self.docnames_ids.keys())[list(self.docnames_ids.values()).index(value)]
+			browser_path = "file:///home/agustin/Desktop/Recuperacion/repo/TP_02/ejercicio_6/"+doc_name
+			final_ordered_result.append((value, self.result[value], browser_path))
+
+		final_ordered_result = sorted(final_ordered_result, key=lambda tup: tup[1], reverse=True)
+
+		print(tabulate(final_ordered_result, headers=['DocID', 'Score', 'DocPath'], tablefmt='orgtbl'))
+
+
 
 """term_documents = {}
 document_terms = {}

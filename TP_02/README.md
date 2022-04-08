@@ -31,18 +31,22 @@ Como el termino 142 no está en ningun documento, cuando hago el DF para hacer e
 
 
 
+Punto 6. Desprolijo
+Falta lo de las postings.
+Falta ponderar terminos del query.
+Cambiar a indice invertido.
+Dejar de buscar si el doc id leído es mayor, habiendo ordenado los docid.
+
+Justificar porque use bf4
+Documentar mejor como correr el programa?
 
 
 
+5
+./terrier batchretrieve -t ../../ejercicio_5/query-text.trec -w TF_IDF
 
-Borrador:
+Terrier model list http://terrier.org/docs/current/javadoc/org/terrier/matching/models/package-summary.html
 
-Eliminando la palabra "PATIENTS" de la query, se mejora la precisión, dado que esta hace que se recuperen 4 documentos que ninguno es relevante.
-
-Podría seguir indicando que terminos se podrían agregar o quitar de la query para mejorar la precision o recall o ambos. El problema es que este analisis es facil hacerlo viendo los documentos relevantes, los terminos que tienen estos documentos, el valor que aporta cada uno de los términos de la query al conjunto de resultados, etc. Pero me resulta poco valioso indicar cómo mejorar los resultados, haciéndolo de esta forma, dado que es como "hacer trampa".
-Por ejemplo, para la query 2, los términos que resultan intuitivos para traducir de la 
-
-Podría mejorar la eficiencia de la query realizando un analisis utilizando los diferentes archivos de input que tengo. Este analisis es facil hacerlo viendo los documentos relevantes, los terminos que tienen estos documentos, el valor que aporta cada uno de los términos de la query al conjunto de resultados, etc. El problema, es que no se llegan a resultados reales, al que un usuario podría llegar. Es decir, hay documentos que no son recuperados debido a que no contienen ninguno de los términos de la query, podría agregar uno de los términos del documento a la query, y así lograr que lo recupere, pero este término, sería imposible de adivinar para el usuario, por lo tanto no sería un documento que está al alcance del usuario recuperarlo.
 
 
 -->

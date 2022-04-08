@@ -1,4 +1,5 @@
 from normalizer import Normalizer
+from bs4 import BeautifulSoup
 
 class Tokenizer:
 	def __init__(self):
@@ -42,15 +43,23 @@ class Tokenizer:
 
 			self.increment_frequency(token, file_terms)
 
-	def tokenize_file(self, filename, file_id):
+	def tokenize_html_file(self, filename, file_id):
 		file_terms = {}
-		with open(filename, "r") as f:
-			for line in f.readlines():
-				for word in line.strip().split():
-					token = self.normalizer.normalize(word)
-					self.add_if_term(token, file_terms)
-
+		with open(filename, 'r') as f:
+			contents = f.read()
+			soup = BeautifulSoup(contents, 'lxml')
+			for word in soup.get_text().split():
+				token = self.normalizer.normalize(word)
+				self.add_if_term(token, file_terms)
 		self.documents_vectors[file_id] = file_terms
 
 	def get_results(self):
 		return [self.vocabulary, self.documents_vectors]
+
+	def tokenize_query(self, user_input):
+		result = []
+		for word in user_input.strip().split():
+			token = self.normalizer.normalize(word)
+			if self.is_term(token):
+				result.append(token)
+		return result
