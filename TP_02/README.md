@@ -44,6 +44,8 @@ Documentar mejor como correr el programa?
 
 	#Verificar si en algun momento no inserta desordenado en una posting.
 
+Distributed Indexing time: 603.5476200580597 seconds, Documents Processed: 6043, Workers Threads: 5.
+Mergeing time: 6.121704816818237 seconds.
 
 
 5

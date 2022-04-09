@@ -148,5 +148,5 @@ def mostrar_menu_principal():
 
 	mostrar_sub_menu(m, t)
 
-#mostrar_menu_configuracion() #Comentar esto hace que sea mas rapido el develop
-mostrar_menu_principal()
+mostrar_menu_configuracion() #Comentar esto hace que sea mas rapido el develop
+#mostrar_menu_principal()
