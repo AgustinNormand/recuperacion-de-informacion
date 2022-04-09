@@ -4,18 +4,9 @@ import pathlib
 from tokenizer import Tokenizer
 from exporter import Exporter
 import threading
-import pickle
 import time
 from model import Model
-
-def show_menu(model):
-	tokenizer = Tokenizer()
-	print("Ingrese los terminos de la query, 0 para salir.")
-	user_input = ""
-	while user_input != "0":
-		user_input = input()
-		if user_input != "0":
-			model.query(tokenizer.tokenize_query(user_input))
+import merger
 
 def load_documents(corpus_path):
 	docnames_ids = {}
@@ -24,71 +15,12 @@ def load_documents(corpus_path):
 		doc_id = id_count
 		id_count += 1
 		docnames_ids[str(file_name)] = doc_id
+	Exporter().docnames_ids_file(docnames_ids, "./output/docnames_ids")
 	return docnames_ids
 
-def translate_document_vector(vocabulary, document_vector):
-	result = {}
-	for value in document_vector:
-		result[vocabulary[value][0]] = document_vector[value]
-	return result
 
-def get_df(value, results):
-	acum = 0
-	for result in results: #results = [[vocab, docvec], [vocab, docvec]] 1 por cada thread
-		try:
-			vocabulary = result[0]
-			acum += vocabulary[value]
-		except:
-			pass
-	return acum
-
-def process_results(results):
-	keys = []
-	for result in results: #results = [[vocab, docvec], [vocab, docvec]] 1 por cada thread
-		vocabulary = result[0]
-
-		keys.extend(vocabulary.keys())
-	vocabulary_list = list(set(keys))
-
-	vocabulary = {}
-	id_counter = 1
-
-	for value in vocabulary_list:
-		vocabulary[value] = [id_counter, get_df(value, results)]
-		id_counter += 1
-
-	cleaned_documents_vectors = {}
-
-	for result in results:
-		documents_vectors = result[1]
-		for key in documents_vectors:
-			cleaned_documents_vectors[key] = documents_vectors[key]
-			#cleaned_documents_vectors[key] = translate_document_vector(vocabulary, documents_vectors[key])
-
-	return [vocabulary, cleaned_documents_vectors]
-
-def use_saved_index(dirpath):
-	corpus_path = pathlib.Path(dirpath)
-	docnames_ids = load_documents(corpus_path)
-	file = open('result_list', 'rb')
-	results = []
-	while True:
-		try:
-			results.append(pickle.load(file))
-		except:
-			break
-	file.close()
-	
-	vocabulary, documents_vectors = process_results(results)
-
-	#Exporter(docnames_ids, documents_vectors, vocabulary)
-	
-	show_menu(Model(vocabulary, documents_vectors, docnames_ids))
-	sys.exit()
-
-
-def process_function(worker_number, queue, results):
-	tokenizer = Tokenizer()
+def process_function(worker_number, queue, stopwords_path, results):
+	tokenizer = Tokenizer(stopwords_path)
 	if worker_number == 1:
 			total = queue.qsize()
 
@@ -106,7 +38,7 @@ def process_function(worker_number, queue, results):
 		
 	results.append(tokenizer.get_results())
 
-def index(dirpath):
+def index(dirpath, stopwords_path):
 	corpus_path = pathlib.Path(dirpath)
 
 	docnames_ids = load_documents(corpus_path)
@@ -127,7 +59,7 @@ def index(dirpath):
 
 		threads = []
 		for worker_number in range(workers_number):
-			p = threading.Thread(target=process_function, args=(worker_number, queue, results))
+			p = threading.Thread(target=process_function, args=(worker_number, queue, stopwords_path, results))
 			threads.append(p)
 			p.start()
 
@@ -135,40 +67,38 @@ def index(dirpath):
 			thread.join()
 
 		end = time.time()
-		print("\rDistributed Indexing time: {} seconds.".format(end - start))
+		print("\rDistributed Indexing time: {} seconds, Documents Processed: {}, Workers Threads: {}.".format(end - start, len(docnames_ids), workers_number))
 
-		file = open('result_list', 'wb')
-		for result in results:
-			pickle.dump(result, file)
-		file.close()
+		start = time.time()
+		vocabulary, inverted_index, documents_vectors, documents_norm = merger.process_results(results)
+		end = time.time()
+		print("\rMergeing time: {} seconds.".format(end - start))
 
-		#start = time.time()
-		#vocabulary, documents_vectors = process_results(results)
-		#end = time.time()
-		#print("\rMergeing thread results time: {} seconds.".format(end - start))
+		Exporter().vocabulary_file(vocabulary, "./output/vocabulary")
+		Exporter().inverted_index(inverted_index, "./output/inverted_index")
+		Exporter().documents_vectors(documents_vectors, "./output/documents_vectors")
+		Exporter().documents_norm(documents_norm, "./output/documents_norm")
 
-		#Exporter(docnames_ids, documents_vectors, vocabulary)
+		print("Human readable and .pkl files exported.")
 
+		return [docnames_ids, vocabulary, inverted_index, documents_vectors, documents_norm]
+
+"""
 if __name__ == '__main__':
 	
 	if len(sys.argv) < 3:
 		print('Es necesario pasar como argumento un path a un directorio')
 		print('Como también 1 si quiere indexar o 0 si quiere usar el indice de disco')
+		print('Opcional: Path al archivo de palabras vacias')
 		sys.exit(0)
 
 	dirpath = sys.argv[1]
 
 	indexar = int(sys.argv[2])
 
-	if indexar == 0:
-		use_saved_index(dirpath)
-	else:
-		index(dirpath)
-	
+	palabras_vacias = None
+	if len(sys.argv) == 4:
+		palabras_vacias = sys.argv[3]
 
-		#
-
-
-#799.2709686756134 seconds.
-#\rIndexing time: 133.31357550621033 seconds.
-	
+	index(dirpath, palabras_vacias)
+"""

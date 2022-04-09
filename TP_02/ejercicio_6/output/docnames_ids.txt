@@ -1,0 +1,4 @@
+doc_name	id
+test/doc2.txt	1
+test/doc3.txt	2
+test/doc1.txt	3

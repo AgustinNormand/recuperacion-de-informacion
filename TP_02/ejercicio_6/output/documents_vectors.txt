@@ -1,0 +1,4 @@
+doc_id	{term: TF}
+2	{'lampara': 1, 'cargador': 1, 'cabl': 1, 'mous': 1, 'matera': 1, 'casa': 1}
+1	{'matera': 2, 'kitarduino': 1, 'telefono': 1}
+3	{'casa': 1, 'perro': 2, 'dog': 1, 'doggi': 1, 'canino': 1, 'matera': 1}

@@ -1,0 +1,13 @@
+doc_id	{term: [doc_id, frequency]}
+lampara	[[2, 1]]
+cargador	[[2, 1]]
+cabl	[[2, 1]]
+mous	[[2, 1]]
+matera	[[1, 2], [2, 1], [3, 1]]
+casa	[[2, 1], [3, 1]]
+kitarduino	[[1, 1]]
+telefono	[[1, 1]]
+perro	[[3, 2]]
+dog	[[3, 1]]
+doggi	[[3, 1]]
+canino	[[3, 1]]

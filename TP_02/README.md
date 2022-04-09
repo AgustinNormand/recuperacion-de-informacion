@@ -40,6 +40,10 @@ Dejar de buscar si el doc id leído es mayor, habiendo ordenado los docid.
 Justificar porque use bf4
 Documentar mejor como correr el programa?
 
+	# Leer de disco palabras vacias una sola vez. Mejora menor.
+
+	#Verificar si en algun momento no inserta desordenado en una posting.
+
 
 
 5
