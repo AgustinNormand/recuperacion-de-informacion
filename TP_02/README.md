@@ -51,6 +51,9 @@ Mergeing time: 6.121704816818237 seconds.
 5
 ./terrier batchretrieve -t ../../ejercicio_5/query-text.trec -w TF_IDF
 
+Las necesidades de información que elegí estarán bien?
+
+
 Terrier model list http://terrier.org/docs/current/javadoc/org/terrier/matching/models/package-summary.html
 
 

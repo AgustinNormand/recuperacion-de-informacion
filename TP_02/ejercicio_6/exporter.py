@@ -17,7 +17,7 @@ class Exporter:
 
         with open(filepath+".txt", "w") as f:
             f.write("{}\t{}\r\n".format(
-                "doc_id", "{term: [doc_id, frequency]}"))
+                "term", "[doc_id, frequency]"))
             for key in inverted_index:
                 f.write("{}\t{}\r\n".format(key, inverted_index[key]))
 
@@ -26,7 +26,7 @@ class Exporter:
             pickle.dump(vocabulary, f)
 
         with open(filepath+".txt", "w") as f:
-            f.write("{}\t{}\r\n".format('term', "df"))
+            f.write("{}\t{}\r\n".format('term', "[df, idf]"))
             for value in vocabulary:
                 f.write("{}\t{}\r\n".format(value, vocabulary[value]))
 
