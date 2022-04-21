@@ -32,10 +32,7 @@ Como el termino 142 no está en ningun documento, cuando hago el DF para hacer e
 
 
 Punto 6. Desprolijo
-Falta lo de las postings.
-Falta ponderar terminos del query.
-Cambiar a indice invertido.
-Dejar de buscar si el doc id leído es mayor, habiendo ordenado los docid.
+Dejar de buscar si el doc id leído es mayor, habiendo ordenado los docid. Cuando usaría esto?
 
 Justificar porque use bf4
 Documentar mejor como correr el programa?

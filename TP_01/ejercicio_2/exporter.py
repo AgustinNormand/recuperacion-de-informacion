@@ -128,8 +128,15 @@ class Exporter:
 
 		try:
 			with open("proper_names.csv", "w") as f:
-				for proper_name in self.entities["proper_name"]:
+				for proper_name in list(set(self.entities["proper_name"])):
 					f.write("{},\r\n".format(proper_name))
+		except:
+			pass	
+
+		try:
+			with open("dates.csv", "w") as f:
+				for date in list(set(self.entities["date"])):
+					f.write("{},\r\n".format(date))
 		except:
 			pass	
 

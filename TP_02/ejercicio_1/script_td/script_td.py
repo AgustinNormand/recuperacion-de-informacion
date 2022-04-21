@@ -66,7 +66,6 @@ for i in range(1, 39):
 	score = sp/(qn*dn)
 	if score != 0:
 		result[i] = score
-		#print("Document {}, Score {}".format(i, result))
 
 ordered_result = sorted(result.items(), key=lambda item: item[1], reverse=True)
 
@@ -84,7 +83,7 @@ with open("relevant_docs.txt", "r") as f:
 query_number = int(sys.argv[1])
 
 final_ordered_result = []
-#print(relevant_docs[1])
+
 
 values_read = 0
 relevants_count = 0
@@ -95,9 +94,7 @@ for value in ordered_result:
 		relevants_count += 1
 		relevant = "x"
 	final_ordered_result.append((value[0], value[1], relevants_count/values_read, relevants_count/len(relevant_docs[query_number]), relevant))
-	#print(value)
 
-#print("Query number {}, Query".format(query_number))
 from tabulate import tabulate
 
 info = [query_number, raw_query, relevant_docs[query_number]]
@@ -108,39 +105,3 @@ print("\r\n")
 print("Retrived Documents:\r\n")
 
 print(tabulate(final_ordered_result, headers=['DocID', 'Score', "Precision", "Recall", "Relevant"], tablefmt='orgtbl'))
-
-#for value in final_ordered_result:
-#	print("{} {} {} {} {}".format(value[0],value[1], value[2],value[3],value[4]))
-#print(result)
-#print(scalar_product(query_vector, document_vectors[5]))
-#print(norma(document_vectors[5]))
-#print(document_terms[1])			
-#print(document_vectors[1])
-#print(norma(query_vector))
-
-#print(terms)
-#print(terms)
-#print(term_documents)
-#print(document_terms)
-
-
-#print(terms[1])
-#print(terms)
-"""
-for term in terms:
-	line = ""
-	line = line + str(term) + ","
-	for document in range(1, 39):
-		if document == 38:
-			one = "1"
-			cero = "0"
-		else:
-			one = "1,"
-			cero = "0,"
-
-		if document in terms[term]:
-			line = line + one
-		else:
-			line = line + cero
-	print(line)
-"""

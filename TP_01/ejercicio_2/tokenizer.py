@@ -28,6 +28,8 @@ class Tokenizer:
 
 		self.process_collection()
 
+		##print(self.entities["date"])
+
 		Exporter(self.term_frequencies, self.token_list, self.term_length_acumulator, self.entities, self.collection).generate_files()
 
 	def load_empty_words(self, empty_words_path):
@@ -88,25 +90,35 @@ class Tokenizer:
 
 	def process_line(self, document_entities, actual_line):
 		regular_expressions = [
-			[r'(\b[\w]+@[A-Za-z0-9]+\.[\.|A-Z|a-z]{2,}\b)', "mail"],
+			[r'(?:[0-9]{2}[\-/][0-9]{2}[\-/][0-9]{4})|(?:[0-9]{4}[\-/][0-9]{2}[\-/][0-9]{2})', "date"],
+			[r'(\b[\w\.]+@[A-Za-z0-9\-]+\.[\.|A-Z|a-z]{2,}\b)', "mail"],
 			[r'(?:[A-Z][bcdfghj-np-tvxz]\.)|(?:[A-Z][a-z]{2}\.)', "abbreviation"], #Dr. Lic.
-			[r'(?:\b[A-Z]\.[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.)', "abbreviation"], #U.S.A N.A.S.A S.A.
-			[r'(?:\b[A-Z]{2}\b)|(?:\b[A-Z]{3}\b)|(?:\b[A-Z]{4}\b)|(?:\b[A-Z]{5}\b)', "abbreviation"],
+			[r'([A-Z]{2}\.[A-Z]{2})', "abbreviation"], #EE.UU
+			[r'(\b(?:[A-Z]\.?){2,})', "abbreviation"], #Poco checkeado. S.A S.A. U.S.A D.A.S.M.I N.A.S.A
+			#[r'(?:\b[A-Z]\.[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.[A-Z]\b)|(?:\b[A-Z]\.[A-Z]\.)', "abbreviation"], #U.S.A N.A.S.A S.A.
+			[r'(?:\b[A-Z]{2}\b)|(?:\b[A-Z]{3}\b)|(?:\b[A-Z]{4}\b)|(?:\b[A-Z]{5}\b)', "abbreviation"], #EJ FIFA USA
 			[r'((?:\b[a-z]{2,3}\.\s)|(?:\s[a-z]{2,3}\.\s))', "abbreviation"], # lic. nac. ing. dra. etc.
-			[r"((?:(?:https?://)|(?:www\.))(?:[a-zA-Z./0-9-_?=]+))", "url"],
+			[r"((?:(?:https?://)|(?:www\.)|(?:ftps?://))(?:[a-zA-Z./0-9-_?=]+))", "url"],
 			[r'((?:\b[0-9]+[\.,][0-9]+\b)|(?:\b[0-9]+\b))', "number"],
 			[r'((?:(?:[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})|(?:(?!\A)[A-ZÁÉÍÚÓ][a-záéíóú]+))', "proper_name"], # El Quinto, Agustin Normand
 		]
+		##"abc.def@mail-archive.com"
+
+		##https://docs.google.com/document/d/1ninD55Cfbb_7PksDirN0XghzNHJZ_N93lheQzF1aOZY/edit?usp=sharing
 
 		for regular_expression, token_type in regular_expressions:
 			m = re.findall(regular_expression, actual_line)
 			actual_line = re.sub(regular_expression, "", actual_line)
 
+			if re.findall(r"(U.S.A)", actual_line):
+				print(re.findall(r"(\b(?:[A-Z]\.?){2,})", actual_line))
+				#print(actual_line)
+
 			if m != []:
 				for value in m:
-					if token_type == "abbreviation":
-						if self.normalizer.normalize(value) in self.palabras_vacias:
-							continue
+					#if token_type == "abbreviation":
+						#if self.normalizer.normalize(value) in self.palabras_vacias:
+							#continue
 					try:
 						document_entities[token_type].append(value.strip())
 					except:
