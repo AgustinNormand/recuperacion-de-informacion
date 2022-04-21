@@ -21,6 +21,7 @@ def process_files(dirpath):
 				query_number, _, doc_id, _, score, model = line.split()
 				retrieved_documents[str(file_name)][int(query_number)].append([int(doc_id), score])
 	
+	
 	return retrieved_documents
 """
 def get_score(document_id, vector):
