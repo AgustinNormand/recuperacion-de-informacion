@@ -31,7 +31,9 @@ def process_function(worker_number, queue, stopwords_path, results):
         if content == "":
             break
         try:
-            tokenizer.tokenize_html_file(content[0], content[1])
+            tokenizer.tokenize_file(content[0], content[1], pathlib.Path(content[0]).suffix == ".html")
+                
+            
         except Exception as e:
             print(e)
 

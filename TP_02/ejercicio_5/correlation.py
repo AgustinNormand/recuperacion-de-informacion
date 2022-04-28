@@ -22,18 +22,11 @@ def process_files(dirpath):
 				retrieved_documents[str(file_name)][int(query_number)].append([int(doc_id.split('d')[1]), score])
 	
 	return retrieved_documents
-"""
-def get_score(document_id, vector):
-	for doc_id, score in vector:
-		if document_id == doc_id:
-			return score
 
-	return 0
-"""
 def get_position(vector, value):
 	return vector.index(value)
 
-def spearman(vector1, vector2):
+def sum_square(vector1, vector2):
 	acum = 0
 	for i in range(len(vector1)):
 		acum += pow(vector1[i]-vector2[i], 2)
@@ -44,44 +37,40 @@ def calculate_correlations(retrieved_documents, query, count):
 
 	vector_keys = {}
 
-	
-
 	for i in range(2):
 		vector_keys[i] = []
-		for doc_id, score in retrieved_documents[file_keys[i]][query]:
+		for doc_id, score in retrieved_documents[file_keys[i]][query][:count]:
 			vector_keys[i].append(doc_id)
 
-	union = list(set(vector_keys[0][:count]).union(set(vector_keys[1][:count])))
-	intersection = list(set(vector_keys[0][:count]).intersection(set(vector_keys[1][:count])))
+	for value in vector_keys[0]:
+		if value not in vector_keys[1]:
+			vector_keys[1].append(value)
+
+	for value in vector_keys[1]:
+		if value not in vector_keys[0]:
+			vector_keys[0].append(value)
+
+	union = set(vector_keys[0]).union(set(vector_keys[1]))
 
 	vectors = {}
 	for i in range(2):
 		vectors[i] = []
-		for value in union:
-			try:
-				vectors[i].append(get_position(vector_keys[i], value))
-			except:
-				print("ERROR: Hay un documento que está en un ranking y en el otro no.")
+
+	for value in list(union):
+#		print("Document with id: {}".format(value))
+		for i in range(2):
+			position = get_position(vector_keys[i], value)
+			#print("Position in {}, is: {}".format(i, position))
+			vectors[i].append(position)
 
 	print("Primeros {} resultados".format(count))
-	print(spearman(vectors[0], vectors[1]))
-
-	"""
-	unified_vectors = {}
-
-	for i in range(2):
-		vector = []
-		for key in unique_doc_ids:
-			vector.append(float(get_score(key, retrieved_documents[keys[i]][query])))
-
-		unified_vectors[i] = vector
-	#print("Corrcoef: {}".format(str(abs(np.corrcoef(unified_vectors[0], unified_vectors[1])[0][1])).replace(".", ",")))
-	"""
-
-	#print(retrieved_documents[keys[0]][1][:count])
-	#print(unified_vectors[0])
-	#print(retrieved_documents[keys[1]][1][:count])
-	#print(unified_vectors[1])
+	print(vector_keys[0])
+	print(vector_keys[1])
+	#print(vectors[0])
+	#print(vectors[1])
+	k = len(vectors[0])
+	denominador = (k*(pow(k,2)-1))/3
+	return sum_square(vectors[0], vectors[1])/denominador
 
 if __name__ == '__main__':
 	
@@ -93,11 +82,17 @@ if __name__ == '__main__':
 
 	vector_dict = process_files(dirpath)
 
-	for i in range(1, 6):
-		print("Query: {}".format(i))
-		calculate_correlations(vector_dict, i,10)
+	#file_keys = list(vector_dict.keys())
+	#print([x[0] for x in vector_dict[file_keys[0]][1][:10]])
+	#print([x[0] for x in vector_dict[file_keys[1]][1][:10]])
+
+	print(calculate_correlations(vector_dict, 1,10))
+
+	#for i in range(1, 6):
+		#print("Query: {}".format(i))
+		#print(calculate_correlations(vector_dict, i,10))
 		#break
-		calculate_correlations(vector_dict, i,25)
-		calculate_correlations(vector_dict, i,50)
-		print("\r\n")
+		#calculate_correlations(vector_dict, i,25)
+		#calculate_correlations(vector_dict, i,50)
+		#print("\r\n")
 	

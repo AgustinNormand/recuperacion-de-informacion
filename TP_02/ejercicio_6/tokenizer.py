@@ -74,12 +74,15 @@ class Tokenizer:
 
             self.increment_frequency(token, file_id, file_terms)
 
-    def tokenize_html_file(self, filename, file_id):
+    def tokenize_file(self, filename, file_id, html = False):
         file_terms = {}
         with open(filename, 'r') as f:
             contents = f.read()
-            soup = BeautifulSoup(contents, 'lxml')
-            for word in soup.get_text().split():
+            if html:
+                soup = BeautifulSoup(contents, 'lxml')
+                contents = soup.get_text()
+            
+            for word in contents.split():
                 token = self.normalizer.normalize(word)
                 self.add_if_term(token, file_id, file_terms)
         self.documents_vectors[file_id] = file_terms

@@ -23,69 +23,63 @@ def process_files(dirpath):
 	
 	
 	return retrieved_documents
-"""
-def get_score(document_id, vector):
-	for doc_id, score in vector:
-		if document_id == doc_id:
-			return score
 
-	return 0
-"""
 def get_position(vector, value):
 	return vector.index(value)
 
-def spearman(vector1, vector2):
+def sum_square(vector1, vector2):
 	acum = 0
 	for i in range(len(vector1)):
 		acum += pow(vector1[i]-vector2[i], 2)
 	return acum
 
-def calculate_correlations(retrieved_documents, query, count):
+def calculate_correlations(retrieved_documents, query):
 	file_keys = list(vector_dict.keys())
 
 	vector_keys = {}
-
-	
 
 	for i in range(2):
 		vector_keys[i] = []
 		for doc_id, score in retrieved_documents[file_keys[i]][query]:
 			vector_keys[i].append(doc_id)
 
-	union = list(set(vector_keys[0][:count]).union(set(vector_keys[1][:count])))
-	intersection = list(set(vector_keys[0][:count]).intersection(set(vector_keys[1][:count])))
+	for value in vector_keys[0]:
+		if value not in vector_keys[1]:
+			vector_keys[1].append(value)
+
+	for value in vector_keys[1]:
+		if value not in vector_keys[0]:
+			vector_keys[0].append(value)
+
+	union = set(vector_keys[0]).union(set(vector_keys[1]))
 
 	vectors = {}
 	for i in range(2):
 		vectors[i] = []
-		for value in union:
-			try:
-				vectors[i].append(get_position(vector_keys[i], value))
-			except:
-				print("ERROR: Hay un documento que está en un ranking y en el otro no.")
 
-	print("Primeros {} resultados".format(count))
-	print(spearman(vectors[0], vectors[1]))
+	for value in list(union):
+#		print("Document with id: {}".format(value))
+		for i in range(2):
+			position = get_position(vector_keys[i], value)
+			#print("Position in {}, is: {}".format(i, position))
+			vectors[i].append(position)
 
-	#print(intersection)
-	print(union)
 
-	"""
-	unified_vectors = {}
+	k = len(vectors[0])
+	denominador = (k*(pow(k,2)-1))/3
+	return sum_square(vectors[0], vectors[1])/denominador
+
+def get_ranking_size(retrieved_documents, query):
+	file_keys = list(vector_dict.keys())
+
+	vector_keys = {}
 
 	for i in range(2):
-		vector = []
-		for key in unique_doc_ids:
-			vector.append(float(get_score(key, retrieved_documents[keys[i]][query])))
+		vector_keys[i] = []
+		for doc_id, score in retrieved_documents[file_keys[i]][query]:
+			vector_keys[i].append(doc_id)
 
-		unified_vectors[i] = vector
-	#print("Corrcoef: {}".format(str(abs(np.corrcoef(unified_vectors[0], unified_vectors[1])[0][1])).replace(".", ",")))
-	"""
-
-	#print(retrieved_documents[keys[0]][1][:count])
-	#print(unified_vectors[0])
-	#print(retrieved_documents[keys[1]][1][:count])
-	#print(unified_vectors[1])
+	return len(set(vector_keys[0]).union(set(vector_keys[1])))
 
 if __name__ == '__main__':
 	
@@ -96,13 +90,17 @@ if __name__ == '__main__':
 	dirpath = sys.argv[1]
 
 	vector_dict = process_files(dirpath)
-	#print(vector_dict["../../TP_03/ejercicio_3/results/TF_IDF_15.res"])
 
-	for i in range(1, 2):
-		print("Query: {}".format(i))
-		calculate_correlations(vector_dict, i,5)
-		#break
-		#calculate_correlations(vector_dict, i,25)
-		#calculate_correlations(vector_dict, i,50)
-		print("\r\n")
+	spearman_acumulator = 0
+	size_acumulator = 0
+	counter = 0
+	for i in range(1, 113):
+		size_acumulator += get_ranking_size(vector_dict, i)
+		correlation = calculate_correlations(vector_dict, i)
+		spearman_acumulator += correlation
+		counter += 1
+
+	print("Average size of spearman {}".format(spearman_acumulator/counter))
+
+	print("Average size of rankings {}".format(size_acumulator/counter))
 	
