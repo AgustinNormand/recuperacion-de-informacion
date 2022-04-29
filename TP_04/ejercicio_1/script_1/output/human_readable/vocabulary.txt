@@ -1,5 +1,0 @@
-term	[df, idf]
-tero	1
-arbol	1
-casa	2
-perro	1

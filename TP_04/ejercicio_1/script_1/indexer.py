@@ -34,19 +34,21 @@ def process_function(worker_number, queue, stopwords_path, results):
 class Indexer:
     def __init__(self, dirpath, stopwords_path):
         self.dirpath = dirpath
-        self.load_documents(dirpath)
+        self.load_documents(dirpath, True)
         self.index(stopwords_path)
 
-    def load_documents(self, dirpath):
+    def load_documents(self, dirpath, id_in_name = False):
         corpus_path = pathlib.Path(dirpath)
         self.docnames_ids = {}
         id_count = 1
-        for file_name in corpus_path.rglob("*.*"):
-            doc_id = id_count
-            id_count += 1
+        for file_name in corpus_path.rglob("*.*"): ##If docnames are docNNNN.txt
+            if id_in_name:
+                doc_id = int(file_name.stem.split("doc")[1])
+            else:
+                doc_id = id_count
+                id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
         Exporter().set_docnames_ids_file(self.docnames_ids, "./output/docnames_ids")
-
 
     def index(self, stopwords_path):
         with Manager() as manager:

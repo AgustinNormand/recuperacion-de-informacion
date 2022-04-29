@@ -1,5 +1,0 @@
-term	[doc_id, frequency]
-tero	[1]
-arbol	[1]
-casa	[2, 3]
-perro	[3]

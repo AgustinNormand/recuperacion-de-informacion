@@ -1,4 +1,0 @@
-doc_name	id
-/home/agustin/Desktop/Recuperacion/colecciones/testy_collection/doc2.txt	1
-/home/agustin/Desktop/Recuperacion/colecciones/testy_collection/doc3.txt	2
-/home/agustin/Desktop/Recuperacion/colecciones/testy_collection/doc1.txt	3
