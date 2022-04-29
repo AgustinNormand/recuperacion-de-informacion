@@ -1,10 +1,10 @@
 import re
-from nltk.stem import PorterStemmer
+from nltk.stem import SnowballStemmer
 
 
 class Normalizer:
     def __init__(self):
-        self.ps = PorterStemmer()
+        self.ps = SnowballStemmer("spanish")
 
     def translate(self, to_translate):
         tabin = u'áäâàãéëèêẽíïìîóöòôúüùû'

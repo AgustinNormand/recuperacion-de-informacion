@@ -41,24 +41,29 @@ class Tokenizer:
             return False
         return True
 
-    def increment_inverted_index_frequency(self, term, doc_id):
-        if doc_id not in self.inverted_index[term]:
-            self.inverted_index[term].append(doc_id)
+    def add_term(self, term, doc_id, file_terms):
+        try:
+            if doc_id not in self.inverted_index[term]:
+                self.inverted_index[term].append(doc_id)
+        except:
+            self.inverted_index[term] = [doc_id]
 
-    def increment_frequency(self, term, file_id, file_terms):
-        self.increment_inverted_index_frequency(term, file_id)
+        if term not in file_terms:
+            file_terms.append(term)
 
     def add_if_term(self, token, file_id, file_terms):
         if self.is_term(token):
-            try:
-                self.vocabulary[token] += 1
-            except:
-                self.vocabulary[token] = 1
+            self.add_term(token, file_id, file_terms)
 
-            self.increment_frequency(token, file_id, file_terms)
+    def increment_vocabulary(self, file_terms):
+        for term in file_terms:
+            try:
+                self.vocabulary[term] += 1
+            except:
+                self.vocabulary[term] = 1
 
     def tokenize_file(self, filename, file_id, html = False):
-        file_terms = {}
+        file_terms = []
         with open(filename, 'r') as f:
             contents = f.read()
             if html:
@@ -69,6 +74,8 @@ class Tokenizer:
                 token = self.normalizer.normalize(word)
                 self.add_if_term(token, file_id, file_terms)
         self.documents_vectors[file_id] = file_terms
+        
+        self.increment_vocabulary(file_terms)
 
     def get_results(self):
         return [self.vocabulary, self.inverted_index, self.documents_vectors]

@@ -45,7 +45,7 @@ class Indexer:
             doc_id = id_count
             id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
-        Exporter().set_docnames_ids_file(self.docnames_ids, "./output/docnames_ids.bin")
+        Exporter().set_docnames_ids_file(self.docnames_ids, "./output/docnames_ids")
 
 
     def index(self, stopwords_path):
@@ -85,31 +85,12 @@ class Indexer:
             (
                 vocabulary,
                 inverted_index,
-                documents_vectors,
             ) = merger.process_results(results)
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
-            #print(vocabulary)
-            print(vocabulary)
-            #Exporter().vocabulary_file(vocabulary, "./output/vocabulary")
-            #Exporter().inverted_index(inverted_index, "./output/inverted_index")
-            #Exporter().documents_vectors(documents_vectors, "./output/documents_vectors")
-            #Exporter().documents_norm(documents_norm, "./output/documents_norm")
+            
+            Exporter().vocabulary_file(vocabulary, "./output/vocabulary")
+            Exporter().inverted_index(inverted_index, "./output/inverted_index")
 
-            #print("Human readable and .pkl files exported.")
-            """
-            return [
-                docnames_ids,
-                vocabulary,
-                inverted_index,
-                documents_vectors,
-                documents_norm,
-            ]
-            """
+            print("Files exported.")
 
-
-#dirpath = None
-
-#if len(sys.argv) > 1:
-    #dirpath = sys.argv[1]
-    #i = Indexer(dirpath)
