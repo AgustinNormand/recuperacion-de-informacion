@@ -5,7 +5,7 @@ class Importer:
 
     def read_vocabulary(self, filepath):
         with open(filepath, "rb") as f:
-            string_format = "{}s{}I{}I".format(20, 1, 1)
+            string_format = "{}s{}I{}I".format(100, 1, 1)
             read_size = struct.calcsize(string_format)
             vocabulary = {}
 

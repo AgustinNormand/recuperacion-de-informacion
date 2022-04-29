@@ -1,5 +1,6 @@
 from normalizer import Normalizer
 from bs4 import BeautifulSoup
+from entity_extractor import Entity_Extractor
 
 
 class Tokenizer:
@@ -8,14 +9,15 @@ class Tokenizer:
         self.inverted_index = {}
         self.documents_vectors = {}
 
-        self.min_length = 2
-        self.max_length = 20
+        self.min_length = 1
+        self.max_length = 1000
 
         self.palabras_vacias = []
 
         self.load_empty_words(empty_words_path)
 
         self.normalizer = Normalizer()
+        self.entities_extractor = Entity_Extractor()
 
     def load_empty_words(self, empty_words_path):
         if empty_words_path:
@@ -65,20 +67,18 @@ class Tokenizer:
     def tokenize_file(self, filename, file_id, html = False):
         file_terms = []
         with open(filename, 'r') as f:
-            contents = f.read()
-            if html:
-                soup = BeautifulSoup(contents, 'lxml')
-                contents = soup.get_text()
-            
-            for word in contents.split():
-                token = self.normalizer.normalize(word)
-                self.add_if_term(token, file_id, file_terms)
-        self.documents_vectors[file_id] = file_terms
+            for line in f.readlines():
+                processed_line, entities = self.entities_extractor.extract_entities(line)
+                for entity in entities:
+                    self.add_if_term(entity, file_id, file_terms)
+                for word in processed_line.split():
+                    token = self.normalizer.normalize(word)
+                    self.add_if_term(token, file_id, file_terms)
         
         self.increment_vocabulary(file_terms)
 
     def get_results(self):
-        return [self.vocabulary, self.inverted_index, self.documents_vectors]
+        return [self.vocabulary, self.inverted_index]
 
     def tokenize_query(self, user_input):
         result = {}

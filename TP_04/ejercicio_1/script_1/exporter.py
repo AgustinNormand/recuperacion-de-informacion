@@ -2,8 +2,17 @@ import struct
 import binascii
 
 class Exporter:
+    def get_max_length(self, array):
+        max_length = 0
+        for value in array:
+            if len(value) > max_length:
+                max_length = len(value)
+        return max_length
+
     def set_docnames_ids_file(self, docnames_ids, filepath):
         docnames_ids_list = [(bytes(k, 'utf-8'), v) for k, v in docnames_ids.items()]
+        #max_length = self.get_max_length(docnames_ids.keys())
+        #print("Max length docnames_ids: {}".format(max_length)) #FIXME
         string_format = "{}s{}I".format(100, 1)
         with open(filepath+".bin", 'wb') as f:
             for value in docnames_ids_list:
@@ -11,6 +20,8 @@ class Exporter:
                 f.write(packed_data)
                 #print(binascii.hexlify(packed_data))
         # Mejorar y no hacer escrituras repetidas, sino una sola escritura.    
+
+        #Mejorar, no usar el path absoluto. Incluso, no usar docNN.txt, solo almacenar el NN
 
         with open(filepath+".txt", "w") as f:
             f.write("{}\t{}\r\n".format("doc_name", "id"))
@@ -31,7 +42,9 @@ class Exporter:
                 f.write("{}\t{}\r\n".format(key, inverted_index[key]))
 
     def vocabulary_file(self, vocabulary, filepath):
-        string_format = "{}s{}I{}I".format(20, 1, 1) #Esto debería coincidir con el paramtro del tokenizer
+        #max_length = self.get_max_length(vocabulary.keys())
+        #print("Max length vocabulary: {}".format(max_length)) #FIXME
+        string_format = "{}s{}I{}I".format(100, 1, 1) #Esto debería coincidir con el paramtro del tokenizer
         last_df = 0
         with open(filepath+".bin", 'wb') as f:
             for key in vocabulary:

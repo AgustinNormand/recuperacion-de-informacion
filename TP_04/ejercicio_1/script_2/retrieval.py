@@ -8,10 +8,15 @@ class Retrieval():
         self.vocabulary = self.importer.read_vocabulary("../script_1/output/vocabulary.bin")
         self.normalizer = Normalizer()
 
+        #print(self.vocabulary)
+
     def get_posting(self, term):
         normalized_term = self.normalizer.normalize(term)
         with open("../script_1/output/inverted_index.bin", "rb") as f:
-            df, pointer = self.vocabulary[normalized_term]
+            try:
+                df, pointer = self.vocabulary[normalized_term]
+            except:
+                return []
             string_format = "{}I".format(df)
 
             f.seek(pointer*struct.calcsize("I"))
@@ -20,3 +25,5 @@ class Retrieval():
             
             return list(unpacked_data)
 
+    def get_vocabulary(self):
+        return self.vocabulary.keys()
