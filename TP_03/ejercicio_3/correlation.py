@@ -1,7 +1,5 @@
 import pathlib
 import sys
-import numpy as np
-import math
 
 def initialize(vector_dict, file_names):
 	for file_name in file_names:
@@ -58,16 +56,13 @@ def calculate_correlations(retrieved_documents, query):
 		vectors[i] = []
 
 	for value in list(union):
-#		print("Document with id: {}".format(value))
 		for i in range(2):
 			position = get_position(vector_keys[i], value)
-			#print("Position in {}, is: {}".format(i, position))
 			vectors[i].append(position)
 
-
 	k = len(vectors[0])
-	denominador = (k*(pow(k,2)-1))/3
-	return sum_square(vectors[0], vectors[1])/denominador
+	denominador = k*(pow(k,2)-1)
+	return 1 - ((6 * sum_square(vectors[0], vectors[1]))/denominador)
 
 def get_ranking_size(retrieved_documents, query):
 	file_keys = list(vector_dict.keys())
