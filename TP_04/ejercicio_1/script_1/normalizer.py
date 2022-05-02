@@ -1,11 +1,14 @@
 import re
-#from nltk.stem import PorterStemmer
 from nltk.stem import SnowballStemmer
 
 
 class Normalizer:
-    def __init__(self):
-        self.ps = SnowballStemmer("spanish")
+    def __init__(self, stemming_language = None):
+        if stemming_language != None:
+            self.stemming = True
+            self.ps = SnowballStemmer(stemming_language)
+        else:
+            self.stemming = False
 
     def translate(self, to_translate):
         tabin = u'áäâàãéëèêẽíïìîóöòôúüùû'
@@ -21,5 +24,16 @@ class Normalizer:
         result = token.lower()
         result = self.translate(result)
         result = self.remove_non_alphanumeric(result)
-        result = self.ps.stem(result)
+        if self.stemming:
+            result = self.ps.stem(result)
+        return result
+
+    def normalize_date(self, token):
+        token = token.replace("/", "-")
+        return token
+
+    def normalize_abbreviation(self, token):
+        result = token.lower()
+        result = self.translate(result)
+        result = self.remove_non_alphanumeric(result)
         return result

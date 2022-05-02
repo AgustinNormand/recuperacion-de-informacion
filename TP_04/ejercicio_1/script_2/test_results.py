@@ -15,10 +15,7 @@ with open(dirpath, "r") as f:
     print("Data: {}".format(data["statistics"]))
     print("\r")
 
-    if data["statistics"]["num_terms"] == len(r.get_vocabulary()):
-        print("Same number of terms")
-    else:
-        print("Different number of terms")
+    
     vocabulary = []
     for value in data["data"]:
         vocabulary.append(value["term"])
@@ -27,16 +24,27 @@ with open(dirpath, "r") as f:
         #print("Freqs: {}".format(value["freq"]))
         #print("Df: {}".format(value["df"]))
         #break
+    print("Collection vocabulary")
     print(vocabulary)
     print("\r")
 
+    my_vocabulary = r.get_vocabulary()
 
+    print("My vocabulary")
+    print(my_vocabulary)
+    print("\r")
+
+    if len(vocabulary) == len(my_vocabulary):
+        print("Same number of terms")
+    else:
+        print("Different number of terms")
+
+    print("\r")
+
+    errors = False
     for value in data["data"]:
-
         collection_doc_ids = value["docid"]
-        
         my_doc_ids = r.get_posting(value["term"])
-        errors = False
         if my_doc_ids != collection_doc_ids:
             errors = True
             print("Error in term: {}".format(value["term"]))

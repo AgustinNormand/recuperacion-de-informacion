@@ -17,7 +17,7 @@ class Entity_Extractor():
             [r'((?:\b[a-z]{2,3}\.\s)|(?:\s[a-z]{2,3}\.\s))', "abbreviation"], # lic. nac. ing. dra. etc.
             [r"((?:(?:https?://)|(?:www\.)|(?:ftps?://))(?:[a-zA-Z./0-9-_?=]+))", "url"],
             [r'((?:\b[0-9]+[\.,][0-9]+\b)|(?:\b[0-9]+\b))', "number"],
-            #[r'((?:(?:\b[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})|(?:(?!\A)[A-ZÁÉÍÚÓ][a-záéíóú]+))', "proper_name"], # El Quinto, Agustin Normand
+            #[r'((?:(?:[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})|(?:(?!\A)[A-ZÁÉÍÚÓ][a-záéíóú]+))', "proper_name"], # El Quinto, Agustin Normand
             [r'((?:\b[A-ZÁÉÍÚÓ][a-záéíóú]+\s?){2,})', "proper_name"]
         ]
 
@@ -31,13 +31,12 @@ class Entity_Extractor():
             if m != []:
                 for value in m:
                     value = value.strip()
-                    
                     if re_type == "abbreviation":
-                        value = self.normalizer.normalize_abbreviation(value)
+                        value = self.normalizer.normalize(value)
 
                     if re_type == "date":
-                        value = self.normalizer.normalize_date(value)
-                        
+                        value = value.replace("/", "-")
+
                     if value not in entities:
                         entities.append(value)
                         

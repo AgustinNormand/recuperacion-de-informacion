@@ -1,20 +1,29 @@
 from importer import Importer
 import struct
 from normalizer import Normalizer
+from entity_extractor import Entity_Extractor
 
 class Retrieval():
     def __init__(self):
         self.importer = Importer()
         self.vocabulary = self.importer.read_vocabulary("../script_1/output/vocabulary.bin")
         self.normalizer = Normalizer()
-
-        #print(self.vocabulary)
+        self.entity_extractor = Entity_Extractor()
 
     def get_posting(self, term):
-        normalized_term = self.normalizer.normalize(term)
+        rest, entities_list = self.entity_extractor.extract_entities(term)
+        if len(entities_list) >= 1:
+            #if rest != "":?
+            #if len(entities_list) >= 2: ?
+            #if entity != term? #Doesnt work for U.S.A > usa
+            entity = entities_list[0]
+            processed_term = entity
+        else:
+            processed_term = self.normalizer.normalize(term)
+
         with open("../script_1/output/inverted_index.bin", "rb") as f:
             try:
-                df, pointer = self.vocabulary[normalized_term]
+                df, pointer = self.vocabulary[processed_term]
             except:
                 return []
             string_format = "{}I".format(df)

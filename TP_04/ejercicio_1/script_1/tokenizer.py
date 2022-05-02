@@ -1,10 +1,9 @@
 from normalizer import Normalizer
-from bs4 import BeautifulSoup
 from entity_extractor import Entity_Extractor
 
 
 class Tokenizer:
-    def __init__(self, empty_words_path):
+    def __init__(self, empty_words_path, stemming_language, extract_entities):
         self.vocabulary = {}
         self.inverted_index = {}
         self.documents_vectors = {}
@@ -14,10 +13,14 @@ class Tokenizer:
 
         self.palabras_vacias = []
 
+        self.stemming_language = stemming_language
+        self.extract_entities = extract_entities
+
         self.load_empty_words(empty_words_path)
 
-        self.normalizer = Normalizer()
-        self.entities_extractor = Entity_Extractor()
+        self.normalizer = Normalizer(stemming_language)
+        if self.extract_entities:
+            self.entities_extractor = Entity_Extractor()
 
     def load_empty_words(self, empty_words_path):
         if empty_words_path:
@@ -68,9 +71,12 @@ class Tokenizer:
         file_terms = []
         with open(filename, 'r') as f:
             for line in f.readlines():
-                processed_line, entities = self.entities_extractor.extract_entities(line)
-                for entity in entities:
-                    self.add_if_term(entity, file_id, file_terms)
+                if self.extract_entities:
+                    processed_line, entities = self.entities_extractor.extract_entities(line)
+                    for entity in entities:
+                        self.add_term(entity, file_id, file_terms)
+                else:
+                    processed_line = line
                 for word in processed_line.split():
                     token = self.normalizer.normalize(word)
                     self.add_if_term(token, file_id, file_terms)

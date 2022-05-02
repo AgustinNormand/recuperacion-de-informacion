@@ -1,5 +1,4 @@
 import pathlib
-import sys
 from exporter import Exporter
 from tokenizer import Tokenizer
 from multiprocessing import Manager, Queue
@@ -8,8 +7,8 @@ import threading
 import merger
 
 
-def process_function(worker_number, queue, stopwords_path, results):
-    tokenizer = Tokenizer(stopwords_path)
+def process_function(worker_number, queue, stopwords_path, stemming_language, extract_entities, results):
+    tokenizer = Tokenizer(stopwords_path, stemming_language, extract_entities)
     if worker_number == 1:
         total = queue.qsize()
 
@@ -32,10 +31,14 @@ def process_function(worker_number, queue, stopwords_path, results):
 
 
 class Indexer:
-    def __init__(self, dirpath, stopwords_path):
+    def __init__(self, dirpath, stopwords_path, stemming_language, extract_entities):
+        
+        self.stemming_language = stemming_language
+        self.extract_entities = extract_entities
         self.dirpath = dirpath
+        self.stopwords_path = stopwords_path
         self.load_documents(dirpath, True)
-        self.index(stopwords_path)
+        self.index()
 
     def load_documents(self, dirpath, id_in_name = False):
         corpus_path = pathlib.Path(dirpath)
@@ -50,12 +53,11 @@ class Indexer:
             self.docnames_ids[str(file_name.resolve())] = doc_id
         Exporter().set_docnames_ids_file(self.docnames_ids, "./output/docnames_ids")
 
-    def index(self, stopwords_path):
+    def index(self):
         with Manager() as manager:
             queue = Queue()
             results = manager.list()
             for docname_id in self.docnames_ids:
-                # Queue = ([docpath, docid], [...])
                 queue.put([docname_id, self.docnames_ids[docname_id]])
 
             workers_number = 5
@@ -68,7 +70,7 @@ class Indexer:
             for worker_number in range(workers_number):
                 p = threading.Thread(
                     target=process_function,
-                    args=(worker_number, queue, stopwords_path, results),
+                    args=(worker_number, queue, self.stopwords_path, self.stemming_language, self.extract_entities, results),
                 )
                 threads.append(p)
                 p.start()
