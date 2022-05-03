@@ -4,7 +4,7 @@ from nltk.stem import SnowballStemmer
 
 class Normalizer:
     def __init__(self, stemming_language = None):
-        if stemming_language != None:
+        if stemming_language == "spanish" or stemming_language == "english":
             self.stemming = True
             self.ps = SnowballStemmer(stemming_language)
         else:

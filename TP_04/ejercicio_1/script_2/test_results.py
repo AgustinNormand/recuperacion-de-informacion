@@ -1,4 +1,5 @@
-
+## python3 menu.py ../../../../colecciones/collection_test_ER2/TestCollection/ palabrasvacias.txt spanish true true false
+## python3 test_results.py ../../../../colecciones/collection_test_ER2/collection_data.json
 import json
 import sys
 
@@ -46,6 +47,8 @@ with open(dirpath, "r") as f:
         collection_doc_ids = value["docid"]
         my_doc_ids = r.get_posting(value["term"])
         if my_doc_ids != collection_doc_ids:
+            print(len(value["term"]))
+            print(my_doc_ids)
             errors = True
             print("Error in term: {}".format(value["term"]))
             #print(my_doc_ids)

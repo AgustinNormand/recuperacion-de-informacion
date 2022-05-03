@@ -7,7 +7,7 @@ import threading
 import merger
 
 
-def process_function(worker_number, queue, stopwords_path, stemming_language, extract_entities, results):
+def process_function(worker_number, queue, stopwords_path, stemming_language, extract_entities, html_files, results):
     tokenizer = Tokenizer(stopwords_path, stemming_language, extract_entities)
     if worker_number == 1:
         total = queue.qsize()
@@ -21,7 +21,7 @@ def process_function(worker_number, queue, stopwords_path, stemming_language, ex
             break
         try:
             tokenizer.tokenize_file(
-                content[0], content[1], pathlib.Path(content[0]).suffix == ".html"
+                content[0], content[1], pathlib.Path(content[0]).suffix == ".html" and html_files
             )
 
         except Exception as e:
@@ -31,13 +31,15 @@ def process_function(worker_number, queue, stopwords_path, stemming_language, ex
 
 
 class Indexer:
-    def __init__(self, dirpath, stopwords_path, stemming_language, extract_entities):
+    def __init__(self, dirpath, stopwords_path, stemming_language, extract_entities, id_in_docname, html_files):
         
         self.stemming_language = stemming_language
+        self.id_in_docname = id_in_docname
         self.extract_entities = extract_entities
         self.dirpath = dirpath
         self.stopwords_path = stopwords_path
-        self.load_documents(dirpath, True)
+        self.html_files = html_files
+        self.load_documents(dirpath, id_in_docname)
         self.index()
 
     def load_documents(self, dirpath, id_in_name = False):
@@ -51,7 +53,7 @@ class Indexer:
                 doc_id = id_count
                 id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
-        Exporter().set_docnames_ids_file(self.docnames_ids, "./output/docnames_ids")
+        Exporter().set_docnames_ids_file(self.docnames_ids, "docnames_ids")
 
     def index(self):
         with Manager() as manager:
@@ -70,7 +72,7 @@ class Indexer:
             for worker_number in range(workers_number):
                 p = threading.Thread(
                     target=process_function,
-                    args=(worker_number, queue, self.stopwords_path, self.stemming_language, self.extract_entities, results),
+                    args=(worker_number, queue, self.stopwords_path, self.stemming_language, self.extract_entities, self.html_files, results),
                 )
                 threads.append(p)
                 p.start()
@@ -93,8 +95,15 @@ class Indexer:
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
-            Exporter().vocabulary_file(vocabulary, "./output/vocabulary")
-            Exporter().inverted_index(inverted_index, "./output/inverted_index")
+            Exporter().vocabulary_file(vocabulary, "vocabulary")
+            Exporter().inverted_index(inverted_index, "inverted_index")
+            Exporter().postings_distribution(inverted_index)
+            Exporter().collection_overhead(self.dirpath)
+
+            Exporter().document_overhead(self.docnames_ids, inverted_index)
 
             print("Files exported.")
+
+             
+
 

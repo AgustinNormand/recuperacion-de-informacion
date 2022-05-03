@@ -6,7 +6,7 @@ from entity_extractor import Entity_Extractor
 class Retrieval():
     def __init__(self):
         self.importer = Importer()
-        self.vocabulary = self.importer.read_vocabulary("../script_1/output/vocabulary.bin")
+        self.vocabulary = self.importer.read_vocabulary("../script_1/output/index_files/vocabulary.bin")
         self.normalizer = Normalizer()
         self.entity_extractor = Entity_Extractor()
 
@@ -21,7 +21,7 @@ class Retrieval():
         else:
             processed_term = self.normalizer.normalize(term)
 
-        with open("../script_1/output/inverted_index.bin", "rb") as f:
+        with open("../script_1/output/index_files/inverted_index.bin", "rb") as f:
             try:
                 df, pointer = self.vocabulary[processed_term]
             except:

@@ -1,7 +1,86 @@
 import struct
-import binascii
+import matplotlib.pyplot as plt
+import os
 
 class Exporter:
+    def document_overhead(self, docnames_ids, inverted_index):
+        #acum = 0
+        docid_overhead = {}
+        overhead_count = {}
+        for key in docnames_ids.keys():
+            file_size = os.path.getsize(key)
+            #print("File size: {} bytes".format(file_size))
+            file_id = docnames_ids[key]
+            counter = 0
+            for key in inverted_index:
+                if file_id in inverted_index[key]:
+                    counter += 1
+            #print("{} times had to save id in posting".format(counter))
+            #print("1 time had to save id in docnames_ids.bin")
+            #print("{} characters used for the title".format(115))#FIXME NO DEBERIA ESTAR HARDCODEADO
+            total_size = counter*4+4+115
+            overhead = total_size/(total_size+file_size)
+            docid_overhead[file_id] = overhead
+            try:
+                overhead_count[round(overhead, 2)] += 1
+            except:
+                overhead_count[round(overhead, 2)] = 1
+            #print("Total size: {} bytes".format(total_size))
+            #acum += total_size
+        #print("Acum: {}".format(acum))
+        #print(docid_overhead)
+        keys = sorted(overhead_count.keys())
+        #print(keys)
+        values = []
+        for key in keys:
+            values.append(overhead_count[key])
+
+        plt.figure(0)
+        plt.plot(keys, values)
+        #plt.xlim(min(keys), max(keys))
+        #plt.ylim(min(values), max(values))
+        plt.xlabel('Overhead')
+        plt.ylabel('Cantidad de documentos')
+        plt.savefig('./output/human_files/overhead.png')
+        #print(overhead_count)
+
+    def get_size(self, directory):
+        size = 0
+        for path, dirs, files in os.walk(directory):
+            for f in files:
+                fp = os.path.join(path, f)
+                size += os.path.getsize(fp)
+        return size
+
+    def collection_overhead(self, dirpath):
+        corpus_size = self.get_size(dirpath)
+        index_size = self.get_size("./output/index_files/")
+        
+        print("Corpus Size: {} bytes, Index Size: {} bytes".format(corpus_size, index_size))
+        print("Overhead: {}".format(index_size/(corpus_size+index_size)))
+
+
+    def postings_distribution(self, inverted_index):
+        distribution = {}
+        for value in inverted_index:
+            try:
+                distribution[len(inverted_index[value])*4] += 1
+            except:
+                distribution[len(inverted_index[value])*4] = 1
+        
+        keys = sorted(distribution.keys())
+        values = []
+        for key in keys:
+            values.append(distribution[key])
+
+        plt.figure(1)
+        plt.plot(keys, values)
+        #plt.xlim(min(keys), max(keys))
+        #plt.ylim(min(values), max(values))
+        plt.xlabel('Bytes')
+        plt.ylabel('Cantidad de postings')
+        plt.savefig('./output/human_files/postings_distribution.png')
+
     def get_max_length(self, array):
         max_length = 0
         for value in array:
@@ -9,12 +88,12 @@ class Exporter:
                 max_length = len(value)
         return max_length
 
-    def set_docnames_ids_file(self, docnames_ids, filepath):
+    def set_docnames_ids_file(self, docnames_ids, filename):
         docnames_ids_list = [(bytes(k, 'utf-8'), v) for k, v in docnames_ids.items()]
-        #max_length = self.get_max_length(docnames_ids.keys())
-        #print("Max length docnames_ids: {}".format(max_length)) #FIXME
-        string_format = "{}s{}I".format(100, 1)
-        with open(filepath+".bin", 'wb') as f:
+        max_length = self.get_max_length(docnames_ids.keys())
+        print("Max length docnames_ids: {}".format(max_length)) #TODO
+        string_format = "{}s{}I".format(115, 1)
+        with open("./output/index_files/"+filename+".bin", 'wb') as f:
             for value in docnames_ids_list:
                 packed_data = struct.pack(string_format, *value)
                 f.write(packed_data)
@@ -23,30 +102,30 @@ class Exporter:
 
         #Mejorar, no usar el path absoluto. Incluso, no usar docNN.txt, solo almacenar el NN
 
-        with open(filepath+".txt", "w") as f:
+        with open("./output/human_files/"+filename+".txt", "w") as f:
             f.write("{}\t{}\r\n".format("doc_name", "id"))
             for doc_id in docnames_ids:
                 f.write("{}\t{}\r\n".format(doc_id, docnames_ids[doc_id]))
                 
-    def inverted_index(self, inverted_index, filepath):
-        with open(filepath+".bin", 'wb') as f:
+    def inverted_index(self, inverted_index, filename):
+        with open("./output/index_files/"+filename+".bin", 'wb') as f:
             for key in inverted_index:
                 string_format = "{}I".format(len(inverted_index[key]))
                 packed_data = struct.pack(string_format, *inverted_index[key])
                 f.write(packed_data)
 
-        with open(filepath+".txt", "w") as f:
+        with open("./output/human_files/"+filename+".txt", "w") as f:
             f.write("{}\t{}\r\n".format(
                 "term", "[doc_id]"))
             for key in inverted_index:
                 f.write("{}\t{}\r\n".format(key, inverted_index[key]))
 
-    def vocabulary_file(self, vocabulary, filepath):
-        #max_length = self.get_max_length(vocabulary.keys())
-        #print("Max length vocabulary: {}".format(max_length)) #FIXME
+    def vocabulary_file(self, vocabulary, filename):
+        max_length = self.get_max_length(vocabulary.keys())
+        print("Max length vocabulary: {}".format(max_length)) #TODO
         string_format = "{}s{}I{}I".format(100, 1, 1) #Esto debería coincidir con el paramtro del tokenizer
         last_df = 0
-        with open(filepath+".bin", 'wb') as f:
+        with open("./output/index_files/"+filename+".bin", 'wb') as f:
             for key in vocabulary:
                 packed_data = struct.pack(string_format, bytes(key, 'utf-8'), vocabulary[key], last_df)
                 #print(binascii.hexlify(packed_data))
@@ -54,7 +133,7 @@ class Exporter:
                 last_df += vocabulary[key]
         # Mejorar el tamaño del string para los terminos
             
-        with open(filepath+".txt", "w") as f:
+        with open("./output/human_files/"+filename+".txt", "w") as f:
                 f.write("{}\t{}\r\n".format('term', "[df]"))
                 for value in vocabulary:
                     f.write("{}\t{}\r\n".format(value, vocabulary[value]))

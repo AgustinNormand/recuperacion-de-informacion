@@ -4,13 +4,31 @@ from retrieval import Retrieval
 
 empty_words_path = None
 
+stemming_language = "spanish"
+extract_entities = True
+
+def strtobool(string):
+    string = string.lower()
+    if string == "true" or string == "yes" or string == "1" or string == "si":
+        return True
+    return False
+
 if len(sys.argv) > 1:
-    empty_words_path = sys.argv[1]
+    extract_entities = strtobool(sys.argv[1])
+
+if len(sys.argv) > 2:
+    stemming_language = sys.argv[2].lower()
+
+#if len(sys.argv) > 1:
+   # empty_words_path = sys.argv[1]
 
 def mostrar_menu_configuracion():
-    print("python3 menu.py <path archivo palabras vacias>\r\n")
+    #print("python3 menu.py <path archivo palabras vacias>\r\n")
+    print("python3 menu.py <extract_entities> <stemming_language> \r\n")
     print("Verifique los parámetros. \r\n")
-    print("Path del archivo de palabras vacias: {}".format(empty_words_path))
+    print("Stemming Language: {}".format(stemming_language))
+    print("Extract Entities: {}".format(extract_entities))
+    #print("Path del archivo de palabras vacias: {}".format(empty_words_path))
     print("\r\n")
     mostrar_menu_principal()
 

@@ -1,4 +1,5 @@
 from normalizer import Normalizer
+from bs4 import BeautifulSoup
 from entity_extractor import Entity_Extractor
 
 
@@ -8,8 +9,8 @@ class Tokenizer:
         self.inverted_index = {}
         self.documents_vectors = {}
 
-        self.min_length = 1
-        self.max_length = 1000
+        self.min_length = 2
+        self.max_length = 25
 
         self.palabras_vacias = []
 
@@ -29,7 +30,7 @@ class Tokenizer:
                     self.palabras_vacias.append(line.strip())
 
     def valid_length(self, token):
-        return (len(token) > self.min_length and len(token) < self.max_length)
+        return len(token) > self.min_length and len(token) < self.max_length
 
     def palabra_vacia(self, token):
         for palabra_vacia in self.palabras_vacias:
@@ -67,12 +68,14 @@ class Tokenizer:
             except:
                 self.vocabulary[term] = 1
 
-    def tokenize_file(self, filename, file_id, html = False):
+    def tokenize_file(self, filename, file_id, html=False):
         file_terms = []
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             for line in f.readlines():
                 if self.extract_entities:
-                    processed_line, entities = self.entities_extractor.extract_entities(line)
+                    processed_line, entities = self.entities_extractor.extract_entities(
+                        line
+                    )
                     for entity in entities:
                         self.add_term(entity, file_id, file_terms)
                 else:
@@ -80,7 +83,7 @@ class Tokenizer:
                 for word in processed_line.split():
                     token = self.normalizer.normalize(word)
                     self.add_if_term(token, file_id, file_terms)
-        
+
         self.increment_vocabulary(file_terms)
 
     def get_results(self):

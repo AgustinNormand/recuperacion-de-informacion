@@ -1,0 +1,21 @@
+term	[df]
+abc.def@mail-archive.com	90
+https://www.researchgate.net/publication/2360239	1000
+15413355	220
+Domingo Faustino Sarmiento	1000
+dasmi	150
+lluvi	320
+https://www.labredes.unlu.edu.ar/tyr2022	50
+terner	400
+https://www.youtube.com/watch?v=zKqUfwB84Zg	60
+mratto@mail.unlu.edu.ar	100
+tenis	130
+botell	200
+sra	80
+https://docs.google.com/document/d/1ninD55Cfbb_7PksDirN0XghzNHJZ_N93lheQzF1aOZY/edit?usp=sharing	120
+http://www.tcpipguide.com/free/t_TCPIPProcessesMultiplexingandClientServerApplicati.htm	110
+2021-12-09	140
+eeuu	70
+ftp://unlu.edu.ar	40
+usa	30
+cas	20
