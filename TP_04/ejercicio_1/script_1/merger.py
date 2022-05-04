@@ -1,5 +1,3 @@
-import math
-
 def merge_vocabulary(final_vocabulary, thread_vocabulary):
     for key in thread_vocabulary:
         try:

@@ -1,26 +1,10 @@
-import sys
+from constants import *
+from retrieval import *
 
-from retrieval import Retrieval
 
-empty_words_path = None
-
-stemming_language = "spanish"
-extract_entities = True
-
-def strtobool(string):
-    string = string.lower()
-    if string == "true" or string == "yes" or string == "1" or string == "si":
-        return True
-    return False
-
-if len(sys.argv) > 1:
-    extract_entities = strtobool(sys.argv[1])
-
-if len(sys.argv) > 2:
-    stemming_language = sys.argv[2].lower()
-
-#if len(sys.argv) > 1:
-   # empty_words_path = sys.argv[1]
+empty_words_path = EMPTY_WORDS_PATH
+stemming_language = STEMMING_LANGUAGE
+extract_entities = EXTRACT_ENTITIES
 
 def mostrar_menu_configuracion():
     #print("python3 menu.py <path archivo palabras vacias>\r\n")

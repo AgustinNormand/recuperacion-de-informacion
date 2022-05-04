@@ -1,11 +1,13 @@
 import struct
-import binascii
+
+DOCNAMES_SIZE = 115
+TERMS_SIZE = 100
 
 class Importer:
 
     def read_vocabulary(self, filepath):
         with open(filepath, "rb") as f:
-            string_format = "{}s{}I{}I".format(100, 1, 1)
+            string_format = "{}s{}I{}I".format(TERMS_SIZE, 1, 1)
             read_size = struct.calcsize(string_format)
             vocabulary = {}
 
@@ -22,7 +24,7 @@ class Importer:
     def read_docnames_ids_file(self, filepath):
         ids_docnames = {}
         with open(filepath, "rb") as f:
-            string_format = "{}s{}I".format(115, 1)
+            string_format = "{}s{}I".format(DOCNAMES_SIZE, 1)
             read_size = struct.calcsize(string_format)
             content = f.read(read_size)
 

@@ -1,7 +1,7 @@
 from importer import Importer
 import struct
-from normalizer import Normalizer
-from entity_extractor import Entity_Extractor
+from normalizer import *
+from entity_extractor import *
 
 class Retrieval():
     def __init__(self):
