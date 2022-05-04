@@ -1,5 +1,9 @@
-from importer import Importer
 import struct
+from importer import Importer
+
+import sys
+sys.path.append('../script_1')
+
 from normalizer import *
 from entity_extractor import *
 from constants import *

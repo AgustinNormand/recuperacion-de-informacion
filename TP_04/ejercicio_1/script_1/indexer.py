@@ -92,7 +92,6 @@ class Indexer:
             Exporter().inverted_index(inverted_index)
             Exporter().postings_distribution(inverted_index)
             Exporter().collection_overhead()
-
             Exporter().document_overhead(self.docnames_ids, inverted_index)
 
             print("Files exported.")

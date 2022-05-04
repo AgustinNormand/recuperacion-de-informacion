@@ -1,5 +1,9 @@
 import struct
+
+import sys
+sys.path.append('../script_1')
 from constants import *
+
 class Importer:
 
     def read_vocabulary(self, filepath):
