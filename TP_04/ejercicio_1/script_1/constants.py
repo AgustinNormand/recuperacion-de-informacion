@@ -9,17 +9,25 @@ HUMAN_FILES_PATH = "/home/agustin/Desktop/Recuperacion/repo/TP_04/ejercicio_1/sc
 
 #FIXME ABSOLUTE PATHS
 
+#Size of strings for Exporter to write binary file
 DOCNAMES_SIZE = 115
 TERMS_SIZE = 100
+#
 
+#Tokenizer term size
 MIN_TERM_LENGTH = 3
 MAX_TERM_LENGTH = 25
+#
 
 STEMMING_LANGUAGE = "spanish"
-EXTRACT_ENTITIES = True
 
-ID_IN_DOCNAME = True
+#Evaluate RE or not (Email, Abbreviations, Dates, ...)
+EXTRACT_ENTITIES = True
+#
+
+#For wiki-small. Not consider HTML tags
 HTML_FILES = False
+#
 
 DOCNAMES_IDS_FILENAME = "docnames_ids"
 VOCABULARY_FILENAME = "vocabulary"
@@ -36,4 +44,5 @@ TXT_DOCNAMES_IDS_FILENAME = DOCNAMES_IDS_FILENAME+".txt"
 
 # Only for test_results.py
 RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
+ID_IN_DOCNAME = True
 #

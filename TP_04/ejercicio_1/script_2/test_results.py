@@ -1,5 +1,5 @@
-## python3 menu.py ../../../../colecciones/collection_test_ER2/TestCollection/ palabrasvacias.txt spanish true true false
-## python3 test_results.py ../../../../colecciones/collection_test_ER2/collection_data.json
+# SET ID_IN_DOCNAME = True
+
 import json
 
 from retrieval import Retrieval
