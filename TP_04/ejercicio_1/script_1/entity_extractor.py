@@ -1,9 +1,6 @@
 import re
 from normalizer import Normalizer
-
 class Entity_Extractor():
-    
-
     def __init__(self):
         self.normalizer = Normalizer()
         self.regular_expressions = [

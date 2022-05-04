@@ -1,12 +1,12 @@
 import re
 from nltk.stem import SnowballStemmer
-
+import constants as c
 
 class Normalizer:
-    def __init__(self, stemming_language = None):
-        if stemming_language == "spanish" or stemming_language == "english":
+    def __init__(self):
+        if c.STEMMING_LANGUAGE:
             self.stemming = True
-            self.ps = SnowballStemmer(stemming_language)
+            self.ps = SnowballStemmer(c.STEMMING_LANGUAGE)
         else:
             self.stemming = False
 

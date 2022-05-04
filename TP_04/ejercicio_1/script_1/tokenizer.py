@@ -1,36 +1,31 @@
 from normalizer import Normalizer
 from bs4 import BeautifulSoup
 from entity_extractor import Entity_Extractor
+import constants as c
 
 
 class Tokenizer:
-    def __init__(self, empty_words_path, stemming_language, extract_entities):
+    def __init__(self):
         self.vocabulary = {}
         self.inverted_index = {}
         self.documents_vectors = {}
 
-        self.min_length = 2
-        self.max_length = 25
-
         self.palabras_vacias = []
 
-        self.stemming_language = stemming_language
-        self.extract_entities = extract_entities
+        self.load_empty_words()
 
-        self.load_empty_words(empty_words_path)
-
-        self.normalizer = Normalizer(stemming_language)
-        if self.extract_entities:
+        self.normalizer = Normalizer()
+        if c.EXTRACT_ENTITIES:
             self.entities_extractor = Entity_Extractor()
 
-    def load_empty_words(self, empty_words_path):
-        if empty_words_path:
-            with open(empty_words_path, "r") as f:
+    def load_empty_words(self):
+        if c.EMPTY_WORDS_PATH:
+            with open(c.EMPTY_WORDS_PATH, "r") as f:
                 for line in f.readlines():
                     self.palabras_vacias.append(line.strip())
 
     def valid_length(self, token):
-        return len(token) > self.min_length and len(token) < self.max_length
+        return len(token) > c.MIN_TERM_LENGTH and len(token) < c.MAX_TERM_LENGTH
 
     def palabra_vacia(self, token):
         for palabra_vacia in self.palabras_vacias:
@@ -67,24 +62,47 @@ class Tokenizer:
                 self.vocabulary[term] += 1
             except:
                 self.vocabulary[term] = 1
-
-    def tokenize_file(self, filename, file_id, html=False):
+            
+    def tokenize_html_file(self, filename, file_id):
         file_terms = []
         with open(filename, "r") as f:
-            for line in f.readlines():
-                if self.extract_entities:
-                    processed_line, entities = self.entities_extractor.extract_entities(
-                        line
-                    )
-                    for entity in entities:
-                        self.add_term(entity, file_id, file_terms)
-                else:
-                    processed_line = line
-                for word in processed_line.split():
-                    token = self.normalizer.normalize(word)
-                    self.add_if_term(token, file_id, file_terms)
+            content = f.read()
+            soup = BeautifulSoup(content, 'html.parser')
+            content = soup.get_text().replace("\n", "").replace("\xa0", "")
+            if c.EXTRACT_ENTITIES:
+                processed_content, entities = self.entities_extractor.extract_entities(
+                            content
+                        )
+                for entity in entities:
+                    self.add_term(entity, file_id, file_terms)
+            else:
+                processed_content = content
 
+            for word in processed_content.split():
+                token = self.normalizer.normalize(word)
+                self.add_if_term(token, file_id, file_terms)
         self.increment_vocabulary(file_terms)
+
+    def tokenize_file(self, filename, file_id):
+        if c.HTML_FILES:
+            self.tokenize_html_file(filename, file_id)
+        else:
+            file_terms = []
+            with open(filename, "r") as f:
+                for line in f.readlines():
+                    if c.EXTRACT_ENTITIES:
+                        processed_line, entities = self.entities_extractor.extract_entities(
+                            line
+                        )
+                        for entity in entities:
+                            self.add_term(entity, file_id, file_terms)
+                    else:
+                        processed_line = line
+                    for word in processed_line.split():
+                        token = self.normalizer.normalize(word)
+                        self.add_if_term(token, file_id, file_terms)
+
+            self.increment_vocabulary(file_terms)
 
     def get_results(self):
         return [self.vocabulary, self.inverted_index]
