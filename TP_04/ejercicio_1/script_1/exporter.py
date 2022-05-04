@@ -95,7 +95,7 @@ class Exporter:
         max_length = self.get_max_length(docnames_ids.keys())
         print("Max length docnames_ids: {}. Actual length: {}.".format(max_length, c.DOCNAMES_SIZE)) #TODO
         string_format = "{}s{}I".format(c.DOCNAMES_SIZE, 1)
-        with open(c.INDEX_FILES_PATH+c.DOCNAMES_IDS_FILENAME+".bin", 'wb') as f:
+        with open(c.INDEX_FILES_PATH+c.BIN_DOCNAMES_IDS_FILENAME, 'wb') as f:
             for value in docnames_ids_list:
                 packed_data = struct.pack(string_format, *value)
                 f.write(packed_data)
@@ -104,19 +104,19 @@ class Exporter:
 
         #Mejorar, no usar el path absoluto. Incluso, no usar docNN.txt, solo almacenar el NN
 
-        with open(c.HUMAN_FILES_PATH+c.DOCNAMES_IDS_FILENAME+".txt", "w") as f:
+        with open(c.HUMAN_FILES_PATH+c.TXT_DOCNAMES_IDS_FILENAME, "w") as f:
             f.write("{}\t{}\r\n".format("doc_name", "id"))
             for doc_id in docnames_ids:
                 f.write("{}\t{}\r\n".format(doc_id, docnames_ids[doc_id]))
                 
     def inverted_index(self, inverted_index):
-        with open(c.INDEX_FILES_PATH+c.INVERTED_INDEX_FILENAME+".bin", 'wb') as f:
+        with open(c.INDEX_FILES_PATH+c.BIN_INVERTED_INDEX_FILENAME, 'wb') as f:
             for key in inverted_index:
                 string_format = "{}I".format(len(inverted_index[key]))
                 packed_data = struct.pack(string_format, *inverted_index[key])
                 f.write(packed_data)
 
-        with open(c.HUMAN_FILES_PATH+c.INVERTED_INDEX_FILENAME+".txt", "w") as f:
+        with open(c.HUMAN_FILES_PATH+c.TXT_INVERTED_INDEX_FILENAME, "w") as f:
             f.write("{}\t{}\r\n".format(
                 "term", "[doc_id]"))
             for key in inverted_index:
@@ -127,7 +127,7 @@ class Exporter:
         print("Max length vocabulary: {}. Actual length: {}.".format(max_length, c.TERMS_SIZE)) #TODO
         string_format = "{}s{}I{}I".format(c.TERMS_SIZE, 1, 1) #Esto debería coincidir con el paramtro del tokenizer
         last_df = 0
-        with open(c.INDEX_FILES_PATH+c.VOCABULARY_FILENAME+".bin", 'wb') as f:
+        with open(c.INDEX_FILES_PATH+c.BIN_VOCABULARY_FILENAME, 'wb') as f:
             for key in vocabulary:
                 packed_data = struct.pack(string_format, bytes(key, 'utf-8'), vocabulary[key], last_df)
                 #print(binascii.hexlify(packed_data))
@@ -135,7 +135,7 @@ class Exporter:
                 last_df += vocabulary[key]
         # Mejorar el tamaño del string para los terminos
             
-        with open(c.HUMAN_FILES_PATH+c.VOCABULARY_FILENAME+".txt", "w") as f:
+        with open(c.HUMAN_FILES_PATH+c.TXT_VOCABULARY_FILENAME, "w") as f:
                 f.write("{}\t{}\r\n".format('term', "[df]"))
                 for value in vocabulary:
                     f.write("{}\t{}\r\n".format(value, vocabulary[value]))

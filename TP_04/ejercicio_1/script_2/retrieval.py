@@ -2,11 +2,12 @@ from importer import Importer
 import struct
 from normalizer import *
 from entity_extractor import *
+from constants import *
 
 class Retrieval():
     def __init__(self):
         self.importer = Importer()
-        self.vocabulary = self.importer.read_vocabulary("../script_1/output/index_files/vocabulary.bin")
+        self.vocabulary = self.importer.read_vocabulary(INDEX_FILES_PATH+BIN_VOCABULARY_FILENAME)
         self.normalizer = Normalizer()
         self.entity_extractor = Entity_Extractor()
 
