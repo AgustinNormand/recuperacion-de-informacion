@@ -46,7 +46,9 @@ class Indexer:
                 doc_id = id_count
                 id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
-        Exporter().set_docnames_ids_file(self.docnames_ids)
+        Exporter().analize_document_titles_length(self.docnames_ids)
+        Exporter().save_docnames_ids_file(self.docnames_ids)
+        
 
     def index(self):
         with Manager() as manager:
@@ -55,7 +57,7 @@ class Indexer:
             for docname_id in self.docnames_ids:
                 queue.put([docname_id, self.docnames_ids[docname_id]])
 
-            workers_number = 5
+            workers_number = c.WORKERS_NUMBER
             for i in range(workers_number):
                 queue.put("")
 
@@ -74,6 +76,7 @@ class Indexer:
                 thread.join()
 
             end = time.time()
+            print("\r                                   ")
             print(
                 "\rDistributed Indexing time: {} seconds, Documents Processed: {}, Workers Threads: {}.".format(
                     end - start, len(self.docnames_ids), workers_number
@@ -88,6 +91,7 @@ class Indexer:
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
+            Exporter().analize_terms_length(vocabulary)
             Exporter().vocabulary_file(vocabulary)
             Exporter().inverted_index(inverted_index)
             Exporter().postings_distribution(inverted_index)

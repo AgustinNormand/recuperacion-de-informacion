@@ -25,7 +25,7 @@ class Tokenizer:
                     self.palabras_vacias.append(line.strip())
 
     def valid_length(self, token):
-        return len(token) >= c.MIN_TERM_LENGTH and len(token) < c.MAX_TERM_LENGTH
+        return len(token) >= c.MIN_TERM_LENGTH and len(token) <= c.MAX_TERM_LENGTH
 
     def palabra_vacia(self, token):
         for palabra_vacia in self.palabras_vacias:
@@ -88,7 +88,7 @@ class Tokenizer:
             self.tokenize_html_file(filename, file_id)
         else:
             file_terms = []
-            with open(filename, "r") as f:
+            with open(filename, "r", encoding=c.CORPUS_FILES_ENCODING) as f:
                 for line in f.readlines():
                     if c.EXTRACT_ENTITIES:
                         processed_line, entities = self.entities_extractor.extract_entities(
