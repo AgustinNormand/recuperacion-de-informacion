@@ -1,20 +1,13 @@
-## python3 menu.py ../../../../colecciones/collection_test_ER2/TestCollection/ palabrasvacias.txt spanish true true false
-## python3 test_results.py ../../../../colecciones/collection_test_ER2/collection_data.json
 import json
-import sys
-
 from retrieval import Retrieval
 
-AND_SYMBOL = "&"
-OR_SYMBOL = "|"
-NOT_SYMBOL = "!"
-
-if len(sys.argv) > 1:
-    dirpath = sys.argv[1]
+import sys
+sys.path.append('../ejercicio_1/script_1')
+from constants import *
 
 r = Retrieval()
 
-with open(dirpath, "r") as f:
+with open(RESULTS_FILE, "r") as f:
     data = json.load(f)
     print(data.keys())
     print("Data: {}".format(data["statistics"]))
@@ -101,4 +94,5 @@ with open(dirpath, "r") as f:
                 if not result_set == my_resultset:
                     errors = True
                     print("Diferent resultset in {}".format(query)) 
-    print(querys)
+                    
+    print("Amount of querys done: {}".format(querys))

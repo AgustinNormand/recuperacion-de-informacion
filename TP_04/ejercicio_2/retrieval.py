@@ -1,18 +1,19 @@
-from importer import Importer
-import struct
-from normalizer import Normalizer
-from entity_extractor import Entity_Extractor
 import re
+import struct
 
-AND_SYMBOL = "&"
-OR_SYMBOL = "|"
-NOT_SYMBOL = "!"
+import sys
+sys.path.append('../ejercicio_1/script_2')
+
+from importer import *
+from normalizer import *
+from entity_extractor import *
+from constants import *
 
 class Retrieval():
     def __init__(self):
         self.importer = Importer()
-        self.vocabulary = self.importer.read_vocabulary("../ejercicio_1/script_1/output/index_files/vocabulary.bin")
-        self.ids_docnames = self.importer.read_docnames_ids_file("../ejercicio_1/script_1/output/index_files/docnames_ids.bin")
+        self.vocabulary = self.importer.read_vocabulary()
+        self.ids_docnames = self.importer.read_docnames_ids_file()
         self.normalizer = Normalizer()
         self.entity_extractor = Entity_Extractor()
 

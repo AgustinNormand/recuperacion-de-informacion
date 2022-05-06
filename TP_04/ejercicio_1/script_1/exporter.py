@@ -23,13 +23,14 @@ class Exporter:
         print("{} max length: {}".format(name, max_length))
         print("{} actual length: {}".format(name, actual_length))
 
-        plt.figure(figure_number)
-        plt.hist(lengths)
-        plt.xlabel(xlabel)
-        plt.ylabel(ylabel)
-        plt.axvline(actual_length, color="k", linestyle="dashed", linewidth=1)
-        plt.savefig(plot_path)
-        print("{} length distribution plot exported".format(name))
+        if c.PLOT_RESULTS:
+            plt.figure(figure_number)
+            plt.hist(lengths)
+            plt.xlabel(xlabel)
+            plt.ylabel(ylabel)
+            plt.axvline(actual_length, color="k", linestyle="dashed", linewidth=1)
+            plt.savefig(plot_path)
+            print("{} length distribution plot exported".format(name))
 
     def analize_document_titles_length(self, docnames_ids):
         self.export_statistics(
@@ -82,11 +83,12 @@ class Exporter:
         for key in keys:
             values.append(overhead_count[key])
 
-        plt.figure(0)
-        plt.plot(keys, values)
-        plt.xlabel("Overhead")
-        plt.ylabel("Cantidad de documentos")
-        plt.savefig(c.OVERHEAD_PLOT_PATH)
+        if c.PLOT_RESULTS:
+            plt.figure(0)
+            plt.plot(keys, values)
+            plt.xlabel("Overhead")
+            plt.ylabel("Cantidad de documentos")
+            plt.savefig(c.OVERHEAD_PLOT_PATH)
 
     def get_size(self, directory):
         size = 0
@@ -121,11 +123,12 @@ class Exporter:
         for key in keys:
             values.append(distribution[key])
 
-        plt.figure(1)
-        plt.plot(keys, values)
-        plt.xlabel("Bytes")
-        plt.ylabel("Cantidad de postings")
-        plt.savefig(c.POSTINGS_PLOT_PATH)
+        if c.PLOT_RESULTS:
+            plt.figure(1)
+            plt.plot(keys, values)
+            plt.xlabel("Bytes")
+            plt.ylabel("Cantidad de postings")
+            plt.savefig(c.POSTINGS_PLOT_PATH)
 
     def save_docnames_ids_file(self, docnames_ids):
         docnames_ids_list = [(bytes(k, "utf-8"), v) for k, v in docnames_ids.items()]

@@ -11,7 +11,7 @@ from constants import *
 class Retrieval():
     def __init__(self):
         self.importer = Importer()
-        self.vocabulary = self.importer.read_vocabulary(INDEX_FILES_PATH+BIN_VOCABULARY_FILENAME)
+        self.vocabulary = self.importer.read_vocabulary()
         self.normalizer = Normalizer()
         self.entity_extractor = Entity_Extractor()
 
