@@ -21,7 +21,7 @@ class Exporter:
         print("\r")
         print("{} mean length: {}".format(name, acum / counter))
         print("{} max length: {}".format(name, max_length))
-        print("{} actual length: {}.".format(name, actual_length))
+        print("{} actual length: {}".format(name, actual_length))
 
         plt.figure(figure_number)
         plt.hist(lengths)
@@ -46,7 +46,7 @@ class Exporter:
         self.export_statistics(
             vocabulary.keys(),
             "Terms",
-            self.get_max_length(vocabulary.keys()),#c.TERMS_SIZE,
+            c.TERMS_SIZE,
             "x",
             "y",
             c.TERM_LENGTH_PLOT_PATH,
@@ -154,11 +154,8 @@ class Exporter:
             for key in inverted_index:
                 f.write("{}\t{}\r\n".format(key, inverted_index[key]))
 
-
-
     def vocabulary_file(self, vocabulary):
-        #string_format = "{}s{}I{}I".format(c.TERMS_SIZE, 1, 1)
-        string_format = "{}s{}I{}I".format(self.get_max_length(vocabulary.keys()), 1, 1)
+        string_format = "{}s{}I{}I".format(c.TERMS_SIZE, 1, 1)
         last_df = 0
         with open(c.INDEX_FILES_PATH + c.BIN_VOCABULARY_FILENAME, "wb") as f:
             for key in vocabulary:

@@ -1,12 +1,13 @@
-EMPTY_WORDS_PATH = "emptywords.txt"
+EMPTY_WORDS_PATH = "palabrasvacias.txt"
 # "palabrasvacias.txt"
 # "emptywords.txt"
 
-DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/wiki-small/"
+DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/TestCollection/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-small/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/TestCollection/"
+# "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/TestCollection/"
 
 #Size of strings for Exporter to write binary file
 #Posible: ["STATIC", "MAX", "AVERAGE"]
@@ -19,16 +20,19 @@ MIN_TERM_LENGTH = 3
 MAX_TERM_LENGTH = 25
 #
 
-DOCNAMES_SIZE = 172
+DOCNAMES_SIZE = 92
 # RI-tknz-data = 115
 # Wiki-Small = 172
-# 156
+# Wiki-txt = 1561
+# Collection-Test = 89
+# Collection-Test-ER2 = 92
 
-TERMS_SIZE = MAX_TERM_LENGTH
+TERMS_SIZE = 96
+# Collection-Test-ER2 = 96
 #
 
 # None in order to not aplicate stemming
-STEMMING_LANGUAGE = "english"
+STEMMING_LANGUAGE = "spanish"
 # english
 # spanish
  
@@ -37,7 +41,7 @@ EXTRACT_ENTITIES = True
 #
 
 #For wiki-small. Not consider HTML tags
-HTML_FILES = True
+HTML_FILES = False
 #
 
 # Only for Wiki-txt
@@ -46,11 +50,13 @@ CORPUS_FILES_ENCODING = "UTF-8"
 # "UTF-8"
 
 # Only for test_results.py
-RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
+RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
+# "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
+# "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
 #
 
 # True if doc_id is in doc_name. Example doc120.txt
-ID_IN_DOCNAME = False
+ID_IN_DOCNAME = True
 #
 
 WORKERS_NUMBER = 10
