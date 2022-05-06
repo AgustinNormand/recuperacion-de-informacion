@@ -1,8 +1,13 @@
-FILE_PATH = "./queries_2y3t.txt"
+import sys
+sys.path.append('../ejercicio_1/script_1')
+from constants import *
+sys.path.append('../ejercicio_2/')
+from retrieval import *
+import time
 
-AND_SYMBOL = "&"
-OR_SYMBOL = "|"
-NOT_SYMBOL = "!"
+#AND_SYMBOL = "&"
+#OR_SYMBOL = "|"
+#NOT_SYMBOL = "!"
 
 SYMBOLS = [AND_SYMBOL, OR_SYMBOL, NOT_SYMBOL]
 
@@ -19,7 +24,7 @@ def build_tree_term_querys(term0, term1, term2):
     querys.append("({}{}{}){}{}".format(term0, AND_SYMBOL, term1, OR_SYMBOL, term2))
     return querys
 
-with open(FILE_PATH, "r") as f:
+with open(QUERYS_FILE_PATH, "r") as f:
     two_term_and_querys = []
     two_term_or_querys = []
     two_term_not_querys = []
@@ -38,8 +43,19 @@ with open(FILE_PATH, "r") as f:
                 tree_term_querys.extend(build_tree_term_querys(terms[0], terms[1], terms[2]))
     #print(tree_term_querys)
 
-for two_term_and_query in two_term_and_querys:
-    #print(two_term_and_query)
+r = Retrieval()
+
+acum = 0
+counter = 0
+for two_term_and_query in tree_term_querys:
+    counter += 1
+    start = time.time()
+    r.query(two_term_and_query)
+    end = time.time()
+    acum += end - start
+    counter += 1
+print(acum/counter)
+#    print(two_term_and_query)
     
 
 

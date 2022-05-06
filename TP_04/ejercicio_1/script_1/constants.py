@@ -86,6 +86,8 @@ POSTINGS_PLOT_PATH = '/home/agustin/Desktop/Recuperacion/repo/TP_04/ejercicio_1/
 TITLE_LENGTH_PLOT_PATH = '/home/agustin/Desktop/Recuperacion/repo/TP_04/ejercicio_1/script_1/output/human_files/title_length.png'
 TERM_LENGTH_PLOT_PATH = '/home/agustin/Desktop/Recuperacion/repo/TP_04/ejercicio_1/script_1/output/human_files/term_length.png'
 
+QUERYS_FILE_PATH = "/home/agustin/Desktop/Recuperacion/repo/TP_04/ejercicio_3/queries_2y3t.txt"
+
 
 
 

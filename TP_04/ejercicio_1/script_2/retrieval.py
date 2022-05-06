@@ -26,7 +26,7 @@ class Retrieval():
         else:
             processed_term = self.normalizer.normalize(term)
 
-        with open("../script_1/output/index_files/inverted_index.bin", "rb") as f:
+        with open(INDEX_FILES_PATH+BIN_INVERTED_INDEX_FILENAME, "rb") as f:
             try:
                 df, pointer = self.vocabulary[processed_term]
             except:

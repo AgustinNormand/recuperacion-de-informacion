@@ -17,10 +17,6 @@ class Retrieval():
         self.normalizer = Normalizer()
         self.entity_extractor = Entity_Extractor()
 
-        #print(self.ids_docnames[4])
-        #print(self.ids_docnames[128])
-        #print(self.vocabulary["abc.def@mail-archive.com"])
-
     def and_query(self, term1, term2, term3=None):
         posting1 = self.get_posting(term1)
         posting2 = self.get_posting(term2)
