@@ -16,13 +16,16 @@ class Retrieval():
         self.entity_extractor = Entity_Extractor()
 
     def get_posting(self, term):
-        rest, entities_list = self.entity_extractor.extract_entities(term)
-        if len(entities_list) >= 1:
-            #if rest != "":?
-            #if len(entities_list) >= 2: ?
-            #if entity != term? #Doesnt work for U.S.A > usa
-            entity = entities_list[0]
-            processed_term = entity
+        if EXTRACT_ENTITIES:
+            rest, entities_list = self.entity_extractor.extract_entities(term)
+            if len(entities_list) >= 1:
+                #if rest != "":?
+                #if len(entities_list) >= 2: ?
+                #if entity != term? #Doesnt work for U.S.A > usa
+                entity = entities_list[0]
+                processed_term = entity
+            else:
+                processed_term = self.normalizer.normalize(term)
         else:
             processed_term = self.normalizer.normalize(term)
 

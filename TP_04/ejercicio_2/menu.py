@@ -13,7 +13,7 @@ def mostrar_menu_configuracion():
     mostrar_menu_principal()
 
 def mostrar_menu_principal():
-    r = Retrieval()
+    r = Retrieval(True)
 
     print('Ingrese la query')
     user_input = input()
@@ -21,3 +21,10 @@ def mostrar_menu_principal():
         print(document_id)
 
 mostrar_menu_configuracion()
+
+# john|cdata
+# LONG LIST
+
+# john|cdata
+# Empty
+

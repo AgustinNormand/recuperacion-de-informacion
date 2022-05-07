@@ -37,3 +37,15 @@ class Importer:
                 ids_docnames[doc_id] = docname
                 content = f.read(read_size)
         return ids_docnames
+
+    def read_inverted_index(self, vocabulary):
+        inverted_index = {}
+        with open(INDEX_FILES_PATH+BIN_INVERTED_INDEX_FILENAME, "rb") as f:
+            for term in vocabulary:
+                df, pointer = vocabulary[term]
+                string_format = "{}I".format(df)
+                f.seek(pointer*struct.calcsize("I"))
+                content = f.read(struct.calcsize(string_format))
+                unpacked_data = struct.unpack(string_format, content)
+                inverted_index[term] = unpacked_data
+        return inverted_index
