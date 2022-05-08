@@ -2,7 +2,6 @@ import struct
 from constants import *
 import json
 
-
 class Importer:
 
     def __init__(self, terms_size, docnames_size):
@@ -10,7 +9,7 @@ class Importer:
         self.docnames_size = docnames_size
 
     def read_vocabulary(self):
-        with open(INDEX_FILES_PATH+BIN_VOCABULARY_FILENAME, "rb") as f:
+        with open(BIN_VOCABULARY_FILEPATH, "rb") as f:
             string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)
             read_size = struct.calcsize(string_format)
             vocabulary = {}
@@ -27,7 +26,7 @@ class Importer:
 
     def read_docnames_ids_file(self):
         ids_docnames = {}
-        with open(INDEX_FILES_PATH+BIN_DOCNAMES_IDS_FILENAME, "rb") as f:
+        with open(BIN_DOCNAMES_IDS_FILEPATH, "rb") as f:
             string_format = "{}s{}I".format(self.docnames_size, 1)
             read_size = struct.calcsize(string_format)
             content = f.read(read_size)
@@ -43,7 +42,7 @@ class Importer:
 
     def read_inverted_index(self, vocabulary):
         inverted_index = {}
-        with open(INDEX_FILES_PATH+BIN_INVERTED_INDEX_FILENAME, "rb") as f:
+        with open(BIN_INVERTED_INDEX_FILEPATH, "rb") as f:
             for term in vocabulary:
                 df, pointer = vocabulary[term]
                 string_format = "{}I".format(df)

@@ -30,7 +30,7 @@ class Retrieval():
         else:
             processed_term = self.normalizer.normalize(term)
 
-        with open(INDEX_FILES_PATH+BIN_INVERTED_INDEX_FILENAME, "rb") as f:
+        with open(BIN_INVERTED_INDEX_FILEPATH, "rb") as f:
             try:
                 df, pointer = self.vocabulary[processed_term]
             except:

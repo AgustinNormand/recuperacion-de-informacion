@@ -3,39 +3,25 @@ import struct
 
 import sys
 sys.path.append('../ejercicio_1/script_2')
+sys.path.append('../ejercicio_1/script_1')
 
 from importer import *
 from normalizer import *
 from entity_extractor import *
-from constants import *
+#from constants import *
 
 class Retrieval():
-    def __init__(self, on_memory = False):
-        self.importer = Importer()
+    def __init__(self, metadata, on_memory = False):
+        self.metadata = metadata
+        self.importer = Importer(metadata["TERMS_SIZE"], metadata["DOCNAMES_SIZE"])
         self.vocabulary = self.importer.read_vocabulary()
         self.ids_docnames = self.importer.read_docnames_ids_file()
-        self.normalizer = Normalizer()
-        self.entity_extractor = Entity_Extractor()
+        self.normalizer = Normalizer(metadata["STEMMING_LANGUAGE"])
+        self.entity_extractor = Entity_Extractor(metadata["STEMMING_LANGUAGE"])
         self.on_memory = on_memory
         if self.on_memory:
             self.inverted_index = self.importer.read_inverted_index(self.vocabulary)
 
-    def eficient_and(self, posting1, posting2):
-        if len(posting1) > len(posting2):
-            aux = posting2
-            posting2 = posting1
-            posting1 = aux
-
-        result = []
-        for value in posting1:
-            for value_j in posting2:
-                if value == value_j:
-                    result.append(value)
-                    break
-                if value < value_j:
-                    break
-        return result
-        
     def and_query(self, term1, term2, term3=None):
         posting1 = self.get_posting(term1)
         posting2 = self.get_posting(term2)
@@ -87,14 +73,15 @@ class Retrieval():
             rest = user_input.replace("("+parenthesis+")", "")
             if AND_SYMBOL in rest:
                 term = rest.replace(AND_SYMBOL, "")
-                return self.get_posting(term).intersection(parenthesis_resultset)
+                return set(self.get_posting(term)).intersection(parenthesis_resultset)
             if NOT_SYMBOL in rest:
                 term = rest.replace(NOT_SYMBOL, "")
-                return parenthesis_resultset.difference(self.get_posting(term))
+                return parenthesis_resultset.difference(set(self.get_posting(term)))
             if OR_SYMBOL in rest:
                 term = rest.replace(OR_SYMBOL, "")
-                return parenthesis_resultset.union(self.get_posting(term))
+                return parenthesis_resultset.union(set(self.get_posting(term)))
         except Exception as e:
+            #print(e)
             pass
     
 
@@ -116,7 +103,7 @@ class Retrieval():
             return []
 
     def get_posting(self, term):
-        if EXTRACT_ENTITIES:
+        if self.metadata["EXTRACT_ENTITIES"]:
             rest, entities_list = self.entity_extractor.extract_entities(term)
             if len(entities_list) >= 1:
                 #if rest != "":?
@@ -135,7 +122,7 @@ class Retrieval():
             except:
                 return {}
         else:
-            with open(INDEX_FILES_PATH+BIN_INVERTED_INDEX_FILENAME, "rb") as f:
+            with open(BIN_INVERTED_INDEX_FILEPATH, "rb") as f:
                 try:
                     df, pointer = self.vocabulary[processed_term]
                 except:

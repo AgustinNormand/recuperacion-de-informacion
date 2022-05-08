@@ -3,7 +3,7 @@ EMPTY_WORDS_PATH = "./palabrasvacias.txt"
 # "emptywords.txt"
 # None
 
-DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/TestCollection/"
+DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-small/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
@@ -31,7 +31,7 @@ STEMMING_LANGUAGE = "spanish"
 # None
  
 #Evaluate RE or not (Email, Abbreviations, Dates, ...)
-EXTRACT_ENTITIES = False
+EXTRACT_ENTITIES = True
 #
 
 #For wiki-small. Not consider HTML tags
@@ -43,7 +43,7 @@ CORPUS_FILES_ENCODING = "UTF-8"
 # All = "UTF-8"
 
 # True if doc_id is in doc_name. Example doc120.txt
-ID_IN_DOCNAME = True
+ID_IN_DOCNAME = False
 
 WORKERS_NUMBER = 10
 

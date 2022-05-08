@@ -1,10 +1,8 @@
-#import sys
-#sys.path.append('../script_1')
+import sys
+#sys.path.append('../ejercicio_1/script_1')
+from retrieval import Retrieval
 from constants import *
-
-from retrieval import *
 import json
-
 
 def mostrar_menu_configuracion():
     print("Archivo de metadata: {}".format(METADATA_FILE))
@@ -15,12 +13,13 @@ def mostrar_menu_principal():
     metadata = {}
     with open(METADATA_FILE, 'r') as fp:
         metadata = json.load(fp)
-    r = Retrieval(metadata)
+    r = Retrieval(metadata, False)
 
-    print('Ingrese el término del cual quiere la posting list')
+    print('Ingrese la query')
     user_input = input()
-    posting_list = r.get_posting(user_input)
-    for posting in posting_list:
-        print(posting)
+    for document_id in r.query(user_input):
+        print(document_id)
 
 mostrar_menu_configuracion()
+
+
