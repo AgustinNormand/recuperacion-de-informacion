@@ -1,12 +1,11 @@
 import re
 from nltk.stem import SnowballStemmer
-import constants as c
 
 class Normalizer:
-    def __init__(self):
-        if c.STEMMING_LANGUAGE:
+    def __init__(self, STEMMING_LANGUAGE):
+        if STEMMING_LANGUAGE:
             self.stemming = True
-            self.ps = SnowballStemmer(c.STEMMING_LANGUAGE)
+            self.ps = SnowballStemmer(STEMMING_LANGUAGE)
         else:
             self.stemming = False
 
@@ -22,10 +21,10 @@ class Normalizer:
 
     def normalize(self, token):
         result = token.lower()
-        #result = self.translate(result)
-        #result = self.remove_non_alphanumeric(result)
-        #if self.stemming:
-        #    result = self.ps.stem(result)
+        result = self.translate(result)
+        result = self.remove_non_alphanumeric(result)
+        if self.stemming:
+            result = self.ps.stem(result)
         return result
 
     def normalize_date(self, token):

@@ -1,8 +1,8 @@
 import re
 from normalizer import Normalizer
 class Entity_Extractor():
-    def __init__(self):
-        self.normalizer = Normalizer()
+    def __init__(self, STEMMING_LANGUAGE):
+        self.normalizer = Normalizer(STEMMING_LANGUAGE)
         self.regular_expressions = [
             [r'(?:[0-9]{1,2}[\-/][0-9]{1,2}[\-/][0-9]{2,4})|(?:[0-9]{2,4}[\-/][0-9]{1,2}[\-/][0-9]{1,2})', "date"],
             [r'(\b[\w\.]+@[A-Za-z0-9\-]+\.[\.|A-Z|a-z]{2,}\b)', "mail"],

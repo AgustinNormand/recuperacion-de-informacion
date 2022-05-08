@@ -1,0 +1,3 @@
+AND_SYMBOL = "&"
+OR_SYMBOL = "|"
+NOT_SYMBOL = "-"

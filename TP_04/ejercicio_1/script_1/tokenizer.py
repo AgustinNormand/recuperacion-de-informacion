@@ -1,7 +1,7 @@
 from normalizer import Normalizer
 from bs4 import BeautifulSoup
 from entity_extractor import Entity_Extractor
-import constants as c
+from constants import *
 
 
 class Tokenizer:
@@ -14,18 +14,18 @@ class Tokenizer:
 
         self.load_empty_words()
 
-        self.normalizer = Normalizer()
-        if c.EXTRACT_ENTITIES:
-            self.entities_extractor = Entity_Extractor()
+        self.normalizer = Normalizer(STEMMING_LANGUAGE)
+        if EXTRACT_ENTITIES:
+            self.entities_extractor = Entity_Extractor(STEMMING_LANGUAGE)
 
     def load_empty_words(self):
-        if c.EMPTY_WORDS_PATH:
-            with open(c.EMPTY_WORDS_PATH, "r") as f:
+        if EMPTY_WORDS_PATH:
+            with open(EMPTY_WORDS_PATH, "r") as f:
                 for line in f.readlines():
                     self.palabras_vacias.append(line.strip())
 
     def valid_length(self, token):
-        return len(token) >= c.MIN_TERM_LENGTH and len(token) <= c.MAX_TERM_LENGTH
+        return len(token) >= MIN_TERM_LENGTH and len(token) <= MAX_TERM_LENGTH
 
     def palabra_vacia(self, token):
         for palabra_vacia in self.palabras_vacias:
@@ -69,7 +69,7 @@ class Tokenizer:
             content = f.read()
             soup = BeautifulSoup(content, 'html.parser')
             content = soup.get_text().replace("\n", "").replace("\xa0", "")
-            if c.EXTRACT_ENTITIES:
+            if EXTRACT_ENTITIES:
                 processed_content, entities = self.entities_extractor.extract_entities(
                             content
                         )
@@ -84,13 +84,13 @@ class Tokenizer:
         self.increment_vocabulary(file_terms)
 
     def tokenize_file(self, filename, file_id):
-        if c.HTML_FILES:
+        if HTML_FILES:
             self.tokenize_html_file(filename, file_id)
         else:
             file_terms = []
-            with open(filename, "r", encoding=c.CORPUS_FILES_ENCODING) as f:
+            with open(filename, "r", encoding=CORPUS_FILES_ENCODING) as f:
                 for line in f.readlines():
-                    if c.EXTRACT_ENTITIES:
+                    if EXTRACT_ENTITIES:
                         processed_line, entities = self.entities_extractor.extract_entities(
                             line
                         )

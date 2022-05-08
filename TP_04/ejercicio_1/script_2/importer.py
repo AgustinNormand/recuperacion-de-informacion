@@ -1,14 +1,17 @@
 import struct
-
-import sys
-sys.path.append('../script_1')
 from constants import *
+import json
+
 
 class Importer:
 
+    def __init__(self, terms_size, docnames_size):
+        self.terms_size = terms_size
+        self.docnames_size = docnames_size
+
     def read_vocabulary(self):
         with open(INDEX_FILES_PATH+BIN_VOCABULARY_FILENAME, "rb") as f:
-            string_format = "{}s{}I{}I".format(TERMS_SIZE, 1, 1)
+            string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)
             read_size = struct.calcsize(string_format)
             vocabulary = {}
 
@@ -25,7 +28,7 @@ class Importer:
     def read_docnames_ids_file(self):
         ids_docnames = {}
         with open(INDEX_FILES_PATH+BIN_DOCNAMES_IDS_FILENAME, "rb") as f:
-            string_format = "{}s{}I".format(DOCNAMES_SIZE, 1)
+            string_format = "{}s{}I".format(self.docnames_size, 1)
             read_size = struct.calcsize(string_format)
             content = f.read(read_size)
 

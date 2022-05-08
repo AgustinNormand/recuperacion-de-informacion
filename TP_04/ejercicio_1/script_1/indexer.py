@@ -5,7 +5,7 @@ from multiprocessing import Manager, Queue
 import time
 import threading
 import merger
-import constants as c
+from constants import *
 
 
 def process_function(worker_number, queue, results):
@@ -32,22 +32,23 @@ def process_function(worker_number, queue, results):
 
 class Indexer:
     def __init__(self):
+        self.exporter = Exporter()
         self.load_documents()
         self.index()
 
     def load_documents(self):
-        corpus_path = pathlib.Path(c.DIRPATH)
+        corpus_path = pathlib.Path(DIRPATH)
         self.docnames_ids = {}
         id_count = 1
         for file_name in corpus_path.rglob("*.*"): ##If docnames are docNNNN.txt
-            if c.ID_IN_DOCNAME:
+            if ID_IN_DOCNAME:
                 doc_id = int(file_name.stem.split("doc")[1])
             else:
                 doc_id = id_count
                 id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
-        Exporter().analize_document_titles_length(self.docnames_ids)
-        Exporter().save_docnames_ids_file(self.docnames_ids)
+        self.exporter.analize_document_titles_length(self.docnames_ids)
+        self.exporter.save_docnames_ids_file(self.docnames_ids)
         
 
     def index(self):
@@ -57,7 +58,7 @@ class Indexer:
             for docname_id in self.docnames_ids:
                 queue.put([docname_id, self.docnames_ids[docname_id]])
 
-            workers_number = c.WORKERS_NUMBER
+            workers_number = WORKERS_NUMBER
             for i in range(workers_number):
                 queue.put("")
 
@@ -91,12 +92,13 @@ class Indexer:
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
-            Exporter().analize_terms_length(vocabulary)
-            Exporter().vocabulary_file(vocabulary)
-            Exporter().inverted_index(inverted_index)
-            Exporter().postings_distribution(inverted_index)
-            Exporter().collection_overhead()
-            Exporter().document_overhead(self.docnames_ids, inverted_index)
+            self.exporter.analize_terms_length(vocabulary)
+            self.exporter.vocabulary_file(vocabulary)
+            self.exporter.inverted_index(inverted_index)
+            self.exporter.postings_distribution(inverted_index)
+            self.exporter.collection_overhead()
+            self.exporter.document_overhead(self.docnames_ids, inverted_index)
+            self.exporter.metadata()
 
             print("Files exported.")
 

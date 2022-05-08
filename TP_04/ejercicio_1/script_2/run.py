@@ -1,19 +1,24 @@
-import sys
-sys.path.append('../script_1')
+#import sys
+#sys.path.append('../script_1')
 from constants import *
 
 from retrieval import *
+import json
+
 
 def mostrar_menu_configuracion():
-    print("python3 menu.py <extract_entities> <stemming_language> \r\n")
     print("Verifique los parámetros. \r\n")
-    print("Stemming Language: {}".format(STEMMING_LANGUAGE))
-    print("Extract Entities: {}".format(EXTRACT_ENTITIES))
+    print("Archivo de metadata: {}".format(METADATA_FILE))
+    #print("Stemming Language: {}".format(STEMMING_LANGUAGE))
+    #print("Extract Entities: {}".format(EXTRACT_ENTITIES))
     print("\r\n")
     mostrar_menu_principal()
 
 def mostrar_menu_principal():
-    r = Retrieval()
+    metadata = {}
+    with open(METADATA_FILE, 'r') as fp:
+        metadata = json.load(fp)
+    r = Retrieval(metadata)
 
     print('Ingrese el término del cual quiere la posting list')
     user_input = input()

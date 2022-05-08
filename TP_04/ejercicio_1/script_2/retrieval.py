@@ -1,22 +1,23 @@
 import struct
 from importer import Importer
 
-import sys
-sys.path.append('../script_1')
-
-from normalizer import *
-from entity_extractor import *
 from constants import *
 
+import sys
+sys.path.append('../script_1')
+from normalizer import *
+from entity_extractor import *
+
 class Retrieval():
-    def __init__(self):
-        self.importer = Importer()
+    def __init__(self, metadata):
+        self.metadata = metadata
+        self.importer = Importer(metadata["TERMS_SIZE"], metadata["DOCNAMES_SIZE"])
         self.vocabulary = self.importer.read_vocabulary()
-        self.normalizer = Normalizer()
-        self.entity_extractor = Entity_Extractor()
+        self.normalizer = Normalizer(metadata["STEMMING_LANGUAGE"])
+        self.entity_extractor = Entity_Extractor(metadata["STEMMING_LANGUAGE"])
 
     def get_posting(self, term):
-        if EXTRACT_ENTITIES:
+        if self.metadata["EXTRACT_ENTITIES"]:
             rest, entities_list = self.entity_extractor.extract_entities(term)
             if len(entities_list) >= 1:
                 #if rest != "":?

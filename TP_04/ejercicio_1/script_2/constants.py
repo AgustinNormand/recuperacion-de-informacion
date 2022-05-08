@@ -1,0 +1,12 @@
+EMPTY_WORDS_PATH = "./emptywords.txt"
+
+METADATA_FILE = "../script_1/output/index_files/metadata.json"
+
+INDEX_FILES_PATH = "../script_1/output/index_files/"
+
+DOCNAMES_IDS_FILENAME = "docnames_ids"
+VOCABULARY_FILENAME = "vocabulary"
+INVERTED_INDEX_FILENAME = "inverted_index"
+BIN_VOCABULARY_FILENAME = VOCABULARY_FILENAME+".bin"
+BIN_INVERTED_INDEX_FILENAME = INVERTED_INDEX_FILENAME+".bin"
+BIN_DOCNAMES_IDS_FILENAME = DOCNAMES_IDS_FILENAME+".bin"

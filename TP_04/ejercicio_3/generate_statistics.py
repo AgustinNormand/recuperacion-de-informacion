@@ -5,6 +5,10 @@ sys.path.append('../ejercicio_2/')
 from retrieval import *
 import time
 
+QUERYS_FILE_PATH = "/home/agustin/Desktop/Recuperacion/repo/TP_04/ejercicio_3/queries_2y3t.txt"
+
+
+
 SYMBOLS = [AND_SYMBOL, OR_SYMBOL, NOT_SYMBOL]
 
 r = Retrieval()

@@ -1,14 +1,19 @@
-# SET ID_IN_DOCNAME = True
+#RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
+#RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
+
+from constants import *
 
 import json
 
 from retrieval import Retrieval
 
-import sys
-sys.path.append('../script_1')
-from constants import *
+metadata = {}
+with open(METADATA_FILE, 'r') as fp:
+    metadata = json.load(fp)
 
-r = Retrieval()
+import sys
+
+r = Retrieval(metadata)
 
 with open(RESULTS_FILE, "r") as f:
     data = json.load(f)
