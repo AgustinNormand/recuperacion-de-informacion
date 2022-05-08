@@ -1,17 +1,21 @@
-import sys
-sys.path.append('../ejercicio_1/script_1')
 from constants import *
+import sys
+#sys.path.append('../ejercicio_1/script_1')
+#from constants import *
 sys.path.append('../ejercicio_2/')
 from retrieval import *
 import time
+import json
 
-QUERYS_FILE_PATH = "/home/agustin/Desktop/Recuperacion/repo/TP_04/ejercicio_3/queries_2y3t.txt"
+metadata = {}
+with open(METADATA_FILE, 'r') as fp:
+    metadata = json.load(fp)
 
 
 
 SYMBOLS = [AND_SYMBOL, OR_SYMBOL, NOT_SYMBOL]
 
-r = Retrieval()
+r = Retrieval(metadata)
 
 statistics = {}
 
@@ -83,7 +87,7 @@ def measure_query_time(query, retrieval):
         acum += end - start
     return acum / counter
 
-mem_retrieval = Retrieval(True)
+mem_retrieval = Retrieval(metadata, True)
 
 for value in statistics:
     counter = 0
@@ -108,6 +112,6 @@ for value in statistics:
     statistics[value]["mem_execution_time"] = mem_acumulator/counter
     statistics[value]["query_count"] = counter
 
-import json
+
 with open('statistics.json', 'w') as fp:
     json.dump(statistics, fp,  indent=4)
