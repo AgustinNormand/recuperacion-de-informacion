@@ -22,10 +22,10 @@ class Normalizer:
 
     def normalize(self, token):
         result = token.lower()
-        #result = self.translate(result)
-        #result = self.remove_non_alphanumeric(result)
-        #if self.stemming:
-        #    result = self.ps.stem(result)
+        result = self.translate(result)
+        result = self.remove_non_alphanumeric(result)
+        if self.stemming:
+            result = self.ps.stem(result)
         return result
 
     def normalize_date(self, token):

@@ -7,7 +7,7 @@ def mostrar_menu_configuracion():
     #print("python3 menu.py <path archivo palabras vacias>\r\n")
     print("python3 menu.py <extract_entities> <stemming_language> \r\n")
     print("Verifique los parámetros. \r\n")
-    print("Stemming Language: {}".format(STEMMING_LANGUAGE))
+    print("Stemming Language: {}".format(STEM))
     print("Extract Entities: {}".format(EXTRACT_ENTITIES))
     print("\r\n")
     mostrar_menu_principal()
