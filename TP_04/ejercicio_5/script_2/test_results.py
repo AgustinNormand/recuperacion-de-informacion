@@ -1,13 +1,7 @@
 #RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
 RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
 
-
-##
-##
-## VERIFICAR DF #TODO
-##
-##
-
+## TEST FOR POSTINGS AND DF
 
 from constants import *
 

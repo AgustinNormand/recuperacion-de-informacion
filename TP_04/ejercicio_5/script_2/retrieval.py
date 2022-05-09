@@ -85,7 +85,10 @@ class Retrieval:
     def compute_scores(self, docids_partialScores, query_norm):
         docids_finalScore = {}
         for doc_id in docids_partialScores:
-            docids_finalScore[doc_id] = docids_partialScores[doc_id]/(query_norm*self.documents_norm[doc_id])
+            if query_norm == 0 or self.documents_norm == 0:
+                docids_finalScore[doc_id] = 0
+            else:
+                docids_finalScore[doc_id] = docids_partialScores[doc_id]/(query_norm*self.documents_norm[doc_id])
         return docids_finalScore
 
 
