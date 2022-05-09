@@ -39,21 +39,13 @@ class Exporter:
         # Mejorar, no usar el path absoluto. Incluso, no usar docNN.txt, solo almacenar el NN
 
     def inverted_index(self, inverted_index):
-        #print(inverted_index)
-        entry_string_format = "IH"
-        all_postings = []
+        entry_string_format = "IHxx"
         with open(BIN_INVERTED_INDEX_FILEPATH, "wb") as f:
             for term in inverted_index:
                 postings_lists = inverted_index[term]
-                all_postings.extend(list(chain(*postings_lists)))
-            #print(all_postings)
-            #print(len(all_postings)//2)
-            complete_string_format = entry_string_format*(len(all_postings)//2)
-                #print(struct.calcsize(complete_string_format))
-                #print(*list(chain(*postings_lists)))
-            packed_data = struct.pack(complete_string_format, *all_postings)
-                #print(binascii.hexlify(packed_data))
-            f.write(packed_data)
+                complete_string_format = entry_string_format*(len(postings_lists))
+                packed_data = struct.pack(complete_string_format, *list(chain(*postings_lists)))
+                f.write(packed_data)
 
     def analize_terms_length(self, vocabulary):
         if STRING_STORE_CRITERION == "MAX":

@@ -1,5 +1,5 @@
-RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
-#RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
+#RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
+RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
 
 from constants import *
 
@@ -51,13 +51,13 @@ with open(RESULTS_FILE, "r") as f:
         for zip_value in zip(collection_doc_ids, frequency):
             postings_lists.append(list(zip_value))
         my_doc_ids = r.get_posting(value["term"])
-        if my_doc_ids != collection_doc_ids:
-            #print(len(value["term"]))
+        if my_doc_ids != postings_lists:
             print(postings_lists)
             print(my_doc_ids)
             errors = True
             print("Error in term: {}".format(value["term"]))
             sys.exit()
+        print("{} OK.".format(value["term"]))
 
     if not errors:
         print("All posting lists are equal")

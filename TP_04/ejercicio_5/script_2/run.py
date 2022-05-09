@@ -14,10 +14,8 @@ def mostrar_menu_principal():
         metadata = json.load(fp)
     r = Retrieval(metadata)
 
-    print('Ingrese el término del cual quiere la posting list')
+    print('Ingrese la query')
     user_input = input()
-    posting_list = r.get_posting(user_input)
-    for posting in posting_list:
-        print(posting)
+    r.query(user_input)
 
 mostrar_menu_configuracion()

@@ -3,7 +3,7 @@ EMPTY_WORDS_PATH = "./palabrasvacias.txt"
 # "emptywords.txt"
 # None
 
-DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/TestCollection"
+DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/TestCollection"
 # "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-small/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
@@ -25,7 +25,7 @@ STEMMING_LANGUAGE = "spanish"
 # english
 # spanish
 
-EXTRACT_ENTITIES = True
+EXTRACT_ENTITIES = False
 
 CORPUS_FILES_ENCODING = "UTF-8"
 

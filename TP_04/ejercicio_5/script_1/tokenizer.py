@@ -97,7 +97,7 @@ class Tokenizer:
                 for word in processed_line.split():
                     token = self.normalizer.normalize(word)
                     self.add_if_term(token, file_id, file_terms)
-
+        print(file_terms)
         self.increment_vocabulary(file_terms)
 
     def get_results(self):
