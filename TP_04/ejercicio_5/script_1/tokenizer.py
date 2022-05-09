@@ -11,8 +11,8 @@ class Tokenizer:
     def __init__(self):
         self.vocabulary = {}
         self.inverted_index = {}
-        self.documents_vectors = {}
-
+        #self.documents_vectors = {}
+        self.index = {}
         self.palabras_vacias = []
 
         self.load_empty_words()
@@ -56,11 +56,16 @@ class Tokenizer:
             if value[0] == doc_id:
                 value[1] += 1
 
-    def add_term(self, term, doc_id, file_terms):
+    def increment_index_frequency(self, doc_id, term):
+        try:
+            self.index[doc_id][term] += 1
+        except:
+            self.index[doc_id][term] = 1
+
+    def add_term(self, term, doc_id):
+        self.increment_index_frequency(doc_id, term)
         if term not in self.inverted_index.keys():
             self.inverted_index[term] = [[doc_id, 1]]
-            if term not in file_terms:
-                file_terms.append(term)
             return
 
         if self.doc_id_present(term, doc_id):
@@ -68,12 +73,9 @@ class Tokenizer:
         else:
             self.inverted_index[term].append([doc_id, 1])
 
-        if term not in file_terms:
-            file_terms.append(term)
-
-    def add_if_term(self, token, file_id, file_terms):
+    def add_if_term(self, token, doc_id):
         if self.is_term(token):
-            self.add_term(token, file_id, file_terms)
+            self.add_term(token, doc_id)
 
     def increment_vocabulary(self, file_terms):
         for term in file_terms:
@@ -82,8 +84,8 @@ class Tokenizer:
             except:
                 self.vocabulary[term] = 1
 
-    def tokenize_file(self, filename, file_id):
-        file_terms = []
+    def tokenize_file(self, filename, doc_id):
+        self.index[doc_id] = {}
         with open(filename, "r", encoding=CORPUS_FILES_ENCODING) as f:
             for line in f.readlines():
                 if EXTRACT_ENTITIES:
@@ -91,17 +93,16 @@ class Tokenizer:
                         line
                     )
                     for entity in entities:
-                        self.add_term(entity, file_id, file_terms)
+                        self.add_term(entity, doc_id)
                 else:
                     processed_line = line
                 for word in processed_line.split():
                     token = self.normalizer.normalize(word)
-                    self.add_if_term(token, file_id, file_terms)
-        print(file_terms)
-        self.increment_vocabulary(file_terms)
+                    self.add_if_term(token, doc_id)
+        self.increment_vocabulary(list(self.index[doc_id].keys()))
 
     def get_results(self):
-        return [self.vocabulary, self.inverted_index]
+        return [self.vocabulary, self.inverted_index, self.index]
 
     """
     def tokenize_query(self, user_input):

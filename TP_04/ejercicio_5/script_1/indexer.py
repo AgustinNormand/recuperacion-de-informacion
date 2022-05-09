@@ -5,9 +5,6 @@ from multiprocessing import Manager, Queue
 import time
 import threading
 from constants import *
-
-import sys
-sys.path.append("../../ejercicio_1/script_1/")
 import merger as merger
 
 def process_function(worker_number, queue, results):
@@ -90,12 +87,14 @@ class Indexer:
             (
                 vocabulary,
                 inverted_index,
+                index
             ) = merger.process_results(results)
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
             self.exporter.vocabulary_file(vocabulary)
             self.exporter.inverted_index(inverted_index)
+            self.exporter.ids_norm(index)
             self.exporter.metadata()
 
             print("Files exported.")

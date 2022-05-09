@@ -1,6 +1,14 @@
 #RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
 RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
 
+
+##
+##
+## VERIFICAR DF #TODO
+##
+##
+
+
 from constants import *
 
 import json
@@ -47,6 +55,9 @@ with open(RESULTS_FILE, "r") as f:
     for value in data["data"]:
         collection_doc_ids = value["docid"]
         frequency = value["freq"]
+        df = r.get_vocabulary_value(value["term"])[0]
+        if df != value["df"]:
+            print("Different DF in term: {}".format(value["term"]))
         postings_lists = []
         for zip_value in zip(collection_doc_ids, frequency):
             postings_lists.append(list(zip_value))

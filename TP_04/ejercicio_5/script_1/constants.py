@@ -3,7 +3,7 @@ EMPTY_WORDS_PATH = "./palabrasvacias.txt"
 # "emptywords.txt"
 # None
 
-DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/TestCollection"
+DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/TestCollection/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-small/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
@@ -40,3 +40,4 @@ METADATA_FILE = INDEX_FILES_PATH+"metadata.json"
 BIN_VOCABULARY_FILEPATH = INDEX_FILES_PATH+"vocabulary.bin"
 BIN_INVERTED_INDEX_FILEPATH = INDEX_FILES_PATH+"inverted_index.bin"
 BIN_DOCNAMES_IDS_FILEPATH = INDEX_FILES_PATH+"docnames_ids.bin"
+BIN_NORM_FILEPATH = INDEX_FILES_PATH+"ids_norm.bin"

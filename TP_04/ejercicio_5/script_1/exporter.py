@@ -3,6 +3,7 @@ from constants import *
 import json
 from itertools import chain
 import binascii
+import math
 
 class Exporter:
     def metadata(self):
@@ -45,6 +46,19 @@ class Exporter:
                 postings_lists = inverted_index[term]
                 complete_string_format = entry_string_format*(len(postings_lists))
                 packed_data = struct.pack(complete_string_format, *list(chain(*postings_lists)))
+                f.write(packed_data)
+
+    def ids_norm(self, index):
+        
+        with open(BIN_NORM_FILEPATH, "wb") as f:
+            for doc_id in index:
+                acum = 0
+                for term in index[doc_id]:
+                    frequency = index[doc_id][term]
+                    acum += math.pow(frequency, 2)
+                document_norm = math.sqrt(acum)
+                entry_string_format = "If"
+                packed_data = struct.pack(entry_string_format, doc_id, document_norm)
                 f.write(packed_data)
 
     def analize_terms_length(self, vocabulary):

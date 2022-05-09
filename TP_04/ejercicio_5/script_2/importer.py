@@ -8,6 +8,20 @@ class Importer:
         self.terms_size = terms_size
         self.docnames_size = docnames_size
 
+    def read_documents_norm(self, docnames_ids):
+        with open(BIN_NORM_FILEPATH, "rb") as f:
+            string_format = "If"
+            complete_string_format = len(docnames_ids)*string_format
+            content = f.read(struct.calcsize(complete_string_format))
+            unpacked_data = struct.unpack(complete_string_format, content)
+            documents_norm = {}
+            i = 0
+            while i < len(unpacked_data):
+                documents_norm[unpacked_data[i]] = unpacked_data[i+1]
+                i += 2
+            return documents_norm
+            
+
     def read_vocabulary(self):
         with open(BIN_VOCABULARY_FILEPATH, "rb") as f:
             string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)

@@ -17,21 +17,8 @@ class Retrieval:
         self.normalizer = Normalizer(metadata["STEMMING_LANGUAGE"])
         self.entity_extractor = Entity_Extractor(metadata["STEMMING_LANGUAGE"])
         self.docnames_ids = self.importer.read_docnames_ids_file()
-
-    # def get_posting(self, term):
-    #     if self.metadata["EXTRACT_ENTITIES"]:
-    #         rest, entities_list = self.entity_extractor.extract_entities(term)
-    #         if len(entities_list) >= 1:
-    #             entity = entities_list[0]
-    #             processed_term = entity
-    #         else:
-    #             processed_term = self.normalizer.normalize(term)
-    #     else:
-    #         processed_term = self.normalizer.normalize(term)
-
-    #     postings_lists = self.importer.read_posting(processed_term, self.vocabulary)
-
-    #     return postings_lists
+        self.documents_norm = self.importer.read_documents_norm(self.docnames_ids)
+        #print(self.documents_norm)
 
     ## Query processor
 
@@ -81,13 +68,25 @@ class Retrieval:
     def get_documents_scores(self, normalized_terms, terms_idf, query_vector):
         docid_partialScore = {}
         for normalized_term in normalized_terms:
-            for doc_id, tf in self.importer.read_posting(normalized_term, self.vocabulary):
+            for doc_id, tf in self.importer.read_posting(
+                normalized_term, self.vocabulary
+            ):
                 document_term_weight = tf * terms_idf[normalized_term]
                 if doc_id in docid_partialScore.keys():
-                    docid_partialScore[doc_id] += document_term_weight * query_vector[normalized_term]
+                    docid_partialScore[doc_id] += (
+                        document_term_weight * query_vector[normalized_term]
+                    )
                 else:
-                    docid_partialScore[doc_id] = document_term_weight * query_vector[normalized_term]
+                    docid_partialScore[doc_id] = (
+                        document_term_weight * query_vector[normalized_term]
+                    )
         return docid_partialScore
+
+    def compute_scores(self, docids_partialScores, query_norm):
+        docids_finalScore = {}
+        for doc_id in docids_partialScores:
+            docids_finalScore[doc_id] = docids_partialScores[doc_id]/(query_norm*self.documents_norm[doc_id])
+        return docids_finalScore
 
 
     ##
@@ -104,7 +103,43 @@ class Retrieval:
             )
             query_norm = self.get_query_norm(query_vector)
 
-            docids_partialScores = self.get_documents_scores(normalizedTerms_frequency.keys(), terms_idf, query_vector)
+            docids_partialScores = self.get_documents_scores(
+                normalizedTerms_frequency.keys(), terms_idf, query_vector
+            )
+
+            scores = self.compute_scores(docids_partialScores, query_norm)
+
+            sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
+
+            return sorted_scores
+            
+    ## TEST RESULTS
+    def get_posting(self, term):
+        if self.metadata["EXTRACT_ENTITIES"]:
+            rest, entities_list = self.entity_extractor.extract_entities(term)
+            if len(entities_list) >= 1:
+                entity = entities_list[0]
+                processed_term = entity
+            else:
+                processed_term = self.normalizer.normalize(term)
+        else:
+            processed_term = self.normalizer.normalize(term)
+
+        postings_lists = self.importer.read_posting(processed_term, self.vocabulary)
+
+        return postings_lists
 
     def get_vocabulary(self):
-        return self.vocabulary.keys()
+        return self.vocabulary
+
+    def get_vocabulary_value(self, term):
+        if self.metadata["EXTRACT_ENTITIES"]:
+            rest, entities_list = self.entity_extractor.extract_entities(term)
+            if len(entities_list) >= 1:
+                entity = entities_list[0]
+                processed_term = entity
+            else:
+                processed_term = self.normalizer.normalize(term)
+        else:
+            processed_term = self.normalizer.normalize(term)
+        return self.vocabulary[processed_term]
