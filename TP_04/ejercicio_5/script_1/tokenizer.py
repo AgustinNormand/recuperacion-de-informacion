@@ -1,7 +1,10 @@
-from normalizer import Normalizer
-from bs4 import BeautifulSoup
+from constants import *
+
+import sys
+
+sys.path.append("../../ejercicio_1/script_1/")
 from entity_extractor import Entity_Extractor
-import constants as c
+from normalizer import Normalizer
 
 
 class Tokenizer:
@@ -14,18 +17,18 @@ class Tokenizer:
 
         self.load_empty_words()
 
-        self.normalizer = Normalizer()
-        if c.EXTRACT_ENTITIES:
-            self.entities_extractor = Entity_Extractor()
+        self.normalizer = Normalizer(STEMMING_LANGUAGE)
+        if EXTRACT_ENTITIES:
+            self.entities_extractor = Entity_Extractor(STEMMING_LANGUAGE)
 
     def load_empty_words(self):
-        if c.EMPTY_WORDS_PATH:
-            with open(c.EMPTY_WORDS_PATH, "r") as f:
+        if EMPTY_WORDS_PATH:
+            with open(EMPTY_WORDS_PATH, "r") as f:
                 for line in f.readlines():
                     self.palabras_vacias.append(line.strip())
 
     def valid_length(self, token):
-        return len(token) >= c.MIN_TERM_LENGTH and len(token) <= c.MAX_TERM_LENGTH
+        return len(token) >= MIN_TERM_LENGTH and len(token) <= MAX_TERM_LENGTH
 
     def palabra_vacia(self, token):
         for palabra_vacia in self.palabras_vacias:
@@ -42,12 +45,28 @@ class Tokenizer:
             return False
         return True
 
+    def doc_id_present(self, term, doc_id):
+        for stored_doc_id, _ in self.inverted_index[term]:
+            if stored_doc_id == doc_id:
+                return True
+        return False
+
+    def increment_frequency(self, term, doc_id):
+        for value in self.inverted_index[term]:
+            if value[0] == doc_id:
+                value[1] += 1
+
     def add_term(self, term, doc_id, file_terms):
-        try:
-            if doc_id not in self.inverted_index[term]:
-                self.inverted_index[term].append(doc_id)
-        except:
-            self.inverted_index[term] = [doc_id]
+        if term not in self.inverted_index.keys():
+            self.inverted_index[term] = [[doc_id, 1]]
+            if term not in file_terms:
+                file_terms.append(term)
+            return
+
+        if self.doc_id_present(term, doc_id):
+            self.increment_frequency(term, doc_id)
+        else:
+            self.inverted_index[term].append([doc_id, 1])
 
         if term not in file_terms:
             file_terms.append(term)
@@ -65,9 +84,9 @@ class Tokenizer:
 
     def tokenize_file(self, filename, file_id):
         file_terms = []
-        with open(filename, "r", encoding=c.CORPUS_FILES_ENCODING) as f:
+        with open(filename, "r", encoding=CORPUS_FILES_ENCODING) as f:
             for line in f.readlines():
-                if c.EXTRACT_ENTITIES:
+                if EXTRACT_ENTITIES:
                     processed_line, entities = self.entities_extractor.extract_entities(
                         line
                     )
@@ -84,6 +103,7 @@ class Tokenizer:
     def get_results(self):
         return [self.vocabulary, self.inverted_index]
 
+    """
     def tokenize_query(self, user_input):
         result = {}
         for word in user_input.strip().split():
@@ -97,3 +117,4 @@ class Tokenizer:
 
     def tokenize_posting(self, user_input):
         return Normalizer().normalize(user_input)
+    """
