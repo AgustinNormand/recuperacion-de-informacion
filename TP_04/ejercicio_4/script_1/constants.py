@@ -39,7 +39,7 @@ CORPUS_FILES_ENCODING = "ISO-8859-1"
 # All = "UTF-8"
 
 # True if doc_id is in doc_name. Example doc120.txt
-ID_IN_DOCNAME = False
+ID_IN_DOCNAME = True
 
 WORKERS_NUMBER = 10
 

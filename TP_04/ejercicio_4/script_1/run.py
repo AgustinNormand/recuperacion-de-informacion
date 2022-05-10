@@ -7,7 +7,8 @@ def mostrar_menu_configuracion():
     print("Path del archivo de palabras vacias: {}".format(c.EMPTY_WORDS_PATH))
     print("Stemming Language: {}".format(c.STEMMING_LANGUAGE))
     print("Extract Entities: {}".format(c.EXTRACT_ENTITIES))
-    print("Id in docname (docNN.txt):  {}".format(c.ID_IN_DOCNAME))
+    print("Id in docname (docNN.txt): {}".format(c.ID_IN_DOCNAME))
+    print("Cantidad de threads: {}".format(c.WORKERS_NUMBER))
     mostrar_menu_principal()
 
 def mostrar_menu_principal():

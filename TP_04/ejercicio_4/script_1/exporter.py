@@ -5,6 +5,10 @@ from constants import *
 import json
 
 class Exporter:
+
+    def save_process_block(self, thread_results, worker_number, process_block_count):
+        pass
+
     def metadata(self):
         metadata = {}
         metadata["DOCNAMES_SIZE"] = self.docnames_size
