@@ -1,12 +1,12 @@
-DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
+DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/TestCollection/"
 
 INDEX_PATH = "/home/agustin/Desktop/Recuperacion/colecciones/Terrier_Index/"
 
 REINDEX = True
 
-INTERACTIVE = False
+INTERACTIVE = True
 
-ENGLISH = True
+ENGLISH = False
 
 from scipy import stats
 
