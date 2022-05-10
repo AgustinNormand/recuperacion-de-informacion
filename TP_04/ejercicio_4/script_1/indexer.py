@@ -7,7 +7,8 @@ import threading
 from constants import *
 
 
-def process_function(exporter, vocabulary, worker_number, queue):
+def process_function(exporter, worker_number, queue):
+    
     while True:
         process_block = queue.get()
         if process_block == "":
@@ -33,14 +34,12 @@ class Indexer:
         self.load_documents()
         self.build_workers_queue()
         self.index()
-        self.exporter.vocabulary_file(self.vocabulary)
-        self.exporter.metadata()
+        print(self.vocabulary)        
 
-        print("Distributed Indexing time: {} seconds.".format(self.index_time))
-        #print(seconds, Documents Processed: {}, Workers Threads: {}.)
-
-        self.exporter.merge_inverted_index()
-        #self.merger
+        #print("Distributed Indexing time: {} seconds.".format(self.index_time))
+        #self.exporter.merge_inverted_index(self.vocabulary)
+        #self.exporter.vocabulary_file(self.vocabulary)
+        #self.exporter.metadata()
 
     def load_documents(self):
         corpus_path = pathlib.Path(DIRPATH)
@@ -85,8 +84,8 @@ class Indexer:
 
     def index(self):
 
-        manager = Manager()
-        self.vocabulary = manager.dict()
+        #manager = Manager()
+        #self.vocabulary = manager.dict()
 
         start = time.time()
 
@@ -94,7 +93,7 @@ class Indexer:
         for worker_number in range(WORKERS_NUMBER):
             p = threading.Thread(
                 target=process_function,
-                args=(self.exporter, self.vocabulary, worker_number, self.queue),
+                args=(self.exporter, worker_number, self.queue),
             )
             threads.append(p)
             p.start()
