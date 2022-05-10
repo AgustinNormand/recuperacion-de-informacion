@@ -5,8 +5,7 @@ from constants import *
 
 
 class Tokenizer:
-    def __init__(self, vocabulary):
-        self.vocabulary = vocabulary
+    def __init__(self):
         self.inverted_index = {}
 
         self.palabras_vacias = []
@@ -41,19 +40,16 @@ class Tokenizer:
             return False
         return True
 
-    def add_term(self, term, doc_id, file_terms):
+    def add_term(self, term, doc_id):
         try:
             if doc_id not in self.inverted_index[term]:
                 self.inverted_index[term].append(doc_id)
         except:
             self.inverted_index[term] = [doc_id]
 
-        if term not in file_terms:
-            file_terms.append(term)
-
-    def add_if_term(self, token, file_id, file_terms):
+    def add_if_term(self, token, file_id):
         if self.is_term(token):
-            self.add_term(token, file_id, file_terms)
+            self.add_term(token, file_id)
 
     def tokenize_file(self, filename, file_id):
         with open(filename, "r", encoding=CORPUS_FILES_ENCODING) as f:
@@ -63,13 +59,12 @@ class Tokenizer:
                         line
                     )
                     for entity in entities:
-                        self.add_term(entity, file_id, file_terms)
+                        self.add_term(entity, file_id)
                 else:
                     processed_line = line
                 for word in processed_line.split():
                     token = self.normalizer.normalize(word)
                     self.add_if_term(token, file_id)
-
 
     def get_results(self):
         return self.inverted_index

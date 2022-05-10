@@ -8,24 +8,20 @@ from constants import *
 
 
 def process_function(exporter, worker_number, queue):
-    
     while True:
         process_block = queue.get()
         if process_block == "":
             break
-        try:
-            process_block_number, process_block = process_block
-            tokenizer = Tokenizer(vocabulary)
-            for value in process_block:
-                #if worker_number == 0:
+        process_block_number, process_block = process_block
+        tokenizer = Tokenizer()
+        for value in process_block:
+                # if worker_number == 0:
                 #    print(value[1])
-                tokenizer.tokenize_file(value[0], value[1])
-            results = tokenizer.get_results()
-            #if worker_number == 0:
+            tokenizer.tokenize_file(value[0], value[1])
+        results = tokenizer.get_results()
+            # if worker_number == 0:
             #    print(results)
-            exporter.save_process_block(results, worker_number, process_block_number)
-        except Exception as e:
-            print(e)
+        exporter.save_process_block(results, worker_number, process_block_number)
 
 
 class Indexer:
@@ -34,12 +30,13 @@ class Indexer:
         self.load_documents()
         self.build_workers_queue()
         self.index()
-        print(self.vocabulary)        
+        self.exporter.compute_vocabulary()
+        # print(self.vocabulary)
 
-        #print("Distributed Indexing time: {} seconds.".format(self.index_time))
-        #self.exporter.merge_inverted_index(self.vocabulary)
-        #self.exporter.vocabulary_file(self.vocabulary)
-        #self.exporter.metadata()
+        print("Distributed Indexing time: {} seconds.".format(self.index_time))
+        self.exporter.merge_inverted_index()
+        self.exporter.vocabulary_file()
+        self.exporter.metadata()
 
     def load_documents(self):
         corpus_path = pathlib.Path(DIRPATH)
@@ -53,14 +50,15 @@ class Indexer:
                 id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
 
-        self.docnames_ids = dict(sorted(self.docnames_ids.items(), key=lambda item: item[1]))
-        #Ordenar
+        self.docnames_ids = dict(
+            sorted(self.docnames_ids.items(), key=lambda item: item[1])
+        )
+        # Ordenar
         # Aprovechar en el tokenizer que están ordenados?
         self.exporter.save_docnames_ids_file(self.docnames_ids)
         self.document_limit = len(self.docnames_ids) * 0.1
         print("Limite de documentos: {}".format(self.document_limit))
 
-    
     def build_workers_queue(self):
         self.queue = Queue()
 
@@ -78,14 +76,14 @@ class Indexer:
 
         if document_counter > 0:
             self.queue.put(process_block)
-        
+
         for i in range(WORKERS_NUMBER):
             self.queue.put("")
 
     def index(self):
 
-        #manager = Manager()
-        #self.vocabulary = manager.dict()
+        # manager = Manager()
+        # self.vocabulary = manager.dict()
 
         start = time.time()
 
@@ -104,7 +102,6 @@ class Indexer:
         end = time.time()
 
         self.index_time = end - start
-        
 
         """start = time.time()
             (

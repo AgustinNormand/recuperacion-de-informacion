@@ -1,5 +1,11 @@
+from fileinput import filename
 from indexer import *
 import constants as c
+import os
+
+parts_path = pathlib.Path(PART_INVERTED_INDEX_PATH)
+for file_name in parts_path.iterdir():
+    os.remove(file_name)
 
 def mostrar_menu_configuracion():
     print("Verifique los parámetros: \r")

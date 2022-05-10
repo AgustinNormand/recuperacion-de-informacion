@@ -46,6 +46,13 @@ class Exporter:
         # Incluso, no usar docNN.txt, solo almacenar el NN
 
 
+    def compute_vocabulary(self):
+        self.vocabulary = {}
+        for key in self.pointers:
+            for term in self.pointers[key]:
+                self.vocabulary[term] = 0
+                    
+
 
     def save_process_block(
         self, partial_inverted_index, worker_number, process_block_count
@@ -76,7 +83,7 @@ class Exporter:
             return unpacked_data
 
 
-    def merge_inverted_index(self, vocabulary):
+    def merge_inverted_index(self):
         parts_path = pathlib.Path(PART_INVERTED_INDEX_PATH)
         part_files = {}
         for file_name in parts_path.iterdir():
@@ -86,7 +93,7 @@ class Exporter:
         self.final_pointers = {}
         pointer_acumulator = 0
         with open(INDEX_FILES_PATH + BIN_INVERTED_INDEX_FILENAME, "wb") as f:
-            for key in vocabulary:
+            for key in self.vocabulary:
                 #print("La clave {}".format(key))
                 final_posting_list = []
                 for i in range(len(part_files)):
@@ -104,26 +111,21 @@ class Exporter:
                 f.write(packed_data)
                 self.final_pointers[key] = pointer_acumulator
                 pointer_acumulator += len(final_posting_list)
-                if key == "usa":
-                    print(self.final_pointers[key])
-                    print(final_posting_list)
-                    print(len(final_posting_list))
-                #if vocabulary[key] != len(final_posting_list):
-                #    print("{} {}".format(vocabulary[key], len(final_posting_list)))
+                self.vocabulary[key] = len(final_posting_list)
 
+        
     def analize_terms_length(self, vocabulary):
         if STRING_STORE_CRITERION == "MAX":
-            self.terms_size = self.get_max_length(vocabulary.keys())
+            self.terms_size = self.get_max_length(vocabulary)
         else:
             self.terms_size = TERMS_SIZE
 
-    def vocabulary_file(self, vocabulary):
-        print(vocabulary["usa"])
-        self.analize_terms_length(vocabulary)
+    def vocabulary_file(self):
+        self.analize_terms_length(self.vocabulary.keys())
         string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)
         with open(INDEX_FILES_PATH + BIN_VOCABULARY_FILENAME, "wb") as f:
-            for key in vocabulary:
+            for key in self.vocabulary:
                 packed_data = struct.pack(
-                    string_format, bytes(key, "utf-8"), vocabulary[key], self.final_pointers[key]
+                    string_format, bytes(key, "utf-8"), self.vocabulary[key], self.final_pointers[key]
                 )
                 f.write(packed_data)
