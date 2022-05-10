@@ -1,8 +1,5 @@
 from constants import *
 from entity_extractor import Entity_Extractor
-
-import sys
-sys.path.append("../../ejercicio_1/script_1/")
 from normalizer import Normalizer
 
 
@@ -10,7 +7,6 @@ class Tokenizer:
     def __init__(self):
         self.vocabulary = {}
         self.inverted_index = {}
-        #self.documents_vectors = {}
         self.index = {}
         self.palabras_vacias = []
 
@@ -102,19 +98,3 @@ class Tokenizer:
 
     def get_results(self):
         return [self.vocabulary, self.inverted_index, self.index]
-
-    """
-    def tokenize_query(self, user_input):
-        result = {}
-        for word in user_input.strip().split():
-            token = self.normalizer.normalize(word)
-            if self.is_term(token):
-                try:
-                    result[token] += 1
-                except:
-                    result[token] = 1
-        return result
-
-    def tokenize_posting(self, user_input):
-        return Normalizer().normalize(user_input)
-    """

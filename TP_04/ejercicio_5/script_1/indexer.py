@@ -97,6 +97,8 @@ class Indexer:
             self.exporter.ids_norm(index)
             self.exporter.metadata()
 
+            #self.exporter.export_all_statistics()
+
             print("Files exported.")
 
              
