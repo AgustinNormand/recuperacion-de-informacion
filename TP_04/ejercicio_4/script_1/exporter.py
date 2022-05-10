@@ -3,11 +3,25 @@ import matplotlib.pyplot as plt
 import os
 from constants import *
 import json
+from constants import *
 
 class Exporter:
+    def __init__(self):
+        self.pointers = {}
 
-    def save_process_block(self, thread_results, worker_number, process_block_count):
-        pass
+    def save_process_block(self, partial_inverted_index, worker_number, process_block_count):
+        process_block_pointers = {}
+        filename = "worker_number_{}_process_block_{}.bin".format(worker_number, process_block_count)
+        part_path = PART_INVERTED_INDEX_PATH+filename
+        pointer = 0
+        with open(part_path, "wb") as f:
+            for key in partial_inverted_index:
+                process_block_pointers[key] = pointer
+                string_format = "{}I".format(len(partial_inverted_index[key]))
+                packed_data = struct.pack(string_format, *partial_inverted_index[key])
+                f.write(packed_data)
+                pointer += struct.calcsize(string_format)
+        self.pointers[filename] = process_block_pointers
 
     def metadata(self):
         metadata = {}

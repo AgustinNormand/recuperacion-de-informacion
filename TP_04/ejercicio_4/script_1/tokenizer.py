@@ -5,8 +5,8 @@ from constants import *
 
 
 class Tokenizer:
-    def __init__(self):
-        self.vocabulary = {}
+    def __init__(self, vocabulary):
+        self.vocabulary = vocabulary
         self.inverted_index = {}
 
         self.palabras_vacias = []
@@ -81,4 +81,4 @@ class Tokenizer:
         self.increment_vocabulary(file_terms)
 
     def get_results(self):
-        return [self.vocabulary, self.inverted_index]
+        return self.inverted_index

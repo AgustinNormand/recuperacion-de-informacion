@@ -8,7 +8,7 @@ import merger
 from constants import *
 
 
-def process_function(worker_number, queue):
+def process_function(vocabulary, worker_number, queue):
     exporter = Exporter()
     process_block_count = 0
     while True:
@@ -17,7 +17,7 @@ def process_function(worker_number, queue):
             break
         try:
             process_block_count += 1
-            tokenizer = Tokenizer()
+            tokenizer = Tokenizer(vocabulary)
             for value in process_block:
                 tokenizer.tokenize_file(value[0], value[1])
             exporter.save_process_block(tokenizer.get_results(), worker_number, process_block_count)
@@ -31,6 +31,10 @@ class Indexer:
         self.load_documents()
         self.build_workers_queue()
         self.index()
+        self.exporter.vocabulary_file(self.vocabulary)
+
+
+        self.exporter.metadata() #ESTO VA AL FINAL
 
     def load_documents(self):
         corpus_path = pathlib.Path(DIRPATH)
@@ -69,13 +73,16 @@ class Indexer:
 
     def index(self):
 
+        manager = Manager()
+        self.vocabulary = manager.dict()
+
         start = time.time()
 
         threads = []
         for worker_number in range(WORKERS_NUMBER):
             p = threading.Thread(
                 target=process_function,
-                args=(worker_number, self.queue),
+                args=(self.vocabulary, worker_number, self.queue),
             )
             threads.append(p)
             p.start()
