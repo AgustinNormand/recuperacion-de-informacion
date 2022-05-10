@@ -55,15 +55,7 @@ class Tokenizer:
         if self.is_term(token):
             self.add_term(token, file_id, file_terms)
 
-    def increment_vocabulary(self, file_terms):
-        for term in file_terms:
-            try:
-                self.vocabulary[term] += 1
-            except:
-                self.vocabulary[term] = 1
-
     def tokenize_file(self, filename, file_id):
-        file_terms = []
         with open(filename, "r", encoding=CORPUS_FILES_ENCODING) as f:
             for line in f.readlines():
                 if EXTRACT_ENTITIES:
@@ -76,9 +68,8 @@ class Tokenizer:
                     processed_line = line
                 for word in processed_line.split():
                     token = self.normalizer.normalize(word)
-                    self.add_if_term(token, file_id, file_terms)
+                    self.add_if_term(token, file_id)
 
-        self.increment_vocabulary(file_terms)
 
     def get_results(self):
         return self.inverted_index
