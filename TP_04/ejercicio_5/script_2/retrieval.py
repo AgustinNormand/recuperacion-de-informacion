@@ -1,10 +1,12 @@
 from importer import Importer
 from constants import *
-import sys
 
+
+import sys
 sys.path.append("../script_1")
-from normalizer import *
 from entity_extractor import *
+from normalizer import *
+
 
 import math
 
@@ -76,6 +78,7 @@ class Retrieval:
                     docid_partialScore[doc_id] += (
                         document_term_weight * query_vector[normalized_term]
                     )
+                    
                 else:
                     docid_partialScore[doc_id] = (
                         document_term_weight * query_vector[normalized_term]
@@ -85,36 +88,59 @@ class Retrieval:
     def compute_scores(self, docids_partialScores, query_norm):
         docids_finalScore = {}
         for doc_id in docids_partialScores:
-            if query_norm == 0 or self.documents_norm == 0:
-                docids_finalScore[doc_id] = 0
+            if query_norm == 0 or self.documents_norm[doc_id] == 0:
+                pass
             else:
-                docids_finalScore[doc_id] = docids_partialScores[doc_id]/(query_norm*self.documents_norm[doc_id])
+                score = docids_partialScores[doc_id]/(query_norm*self.documents_norm[doc_id])
+                if score != 0:
+                    docids_finalScore[doc_id] = score
         return docids_finalScore
+    ##
 
+    ## Entities
+    def obtain_normalized_terms_with_entities(self, user_input):
+        normalizedTerms_frequency = {}
+        rest, entities_list = self.entity_extractor.extract_entities(user_input)
+        for entity in entities_list:
+            if entity in normalizedTerms_frequency.keys():
+                normalizedTerms_frequency[entity] += 1
+            else:
+                normalizedTerms_frequency[entity] = 1
 
+        terms = rest.split(" ")
+        for term in terms:
+            normalized_term = self.normalizer.normalize(term)
+            if normalized_term in self.vocabulary.keys():
+                if normalized_term in normalizedTerms_frequency.keys():
+                    normalizedTerms_frequency[normalized_term] += 1
+                else:
+                    normalizedTerms_frequency[normalized_term] = 1
+            # else:
+            # print("{} removed from query, not in vocabulary".format(term))
+        return normalizedTerms_frequency
     ##
 
     def query(self, user_input):
         if self.metadata["EXTRACT_ENTITIES"]:
-            print("Pendiente")
+            normalizedTerms_frequency = self.obtain_normalized_terms_with_entities(user_input)
         else:
             normalizedTerms_frequency = self.obtain_normalized_terms(user_input)
-            terms_idf = self.obtain_idf(normalizedTerms_frequency)
-            max_frequency = self.get_max_frequency(normalizedTerms_frequency)
-            query_vector = self.obtain_query_vector(
+        terms_idf = self.obtain_idf(normalizedTerms_frequency)
+        max_frequency = self.get_max_frequency(normalizedTerms_frequency)
+        query_vector = self.obtain_query_vector(
                 normalizedTerms_frequency, terms_idf, max_frequency
             )
-            query_norm = self.get_query_norm(query_vector)
+        query_norm = self.get_query_norm(query_vector)
 
-            docids_partialScores = self.get_documents_scores(
+        docids_partialScores = self.get_documents_scores(
                 normalizedTerms_frequency.keys(), terms_idf, query_vector
             )
 
-            scores = self.compute_scores(docids_partialScores, query_norm)
+        scores = self.compute_scores(docids_partialScores, query_norm)
 
-            sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
+        sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
 
-            return sorted_scores
+        return sorted_scores
             
     ## TEST RESULTS
     def get_posting(self, term):

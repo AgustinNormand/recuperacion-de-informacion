@@ -1,6 +1,6 @@
 {
-    "DOCNAMES_SIZE": 89,
-    "TERMS_SIZE": 10,
+    "DOCNAMES_SIZE": 92,
+    "TERMS_SIZE": 96,
     "STEMMING_LANGUAGE": "spanish",
-    "EXTRACT_ENTITIES": false
+    "EXTRACT_ENTITIES": true
 }

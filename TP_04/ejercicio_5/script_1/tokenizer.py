@@ -1,9 +1,8 @@
 from constants import *
+from entity_extractor import Entity_Extractor
 
 import sys
-
 sys.path.append("../../ejercicio_1/script_1/")
-from entity_extractor import Entity_Extractor
 from normalizer import Normalizer
 
 
