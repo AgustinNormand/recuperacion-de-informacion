@@ -4,23 +4,25 @@ from tokenizer import Tokenizer
 from multiprocessing import Manager, Queue
 import time
 import threading
-import merger
 from constants import *
 
 
-def process_function(vocabulary, worker_number, queue):
-    exporter = Exporter()
-    process_block_count = 0
+def process_function(exporter, vocabulary, worker_number, queue):
     while True:
         process_block = queue.get()
         if process_block == "":
             break
         try:
-            process_block_count += 1
+            process_block_number, process_block = process_block
             tokenizer = Tokenizer(vocabulary)
             for value in process_block:
+                #if worker_number == 0:
+                #    print(value[1])
                 tokenizer.tokenize_file(value[0], value[1])
-            exporter.save_process_block(tokenizer.get_results(), worker_number, process_block_count)
+            results = tokenizer.get_results()
+            #if worker_number == 0:
+            #    print(results)
+            exporter.save_process_block(results, worker_number, process_block_number)
         except Exception as e:
             print(e)
 
@@ -32,9 +34,13 @@ class Indexer:
         self.build_workers_queue()
         self.index()
         self.exporter.vocabulary_file(self.vocabulary)
+        self.exporter.metadata()
 
+        print("Distributed Indexing time: {} seconds.".format(self.index_time))
+        #print(seconds, Documents Processed: {}, Workers Threads: {}.)
 
-        self.exporter.metadata() #ESTO VA AL FINAL
+        self.exporter.merge_inverted_index()
+        #self.merger
 
     def load_documents(self):
         corpus_path = pathlib.Path(DIRPATH)
@@ -47,6 +53,10 @@ class Indexer:
                 doc_id = id_count
                 id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
+
+        self.docnames_ids = dict(sorted(self.docnames_ids.items(), key=lambda item: item[1]))
+        #Ordenar
+        # Aprovechar en el tokenizer que están ordenados?
         self.exporter.save_docnames_ids_file(self.docnames_ids)
         self.document_limit = len(self.docnames_ids) * 0.1
         print("Limite de documentos: {}".format(self.document_limit))
@@ -57,11 +67,13 @@ class Indexer:
 
         document_counter = 0
         process_block = []
+        process_block_counter = 0
         for docname_id in self.docnames_ids:
             process_block.append([docname_id, self.docnames_ids[docname_id]])
             document_counter += 1
             if document_counter == self.document_limit:
-                self.queue.put(process_block)
+                self.queue.put([process_block_counter, process_block])
+                process_block_counter += 1
                 document_counter = 0
                 process_block = []
 
@@ -82,7 +94,7 @@ class Indexer:
         for worker_number in range(WORKERS_NUMBER):
             p = threading.Thread(
                 target=process_function,
-                args=(self.vocabulary, worker_number, self.queue),
+                args=(self.exporter, self.vocabulary, worker_number, self.queue),
             )
             threads.append(p)
             p.start()
@@ -91,12 +103,9 @@ class Indexer:
             thread.join()
 
         end = time.time()
-        print("\r                                   ")
-        print(
-            "\rDistributed Indexing time: {} seconds, Documents Processed: {}, Workers Threads: {}.".format(
-                end - start, len(self.docnames_ids), WORKERS_NUMBER
-            )
-        )
+
+        self.index_time = end - start
+        
 
         """start = time.time()
             (
