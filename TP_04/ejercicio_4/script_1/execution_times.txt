@@ -1,72 +1,63 @@
-Verifique los parámetros: 
-Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
-Path del archivo de palabras vacias: ./emptywords.txt
-Stemming Language: english
-Extract Entities: False
-Id in docname (docNN.txt): False
-Cantidad de threads: 10
-Limite de documentos: 76
-Indexing time: 276.0338673591614 seconds.
-Mergeing time: 46.835002183914185 seconds.
-
-Verifique los parámetros: 
-Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
-Path del archivo de palabras vacias: ./emptywords.txt
-Stemming Language: english
-Extract Entities: False
-Id in docname (docNN.txt): False
-Cantidad de threads: 10
-Limite de documentos: 151
-Indexing time: 327.7100336551666 seconds.
-Mergeing time: 38.12986445426941 seconds.
-
-Verifique los parámetros: 
-Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
-Path del archivo de palabras vacias: ./emptywords.txt
-Stemming Language: english
-Extract Entities: False
-Id in docname (docNN.txt): False
-Cantidad de threads: 10
-Limite de documentos: 302
-Indexing time: 387.84252977371216 seconds.
-Mergeing time: 23.397321462631226 seconds.
-
-Verifique los parámetros: 
-Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
-Path del archivo de palabras vacias: ./emptywords.txt
-Stemming Language: english
-Extract Entities: False
-Id in docname (docNN.txt): False
-Cantidad de threads: 10
-Limite de documentos: 605 (10% of collection)
-Indexing time: 325.9673557281494 seconds.
-Mergeing time: 22.63266921043396 seconds.
-
-Verifique los parámetros: 
-Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
-Path del archivo de palabras vacias: ./emptywords.txt
-Stemming Language: english
-Extract Entities: False
-Id in docname (docNN.txt): False
-Cantidad de threads: 10
-Limite de documentos: 1210
-Indexing time: 397.2900092601776 seconds.
-Mergeing time: 15.86511754989624 seconds.
-
-Verifique los parámetros: 
-Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
-Path del archivo de palabras vacias: ./emptywords.txt
-Stemming Language: english
-Extract Entities: False
-Id in docname (docNN.txt): False
-Cantidad de threads: 10
-Limite de documentos: 2420
-Indexing time: 363.08713603019714 seconds.
-Mergeing time: 14.368023872375488 seconds.
-
-
-
-
-
-
-
+76
+Index Parcial: 399.8992419242859
+Index Parcial: 44.217695236206055
+Index Parcial: 208.9092390537262
+Index Parcial: 11.216203927993774
+Index Parcial: 206.6131157875061
+Index Parcial: 11.210099697113037
+Index Final: 271.8071989218394
+Index Final: 22.21466628710429
+151
+Index Parcial: 399.00087118148804
+Index Parcial: 31.738730430603027
+Index Parcial: 210.17879557609558
+Index Parcial: 11.241419315338135
+Index Parcial: 208.7450749874115
+Index Parcial: 11.209078311920166
+Index Final: 272.64158058166504
+Index Final: 18.06307601928711
+302
+Index Parcial: 397.7558219432831
+Index Parcial: 24.09108591079712
+Index Parcial: 208.325186252594
+Index Parcial: 11.240926504135132
+Index Parcial: 207.13569593429565
+Index Parcial: 11.217695713043213
+Index Final: 271.07223471005756
+Index Final: 15.516569375991821
+604
+Index Parcial: 403.42834424972534
+Index Parcial: 19.23305320739746
+Index Parcial: 209.29333090782166
+Index Parcial: 11.185333490371704
+Index Parcial: 210.54623675346375
+Index Parcial: 11.30296540260315
+Index Final: 274.42263730367023
+Index Final: 13.907117366790771
+1210
+Index Parcial: 405.27302718162537
+Index Parcial: 15.726760625839233
+Index Parcial: 208.15648317337036
+Index Parcial: 11.165241003036499
+Index Parcial: 207.33410143852234
+Index Parcial: 11.206697702407837
+Index Final: 273.58787059783936
+Index Final: 12.69956644376119
+2420
+Index Parcial: 407.98146176338196
+Index Parcial: 14.085683107376099
+Index Parcial: 208.34006357192993
+Index Parcial: 11.229516744613647
+Index Parcial: 209.35584378242493
+Index Parcial: 11.24303936958313
+Index Final: 275.2257897059123
+Index Final: 12.186079740524292
+4840
+Index Parcial: 278.7556297779083
+Index Parcial: 12.508202075958252
+Index Parcial: 208.4511535167694
+Index Parcial: 11.174896717071533
+Index Parcial: 209.31657671928406
+Index Parcial: 11.202228307723999
+Index Final: 232.17445333798727
+Index Final: 11.628442366917929
