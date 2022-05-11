@@ -96,8 +96,9 @@ class Indexer:
             self.exporter.vocabulary_file(vocabulary)
             self.exporter.inverted_index(inverted_index)
             self.exporter.postings_distribution(inverted_index)
-            self.exporter.collection_overhead()
-            self.exporter.document_overhead(self.docnames_ids, inverted_index)
+            if COMPUTE_OVERHEAD:
+                self.exporter.collection_overhead()
+                self.exporter.document_overhead(self.docnames_ids, inverted_index)
             self.exporter.metadata()
 
             print("Files exported.")

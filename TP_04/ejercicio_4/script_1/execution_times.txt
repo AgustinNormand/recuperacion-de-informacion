@@ -1,0 +1,72 @@
+Verifique los parámetros: 
+Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
+Path del archivo de palabras vacias: ./emptywords.txt
+Stemming Language: english
+Extract Entities: False
+Id in docname (docNN.txt): False
+Cantidad de threads: 10
+Limite de documentos: 76
+Indexing time: 276.0338673591614 seconds.
+Mergeing time: 46.835002183914185 seconds.
+
+Verifique los parámetros: 
+Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
+Path del archivo de palabras vacias: ./emptywords.txt
+Stemming Language: english
+Extract Entities: False
+Id in docname (docNN.txt): False
+Cantidad de threads: 10
+Limite de documentos: 151
+Indexing time: 327.7100336551666 seconds.
+Mergeing time: 38.12986445426941 seconds.
+
+Verifique los parámetros: 
+Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
+Path del archivo de palabras vacias: ./emptywords.txt
+Stemming Language: english
+Extract Entities: False
+Id in docname (docNN.txt): False
+Cantidad de threads: 10
+Limite de documentos: 302
+Indexing time: 387.84252977371216 seconds.
+Mergeing time: 23.397321462631226 seconds.
+
+Verifique los parámetros: 
+Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
+Path del archivo de palabras vacias: ./emptywords.txt
+Stemming Language: english
+Extract Entities: False
+Id in docname (docNN.txt): False
+Cantidad de threads: 10
+Limite de documentos: 605 (10% of collection)
+Indexing time: 325.9673557281494 seconds.
+Mergeing time: 22.63266921043396 seconds.
+
+Verifique los parámetros: 
+Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
+Path del archivo de palabras vacias: ./emptywords.txt
+Stemming Language: english
+Extract Entities: False
+Id in docname (docNN.txt): False
+Cantidad de threads: 10
+Limite de documentos: 1210
+Indexing time: 397.2900092601776 seconds.
+Mergeing time: 15.86511754989624 seconds.
+
+Verifique los parámetros: 
+Path de la colección: /home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/
+Path del archivo de palabras vacias: ./emptywords.txt
+Stemming Language: english
+Extract Entities: False
+Id in docname (docNN.txt): False
+Cantidad de threads: 10
+Limite de documentos: 2420
+Indexing time: 363.08713603019714 seconds.
+Mergeing time: 14.368023872375488 seconds.
+
+
+
+
+
+
+

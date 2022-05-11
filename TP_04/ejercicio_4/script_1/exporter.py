@@ -42,9 +42,6 @@ class Exporter:
             for value in docnames_ids_list:
                 packed_data = struct.pack(string_format, *value)
                 f.write(packed_data)
-        # Mejorar y no hacer escrituras repetidas, sino una sola escritura.
-        # Incluso, no usar docNN.txt, solo almacenar el NN
-
 
     def compute_vocabulary(self):
         self.vocabulary = {}

@@ -1,11 +1,10 @@
 import pathlib
 from exporter import Exporter
 from tokenizer import Tokenizer
-from multiprocessing import Manager, Queue
+from multiprocessing import Queue
 import time
 import threading
 from constants import *
-
 
 def process_function(exporter, worker_number, queue):
     while True:
@@ -15,12 +14,11 @@ def process_function(exporter, worker_number, queue):
         process_block_number, process_block = process_block
         tokenizer = Tokenizer()
         for value in process_block:
-                # if worker_number == 0:
-                #    print(value[1])
-            tokenizer.tokenize_file(value[0], value[1])
+            try:
+                tokenizer.tokenize_file(value[0], value[1])
+            except Exception as e:
+                print(e)
         results = tokenizer.get_results()
-            # if worker_number == 0:
-            #    print(results)
         exporter.save_process_block(results, worker_number, process_block_number)
 
 
@@ -31,10 +29,13 @@ class Indexer:
         self.build_workers_queue()
         self.index()
         self.exporter.compute_vocabulary()
-        # print(self.vocabulary)
 
-        print("Distributed Indexing time: {} seconds.".format(self.index_time))
+        print("Indexing time: {} seconds.".format(self.index_time))
+        start = time.time()
         self.exporter.merge_inverted_index()
+        end = time.time()
+
+        print("Mergeing time: {} seconds.".format(end - start))
         self.exporter.vocabulary_file()
         self.exporter.metadata()
 
@@ -53,10 +54,8 @@ class Indexer:
         self.docnames_ids = dict(
             sorted(self.docnames_ids.items(), key=lambda item: item[1])
         )
-        # Ordenar
-        # Aprovechar en el tokenizer que están ordenados?
         self.exporter.save_docnames_ids_file(self.docnames_ids)
-        self.document_limit = len(self.docnames_ids) * 0.1
+        self.document_limit = DOCUMENT_LIMIT
         print("Limite de documentos: {}".format(self.document_limit))
 
     def build_workers_queue(self):
@@ -75,16 +74,12 @@ class Indexer:
                 process_block = []
 
         if document_counter > 0:
-            self.queue.put(process_block)
+            self.queue.put([process_block_counter, process_block])
 
         for i in range(WORKERS_NUMBER):
             self.queue.put("")
 
     def index(self):
-
-        # manager = Manager()
-        # self.vocabulary = manager.dict()
-
         start = time.time()
 
         threads = []
@@ -102,19 +97,3 @@ class Indexer:
         end = time.time()
 
         self.index_time = end - start
-
-        """start = time.time()
-            (
-                vocabulary,
-                inverted_index,
-            ) = merger.process_results(results)
-            
-            end = time.time()
-            print("\rMergeing time: {} seconds.".format(end - start))
-            
-            self.exporter.vocabulary_file(vocabulary)
-            self.exporter.inverted_index(inverted_index)
-            self.exporter.metadata()
-
-            print("Files exported.")
-            """
