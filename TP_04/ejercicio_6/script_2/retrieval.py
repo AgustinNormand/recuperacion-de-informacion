@@ -1,3 +1,4 @@
+from locale import normalize
 from importer import Importer
 from constants import *
 
@@ -19,11 +20,11 @@ class Retrieval:
         self.normalizer = Normalizer(metadata["STEMMING_LANGUAGE"])
         self.entity_extractor = Entity_Extractor(metadata["STEMMING_LANGUAGE"])
         self.docnames_ids = self.importer.read_docnames_ids_file()
-        self.documents_norm = self.importer.read_documents_norm(self.docnames_ids)
+        #self.documents_norm = self.importer.read_documents_norm(self.docnames_ids)
         #print(self.documents_norm)
 
     ## Query processor
-
+    """
     def obtain_normalized_terms(self, user_input):
         terms = user_input.split(" ")
         normalizedTerms_frequency = {}
@@ -141,6 +142,98 @@ class Retrieval:
         sorted_scores = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
 
         return sorted_scores
+    """
+
+    def get_doc_id(self, posting):
+        return posting[0]
+
+
+    def and_query(self, terms):
+        self.terms_postings_lists = {}
+        for term in terms:
+            self.terms_postings_lists[term] = self.importer.read_posting(term, self.vocabulary)
+        
+
+        #Se podría hacer mejor con los punteros de las postings
+        terms_docIds = {}
+        for term in self.terms_postings_lists:
+            for posting in self.terms_postings_lists[term]:
+                try:
+                    terms_docIds[term].add(self.get_doc_id(posting))
+                except:
+                    terms_docIds[term] = {self.get_doc_id(posting)}
+
+        #print(terms_docIds)
+        return list(set.intersection(*terms_docIds.values()))
+
+    def obtener_posiciones(self, doc_id, term):
+        for posting_list in self.terms_postings_lists[term]:
+            if self.get_doc_id(posting_list) == doc_id:
+                return posting_list[2]
+        #docId_posicio
+        #for 
+        pass
+
+    def substract(self, position_list, to_substract):
+        for i in range(len(position_list)):
+        #for value in position_list:
+            position_list[i] = position_list[i] - to_substract
+        return set(position_list)
+        #    value = value - to_substract
+        #print(position_list)
+
+    def next_query(self, terms):
+        results = []
+        intersection = self.and_query(terms)
+        #print(intersection)
+        #print(self.obtener_posiciones(1, "perr"))
+        #print(self.obtener_posiciones(1, "cas"))
+        docId_positions = {}
+        for doc_id in intersection:
+            position_list = []
+            for term in terms:
+                #print(term)
+                position_list.append(self.obtener_posiciones(doc_id, term))
+            docId_positions[doc_id] = position_list
+        #print(docId_positions)
+
+        for doc_id in docId_positions:
+            set_positions_lists = []
+            positions_lists = docId_positions[doc_id]
+            to_substract = 0
+            for position_list in positions_lists:
+                set_position_list = self.substract(position_list, to_substract)
+                to_substract += 1
+                set_positions_lists.append(set_position_list)
+                #print(position_list)
+            #for position_lis
+            if set.intersection(*(set_positions_lists)) != set():
+                results.append(doc_id)
+                #print(position_list)
+                #for position in positions_lists:
+                    #print(position)
+            #i = len(positions)
+        return results
+        #for term in terms:
+            #for posting in self.terms_postings_lists[term]:
+                #print(posting)
+        #print(intersection)
+
+    def normalize_terms(self, terms):
+        normalized_terms = []
+        for term in terms:
+            normalized_terms.append(self.normalizer.normalize(term))
+        return normalized_terms
+
+    def query(self, user_input):
+        #if OPERADOR_CERCA in user_input:
+        #    self.near_query(user_input.split(OPERADOR_CERCA))
+        if OPERADOR_SIGUIENTE in user_input:
+            return self.next_query(self.normalize_terms(user_input.split(OPERADOR_SIGUIENTE)))
+        #if OPERADOR_FRASE in user_input:
+        #    self.next_query(user_input.split(OPERADOR_FRASE)[1].split())
+
+    #Pendiente entidades
             
     ## TEST RESULTS
     def get_posting(self, term):
