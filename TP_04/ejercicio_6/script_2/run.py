@@ -16,8 +16,9 @@ def mostrar_menu_principal():
 
     print('Ingrese la query')
     user_input = input()
-    results = r.query(user_input)
-    for doc_id in results:
-        print("{} {}".format(doc_id, results[doc_id]))
+    print(r.get_posting(user_input))
+    #results = r.query(user_input)
+    #for doc_id in results:
+        #print("{} {}".format(doc_id, results[doc_id]))
 
 mostrar_menu_configuracion()

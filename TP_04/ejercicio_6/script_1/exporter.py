@@ -40,8 +40,6 @@ class Exporter:
             for value in docnames_ids_list:
                 packed_data = struct.pack(string_format, *value)
                 f.write(packed_data)
-        # Mejorar y no hacer escrituras repetidas, sino una sola escritura.
-        # Mejorar, no usar el path absoluto. Incluso, no usar docNN.txt, solo almacenar el NN
     
     def save_positions(self, inverted_index):
         string_format = "I"
@@ -49,34 +47,27 @@ class Exporter:
         with open(BIN_POSITIONS_FILEPATH, "wb") as f:
             for term in inverted_index:
                 for posting_list in inverted_index[term]:
-                    doc_id, frequency, positions = posting_list
-                
+                    _, frequency, positions = posting_list
                     complete_string_format = string_format*len(positions)
-                    #print("{} {} {}".format(doc_id, frequency, positions))
-                    
                     f.write(struct.pack(complete_string_format, *positions))
                     posting_list[2] = pointer_acumulator
                     pointer_acumulator += struct.calcsize(complete_string_format)
                     
                     if len(positions) != frequency:
                         print("len(positions) != frequency")
-                    
-                    #break
-                #break
-       #print(inverted_index)
 
-    #def inverted_index(self, inverted_index):
-        #self.inverted_index = inverted_index
-        #entry_string_format = "IHxx"
-        #with open(BIN_INVERTED_INDEX_FILEPATH, "wb") as f:
-            #for term in inverted_index:
-                #print(inverted_index[term])
-                #postings_lists = []
-                #for posting_list in inverted_index[term]:
-                    #postings_lists.append
-                #complete_string_format = entry_string_format*(len(postings_lists))
-                #packed_data = struct.pack(complete_string_format, *list(chain(*postings_lists)))
-                #f.write(packed_data)
+
+    def inverted_index(self, inverted_index, vocabulary):
+        entry_string_format = "IHH"
+        pointer_acumulator = 0
+        with open(BIN_INVERTED_INDEX_FILEPATH, "wb") as f:
+            for term in inverted_index:
+                postings_lists = inverted_index[term]
+                complete_string_format = entry_string_format*(len(postings_lists))
+                packed_data = struct.pack(complete_string_format, *list(chain(*postings_lists)))
+                f.write(packed_data)
+                vocabulary[term] = [vocabulary[term], pointer_acumulator]
+                pointer_acumulator += struct.calcsize(complete_string_format)
 
     def ids_norm(self, index):
         with open(BIN_NORM_FILEPATH, "wb") as f:
@@ -100,14 +91,13 @@ class Exporter:
     def vocabulary_file(self, vocabulary):
         self.analize_terms_length(vocabulary)
         string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)
-        last_df = 0 # Sacar de aca?
         with open(BIN_VOCABULARY_FILEPATH, "wb") as f:
             for key in vocabulary:
+                df, pointer = vocabulary[key]
                 packed_data = struct.pack(
-                    string_format, bytes(key, "utf-8"), vocabulary[key], last_df  #Sacar de aca?
+                    string_format, bytes(key, "utf-8"), df, pointer
                 )
                 f.write(packed_data)
-                last_df += vocabulary[key] # Sacar de aca?
 
     ## OVERHEAD AND STATISTICS
 """

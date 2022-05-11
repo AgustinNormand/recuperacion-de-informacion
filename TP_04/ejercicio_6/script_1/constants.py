@@ -31,7 +31,7 @@ CORPUS_FILES_ENCODING = "UTF-8"
 # Wiki-Txt = "ISO-8859-1"
 # All = "UTF-8"
 
-ID_IN_DOCNAME = False
+ID_IN_DOCNAME = True
 
 WORKERS_NUMBER = 10
 

@@ -53,6 +53,15 @@ class Importer:
                 content = f.read(read_size)
         return ids_docnames
 
+    def read_positions(self, pointer, df):
+        string_format = "I"
+        with open(BIN_POSITIONS_FILEPATH, "rb") as f:
+            complete_string_format = string_format*df
+            f.seek(pointer)
+            content = f.read(struct.calcsize(complete_string_format))
+            unpacked_data = struct.unpack(complete_string_format, content)
+        return list(unpacked_data)
+
 
     def read_posting(self, term, vocabulary):
         with open(BIN_INVERTED_INDEX_FILEPATH, "rb") as f:
@@ -61,16 +70,19 @@ class Importer:
             except:
                 return []
 
-            entry_string_format = "IHxx"
+            entry_string_format = "IHH"
             df, pointer = vocabulary[term]
             complete_string_format = entry_string_format*df
-            f.seek(pointer*struct.calcsize(entry_string_format))
+            f.seek(pointer)
             content = f.read(struct.calcsize(complete_string_format))
             unpacked_data = struct.unpack(complete_string_format, content)
 
             postings_lists = []
             i = 0
             while i < len(unpacked_data):
-                postings_lists.append([unpacked_data[i], unpacked_data[i+1]])
-                i += 2
+                doc_id = unpacked_data[i]
+                df = unpacked_data[i+1]
+                position_pointer = unpacked_data[i+2]
+                postings_lists.append([doc_id, df, self.read_positions(position_pointer, df)])
+                i += 3
             return postings_lists
