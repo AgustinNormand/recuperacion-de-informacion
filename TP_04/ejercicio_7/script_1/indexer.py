@@ -91,18 +91,17 @@ class Indexer:
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
-            
+            print("Vocabulary")
+            print(vocabulary)
+
             self.exporter.inverted_index(inverted_index)
-            #self.exporter.skips(inverted_index)
-            #print(vocabulary)
-            #skips = self.build_skips(inverted_index)
             self.exporter.vocabulary_file(vocabulary)
 
             #self.exporter.postings_distribution(inverted_index)
             #if COMPUTE_OVERHEAD:
                 #self.exporter.collection_overhead()
                 #self.exporter.document_overhead(self.docnames_ids, inverted_index)
-            #self.exporter.metadata()
+            self.exporter.metadata()
 
             print("Files exported.")
 

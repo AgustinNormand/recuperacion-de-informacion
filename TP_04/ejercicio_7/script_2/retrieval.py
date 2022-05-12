@@ -1,10 +1,6 @@
 import re
 import struct
 
-import sys
-sys.path.append('../ejercicio_1/script_2')
-sys.path.append('../ejercicio_1/script_1')
-
 from importer import *
 from normalizer import *
 from entity_extractor import *
@@ -101,6 +97,10 @@ class Retrieval():
                     return sorted(list(self.get_posting(user_input)))
         except:
             return []
+
+    def get_skip(self, term):
+        normalized_term = self.normalizer.normalize(term)
+        return self.importer.get_skip(normalized_term, self.vocabulary)
 
     def get_posting(self, term):
         if self.metadata["EXTRACT_ENTITIES"]:

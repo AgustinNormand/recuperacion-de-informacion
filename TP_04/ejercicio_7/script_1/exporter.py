@@ -32,31 +32,36 @@ class Exporter:
     ## Inverted Index
 
     def inverted_index(self, inverted_index):
-        print(inverted_index)
+        #print("Inverted Index:")
+        #print(inverted_index)
         self.inverted_index_pointers = {}
         self.skips_pointers = {}
         inverted_index_string_format = "I"
         skips_string_format = "II"
+        #Debería ser un byte el puntero, y para que sea mas chico, no calcularlo
+        #Si no los multiplico por el calcsize, son numeros mas chicos, se pueden comprimir mejor
         inverted_index_file = open(INDEX_FILES_PATH + BIN_INVERTED_INDEX_FILENAME, "wb")
         skips = open(INDEX_FILES_PATH + BIN_SKIPS_FILENAME, "wb")
         inverted_index_pointer_acumulator = 0
         skips_pointer_acumulator = 0
         
         for key in inverted_index:
-            #print("Key {}".format(key))
+            #print("Key {} {}".format(key, inverted_index[key]))
             #print("Start in inverted index: {}".format(inverted_index_pointer_acumulator))
             #print("Start in skips: {}".format(skips_pointer_acumulator))
             self.inverted_index_pointers[key] = inverted_index_pointer_acumulator
             self.skips_pointers[key] = skips_pointer_acumulator
 
-            doc_ids_writed = 2 #Para que el primero que escriba, lo incremente, y guarde la skip
+            #No es asi#doc_ids_writed = 2 #Para que el primero que escriba, lo incremente, y guarde la skip
+            doc_ids_writed = 0
             posting = inverted_index[key]
             for doc_id in posting:
                 packed_data = struct.pack(inverted_index_string_format, doc_id)
                 inverted_index_file.write(packed_data)
                 doc_ids_writed += 1
-                if doc_ids_writed == 3:
+                if doc_ids_writed == K_SKIPS:
                     packed_data = struct.pack(skips_string_format, doc_id, inverted_index_pointer_acumulator)
+                    skips.write(packed_data)
                     doc_ids_writed = 0
                     skips_pointer_acumulator += struct.calcsize(skips_string_format)
                 inverted_index_pointer_acumulator += struct.calcsize(inverted_index_string_format)
@@ -73,6 +78,7 @@ class Exporter:
             self.terms_size = TERMS_SIZE
 
     def vocabulary_file(self, vocabulary):
+        
         self.analize_terms_length(vocabulary)
         string_format = "{}sIII".format(self.terms_size)
         with open(INDEX_FILES_PATH + BIN_VOCABULARY_FILENAME, "wb") as f:
