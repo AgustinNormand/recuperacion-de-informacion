@@ -87,7 +87,6 @@ class Indexer:
             (
                 vocabulary,
                 inverted_index,
-                index
             ) = merger.process_results(results)
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
@@ -96,9 +95,8 @@ class Indexer:
             self.exporter.save_positions(inverted_index)
             self.exporter.inverted_index(inverted_index, vocabulary)
             self.exporter.vocabulary_file(vocabulary)
-            self.exporter.ids_norm(index)
             self.exporter.metadata()
-            #self.exporter.export_all_statistics()
+            self.exporter.export_all_statistics()
 
             print("Files exported.")
 

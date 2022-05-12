@@ -8,20 +8,6 @@ class Importer:
         self.terms_size = terms_size
         self.docnames_size = docnames_size
 
-    def read_documents_norm(self, docnames_ids):
-        with open(BIN_NORM_FILEPATH, "rb") as f:
-            string_format = "If"
-            complete_string_format = len(docnames_ids)*string_format
-            content = f.read(struct.calcsize(complete_string_format))
-            unpacked_data = struct.unpack(complete_string_format, content)
-            documents_norm = {}
-            i = 0
-            while i < len(unpacked_data):
-                documents_norm[unpacked_data[i]] = unpacked_data[i+1]
-                i += 2
-            return documents_norm
-            
-
     def read_vocabulary(self):
         with open(BIN_VOCABULARY_FILEPATH, "rb") as f:
             string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)
@@ -53,10 +39,10 @@ class Importer:
                 content = f.read(read_size)
         return ids_docnames
 
-    def read_positions(self, pointer, df):
+    def read_positions(self, pointer, tf):
         string_format = "I"
         with open(BIN_POSITIONS_FILEPATH, "rb") as f:
-            complete_string_format = string_format*df
+            complete_string_format = string_format*tf
             f.seek(pointer)
             content = f.read(struct.calcsize(complete_string_format))
             unpacked_data = struct.unpack(complete_string_format, content)

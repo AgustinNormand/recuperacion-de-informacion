@@ -129,14 +129,9 @@ class Retrieval:
 
     def phrase_query(self, terms):
         acum_set = None
-        #print(terms)
         for i in range(len(terms)-1):
             j = i+1
-            #print("{} {}".format(i, j))
-            near_query = "{} SIGUIENTE_A {}".format(terms[i], terms[j])
-            #print(near_query)
             next_query_response = set(self.next_query(terms[i], terms[j]))
-           #print(next_query_response)
 
             if acum_set == None:
                 acum_set = next_query_response
@@ -148,7 +143,6 @@ class Retrieval:
     ##
 
     def query(self, user_input):
-        #print(self.vocabulary)
         if OPERADOR_CERCA in user_input:
             normalized_terms = self.normalize_terms(user_input.split(OPERADOR_CERCA))
             if len(normalized_terms) > 0:

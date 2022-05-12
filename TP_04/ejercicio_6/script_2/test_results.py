@@ -1,5 +1,5 @@
-RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
-#RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
+# RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
+RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
 
 ## TEST FOR POSTINGS AND DF
 
@@ -10,12 +10,24 @@ import json
 from retrieval import Retrieval
 
 metadata = {}
-with open(METADATA_FILE, 'r') as fp:
+with open(METADATA_FILE, "r") as fp:
     metadata = json.load(fp)
 
 import sys
 
 r = Retrieval(metadata)
+
+
+def extraer_doc_ids(postings_lists):
+    result = []
+    for posting_list in postings_lists:
+        #print(posting_list)
+        partial_result = [posting_list[0], posting_list[1]]
+        #for posting in posting_list:
+            #partial_result.append(posting[0])
+        result.append(partial_result)
+    return result
+
 
 with open(RESULTS_FILE, "r") as f:
     data = json.load(f)
@@ -23,7 +35,6 @@ with open(RESULTS_FILE, "r") as f:
     print("Data: {}".format(data["statistics"]))
     print("\r")
 
-    
     vocabulary = []
     for value in data["data"]:
         vocabulary.append(value["term"])
@@ -52,13 +63,14 @@ with open(RESULTS_FILE, "r") as f:
         df = r.get_vocabulary_value(value["term"])[0]
         if df != value["df"]:
             print("Different DF in term: {}".format(value["term"]))
+
         postings_lists = []
         for zip_value in zip(collection_doc_ids, frequency):
             postings_lists.append(list(zip_value))
         my_doc_ids = r.get_posting(value["term"])
-        if my_doc_ids != postings_lists:
+        if extraer_doc_ids(my_doc_ids) != postings_lists:
             print(postings_lists)
-            print(my_doc_ids)
+            print(extraer_doc_ids(my_doc_ids))
             errors = True
             print("Error in term: {}".format(value["term"]))
             sys.exit()
@@ -66,5 +78,3 @@ with open(RESULTS_FILE, "r") as f:
 
     if not errors:
         print("All posting lists are equal")
-    
- 

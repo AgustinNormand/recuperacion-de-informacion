@@ -98,4 +98,4 @@ class Tokenizer:
         self.increment_vocabulary(list(self.index[doc_id].keys()))
 
     def get_results(self):
-        return [self.vocabulary, self.inverted_index, self.index]
+        return [self.vocabulary, self.inverted_index]
