@@ -23,74 +23,14 @@ class Retrieval:
         self.palabras_vacias = []
         self.load_empty_words()
 
-        #print(self.docnames_ids[771])
+    ## Normalization
 
     def load_empty_words(self):
         if EMPTY_WORDS_PATH:
             with open(EMPTY_WORDS_PATH, "r") as f:
                 for line in f.readlines():
                     self.palabras_vacias.append(line.strip())
-
-    def get_doc_id(self, posting):
-        return posting[0]
-
-    # [771, 2, [1564, 2745]]
-    def and_query(self, terms):
-        self.terms_postings_lists = {}
-        for term in terms:
-            self.terms_postings_lists[term] = self.importer.read_posting(term, self.vocabulary)
-        #print(self.terms_postings_lists)
-        #Se podría hacer mejor con los punteros de las postings
-        terms_docIds = {}
-        for term in self.terms_postings_lists:
-            for posting in self.terms_postings_lists[term]:
-                try:
-                    terms_docIds[term].add(self.get_doc_id(posting))
-                except:
-                    terms_docIds[term] = {self.get_doc_id(posting)}
-        return list(set.intersection(*terms_docIds.values()))
-
-    def obtener_posiciones(self, doc_id, term):
-        for posting_list in self.terms_postings_lists[term]:
-            if self.get_doc_id(posting_list) == doc_id:
-                return posting_list[2]
-
-    def substract(self, position_list, to_substract):
-        #print(position_list)
-        for i in range(len(position_list)):
-            position_list[i] = position_list[i] - to_substract
-        return set(position_list)
-
-    def next_query(self, terms):
-        print(terms)
-        results = []
-        intersection = self.and_query(terms)
-        print(intersection)
-        print(self.terms_postings_lists)
-        docId_positions = {}
-        for doc_id in intersection:
-            position_list = []
-            for term in terms:
-                position_list.append(self.obtener_posiciones(doc_id, term))
-                #print("{} {}".format(doc_id, term))
-                #print(self.obtener_posiciones(doc_id, term))
-                #print(self.terms_postings_lists[term])
-            docId_positions[doc_id] = position_list
-        #print(docId_positions)
-        for doc_id in docId_positions:
-            set_positions_lists = []
-            positions_lists = docId_positions[doc_id]
-            to_substract = 0
-            for position_list in positions_lists:
-                set_position_list = self.substract(position_list, to_substract)
-                to_substract += 1
-                set_positions_lists.append(set_position_list)
-            #print(doc_id)
-            #print(set_positions_lists)
-            if set.intersection(*(set_positions_lists)) != set():
-                results.append(doc_id)
-        return results
-
+    
     def normalize_terms_without_entities(self, terms):
         normalized_terms = []
         for term in terms:
@@ -117,28 +57,114 @@ class Retrieval:
                 return False
         return False
 
-    def near_query(self, terms):
-        intersection = self.and_query(terms)
-        #print(intersection)
+    ##
+
+    ## Cerca de 
+
+    def get_doc_id(self, posting):
+        return posting[0]
+
+    def get_set_of_doc_ids(self, posting_list):
+        result = set()
+        for posting in posting_list:
+            result.add(posting[0])
+        return result
+
+    def obtain_intersection(self, posting_list_1, posting_list_2):
+        return self.get_set_of_doc_ids(posting_list_1).intersection(self.get_set_of_doc_ids(posting_list_2))
+
+    def extraer_posiciones(self, doc_id, posting_list):
+        for posting_list in posting_list:
+            if self.get_doc_id(posting_list) == doc_id:
+                return posting_list[2]
+
+    def verificar_cercania(self, posiciones_term_1, posiciones_term_2):
+        for posicion_term_1 in posiciones_term_1:
+            for posicion_term_2 in posiciones_term_2:
+                distance = posicion_term_1 - posicion_term_2
+                if abs(distance) <= DISTANCIA_CERCANIA:
+                    return True
+        return False
+    
+    def near_query(self, term1, term2):
+        results = []
+        posting1 = self.importer.read_posting(term1, self.vocabulary)
+        posting2 = self.importer.read_posting(term2, self.vocabulary)
+        intersection = self.obtain_intersection(posting1, posting2)
+        for doc_id in intersection:
+            posiciones_term_1 = self.extraer_posiciones(doc_id, posting1)
+            posiciones_term_2 = self.extraer_posiciones(doc_id, posting2)
+            if self.verificar_cercania(posiciones_term_1, posiciones_term_2):
+                results.append(doc_id)
+
+        return results
+
+    ##
+
+    ## Next
+
+    def verificar_contiguidad(self, posiciones_term_1, posiciones_term_2):
+        for posicion_term_1 in posiciones_term_1:
+            for posicion_term_2 in posiciones_term_2:
+                distance = posicion_term_1 - posicion_term_2
+                if distance == -1:
+                    return True
+        return False
+
+    def next_query(self, term1, term2):
+        results = []
+        posting1 = self.importer.read_posting(term1, self.vocabulary)
+        posting2 = self.importer.read_posting(term2, self.vocabulary)
+        intersection = self.obtain_intersection(posting1, posting2)
+        for doc_id in intersection:
+            posiciones_term_1 = self.extraer_posiciones(doc_id, posting1)
+            posiciones_term_2 = self.extraer_posiciones(doc_id, posting2)
+            if self.verificar_contiguidad(posiciones_term_1, posiciones_term_2):
+                results.append(doc_id)
+        return results
+
+    ##
+
+    ## Frase
+
+    def phrase_query(self, terms):
+        acum_set = None
+        #print(terms)
+        for i in range(len(terms)-1):
+            j = i+1
+            #print("{} {}".format(i, j))
+            near_query = "{} SIGUIENTE_A {}".format(terms[i], terms[j])
+            #print(near_query)
+            next_query_response = set(self.next_query(terms[i], terms[j]))
+           #print(next_query_response)
+
+            if acum_set == None:
+                acum_set = next_query_response
+            else:
+                acum_set = acum_set.intersection(next_query_response)
+            
+        return acum_set
+
+    ##
 
     def query(self, user_input):
         #print(self.vocabulary)
         if OPERADOR_CERCA in user_input:
             normalized_terms = self.normalize_terms(user_input.split(OPERADOR_CERCA))
             if len(normalized_terms) > 0:
-                return self.near_query()
+                return self.near_query(*normalized_terms)
             else:
                 return []
         if OPERADOR_SIGUIENTE in user_input:
             normalized_terms = self.normalize_terms(user_input.split(OPERADOR_SIGUIENTE))
             if len(normalized_terms) > 0:
-                return self.next_query(normalized_terms)
+                return self.next_query(*normalized_terms)
             else:
                 return []
         if OPERADOR_FRASE in user_input:
             normalized_terms = self.normalize_terms(user_input.split(OPERADOR_FRASE)[1].split())
             if len(normalized_terms) > 0:
-                return self.next_query(normalized_terms)
+                return self.phrase_query(normalized_terms)
             else:
                 return []
 
@@ -172,3 +198,8 @@ class Retrieval:
         else:
             processed_term = self.normalizer.normalize(term)
         return self.vocabulary[processed_term]
+
+    ##
+
+    def get_docnames_ids(self):
+        return self.docnames_ids
