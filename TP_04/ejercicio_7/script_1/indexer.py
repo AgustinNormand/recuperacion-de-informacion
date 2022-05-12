@@ -93,10 +93,10 @@ class Indexer:
             
             
             self.exporter.inverted_index(inverted_index)
-            self.exporter.skips(inverted_index)
+            #self.exporter.skips(inverted_index)
             #print(vocabulary)
             #skips = self.build_skips(inverted_index)
-            #self.exporter.vocabulary_file(vocabulary)
+            self.exporter.vocabulary_file(vocabulary)
 
             #self.exporter.postings_distribution(inverted_index)
             #if COMPUTE_OVERHEAD:

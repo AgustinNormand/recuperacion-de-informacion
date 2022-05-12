@@ -32,29 +32,36 @@ class Exporter:
     ## Inverted Index
 
     def inverted_index(self, inverted_index):
+        print(inverted_index)
         self.inverted_index_pointers = {}
-        pointers_acumulator = 0
-        inverted_index = open(INDEX_FILES_PATH + BIN_INVERTED_INDEX_FILENAME, "wb")
+        self.skips_pointers = {}
+        inverted_index_string_format = "I"
+        skips_string_format = "II"
+        inverted_index_file = open(INDEX_FILES_PATH + BIN_INVERTED_INDEX_FILENAME, "wb")
         skips = open(INDEX_FILES_PATH + BIN_SKIPS_FILENAME, "wb")
+        inverted_index_pointer_acumulator = 0
+        skips_pointer_acumulator = 0
+        
+        for key in inverted_index:
+            #print("Key {}".format(key))
+            #print("Start in inverted index: {}".format(inverted_index_pointer_acumulator))
+            #print("Start in skips: {}".format(skips_pointer_acumulator))
+            self.inverted_index_pointers[key] = inverted_index_pointer_acumulator
+            self.skips_pointers[key] = skips_pointer_acumulator
 
-#            for key in inverted_index:
-                #string_format = "{}I".format(len(inverted_index[key]))
-                #packed_data = struct.pack(string_format, *inverted_index[key])
-                #f.write(packed_data)
-                #self.inverted_index_pointers[key] = pointers_acumulator
-                #pointers_acumulator += struct.calcsize(string_format)
+            doc_ids_writed = 2 #Para que el primero que escriba, lo incremente, y guarde la skip
+            posting = inverted_index[key]
+            for doc_id in posting:
+                packed_data = struct.pack(inverted_index_string_format, doc_id)
+                inverted_index_file.write(packed_data)
+                doc_ids_writed += 1
+                if doc_ids_writed == 3:
+                    packed_data = struct.pack(skips_string_format, doc_id, inverted_index_pointer_acumulator)
+                    doc_ids_writed = 0
+                    skips_pointer_acumulator += struct.calcsize(skips_string_format)
+                inverted_index_pointer_acumulator += struct.calcsize(inverted_index_string_format)
 
-    ##
-
-    ## Skips
-
-    #def skips(self, inverted_index):
-        #for key in inverted_index:
-            #posting = inverted_index[key]
-            #print("{} {}".format(key, posting))
-
-        #print("Alho")
-
+        #print(self.skips_pointers)
     ##
 
     ## Vocabulary
@@ -67,15 +74,13 @@ class Exporter:
 
     def vocabulary_file(self, vocabulary):
         self.analize_terms_length(vocabulary)
-        string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)
-        last_df = 0
+        string_format = "{}sIII".format(self.terms_size)
         with open(INDEX_FILES_PATH + BIN_VOCABULARY_FILENAME, "wb") as f:
             for key in vocabulary:
                 packed_data = struct.pack(
-                    string_format, bytes(key, "utf-8"), vocabulary[key], last_df
+                    string_format, bytes(key, "utf-8"), vocabulary[key], self.skips_pointers[key], self.inverted_index_pointers[key]
                 )
                 f.write(packed_data)
-                last_df += vocabulary[key]
 
     ##
 
