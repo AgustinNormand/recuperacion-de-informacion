@@ -58,7 +58,7 @@ class Exporter:
 
 
     def inverted_index(self, inverted_index, vocabulary):
-        entry_string_format = "IHH"
+        entry_string_format = "IHIxxxx"
         pointer_acumulator = 0
         with open(BIN_INVERTED_INDEX_FILEPATH, "wb") as f:
             for term in inverted_index:

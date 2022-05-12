@@ -14,9 +14,10 @@ def mostrar_menu_principal():
         metadata = json.load(fp)
     r = Retrieval(metadata)
 
-    #print('Ingrese la query')
-    #user_input = input()
-    user_input = "casa SIGUIENTE_A perro"
+    print('Ingrese la query')
+    user_input = input()
+    #user_input = "\"House of cards\""
+    #print(r.get_posting(user_input))
     #print(r.get_posting(user_input))
     results = r.query(user_input)
     for doc_id in results:

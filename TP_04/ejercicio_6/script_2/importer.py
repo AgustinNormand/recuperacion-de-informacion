@@ -70,7 +70,7 @@ class Importer:
             except:
                 return []
 
-            entry_string_format = "IHH"
+            entry_string_format = "IHIxxxx"
             df, pointer = vocabulary[term]
             complete_string_format = entry_string_format*df
             f.seek(pointer)

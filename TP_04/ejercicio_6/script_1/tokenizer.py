@@ -90,8 +90,9 @@ class Tokenizer:
                 for word in processed_line.split():
                     token = self.normalizer.normalize(word)
                     if not self.palabra_vacia(token):
-                        word_position += 1
+                        #word_position += 1 #Antes lo había puesto aca
                         if self.valid_length(token):
+                            word_position += 1 #Considero que va aca
                             self.add_term(token, doc_id, word_position)
 
         self.increment_vocabulary(list(self.index[doc_id].keys()))

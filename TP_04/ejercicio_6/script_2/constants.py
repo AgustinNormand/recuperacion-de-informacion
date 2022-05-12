@@ -1,3 +1,8 @@
+EMPTY_WORDS_PATH = "./emptywords.txt"
+# "palabrasvacias.txt"
+# "emptywords.txt"
+# None
+
 INDEX_FILES_PATH = "../script_1/index_files/"
 
 METADATA_FILE = INDEX_FILES_PATH+"metadata.json"

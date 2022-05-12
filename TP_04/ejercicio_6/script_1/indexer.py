@@ -92,7 +92,7 @@ class Indexer:
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
-            print(inverted_index["cas"])
+            #print(inverted_index["cas"])
             self.exporter.save_positions(inverted_index)
             self.exporter.inverted_index(inverted_index, vocabulary)
             self.exporter.vocabulary_file(vocabulary)
