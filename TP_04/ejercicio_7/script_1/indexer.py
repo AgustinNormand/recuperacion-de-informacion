@@ -49,7 +49,6 @@ class Indexer:
             self.docnames_ids[str(file_name.resolve())] = doc_id
         self.exporter.analize_document_titles_length(self.docnames_ids)
         self.exporter.save_docnames_ids_file(self.docnames_ids)
-        
 
     def index(self):
         with Manager() as manager:
@@ -92,14 +91,18 @@ class Indexer:
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
-            self.exporter.analize_terms_length(vocabulary)
-            self.exporter.vocabulary_file(vocabulary)
+            
             self.exporter.inverted_index(inverted_index)
-            self.exporter.postings_distribution(inverted_index)
-            if COMPUTE_OVERHEAD:
-                self.exporter.collection_overhead()
-                self.exporter.document_overhead(self.docnames_ids, inverted_index)
-            self.exporter.metadata()
+            self.exporter.skips(inverted_index)
+            #print(vocabulary)
+            #skips = self.build_skips(inverted_index)
+            #self.exporter.vocabulary_file(vocabulary)
+
+            #self.exporter.postings_distribution(inverted_index)
+            #if COMPUTE_OVERHEAD:
+                #self.exporter.collection_overhead()
+                #self.exporter.document_overhead(self.docnames_ids, inverted_index)
+            #self.exporter.metadata()
 
             print("Files exported.")
 

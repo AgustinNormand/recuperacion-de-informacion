@@ -1,9 +1,9 @@
-EMPTY_WORDS_PATH = "./emptywords.txt"
+EMPTY_WORDS_PATH = "./palabrasvacias.txt"
 # "palabrasvacias.txt"
 # "emptywords.txt"
 # None
 
-DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
+DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/testy_collection/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-small/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
@@ -24,26 +24,28 @@ DOCNAMES_SIZE = 50
 TERMS_SIZE = 50
 
 
-STEMMING_LANGUAGE = "english"
+STEMMING_LANGUAGE = "spanish"
 # Depends with the collection used
 # english
 # spanish
 # None
  
 #Evaluate RE or not (Email, Abbreviations, Dates, ...)
-EXTRACT_ENTITIES = False
+EXTRACT_ENTITIES = True
 #
 
 #For wiki-small. Not consider HTML tags
 HTML_FILES = False
 #
 
-CORPUS_FILES_ENCODING = "ISO-8859-1"
+CORPUS_FILES_ENCODING = "UTF-8"
 # Wiki-Txt = "ISO-8859-1"
 # All = "UTF-8"
 
 # True if doc_id is in doc_name. Example doc120.txt
-ID_IN_DOCNAME = False
+ID_IN_DOCNAME = True
+
+K_SKIPS = 3
 
 WORKERS_NUMBER = 10
 
@@ -58,6 +60,8 @@ BIN_INVERTED_INDEX_FILENAME = INVERTED_INDEX_FILENAME+".bin"
 TXT_INVERTED_INDEX_FILENAME = INVERTED_INDEX_FILENAME+".txt"
 BIN_DOCNAMES_IDS_FILENAME = DOCNAMES_IDS_FILENAME+".bin"
 TXT_DOCNAMES_IDS_FILENAME = DOCNAMES_IDS_FILENAME+".txt"
+
+BIN_SKIPS_FILENAME = "skips.bin"
 
 METADATA_FILE = "metadata.json"
 
