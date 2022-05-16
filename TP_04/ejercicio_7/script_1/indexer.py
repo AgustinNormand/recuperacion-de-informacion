@@ -105,6 +105,10 @@ class Indexer:
 
             print("Files exported.")
 
-             
+"""
+Almacené los punteros calculados, es decir, solo es necesario hacer un seek al puntero. Esto no es lo mejor, ya que se requieren más bits para almacenar el puntero, lo cual trae diversas desventajas, en la compresión, en la lectura de mayor cantidad de registros por ciclos de cpu, overhead, etc. Y la única ventaja es ahorrarse un cálculo en query time, que es, el puntero multiplicado por el tamaño en bytes del string_format usado en el struct.
+Si la posting es [1, 2, 3, 4, 5, 6], en las skips con un K de 3, guardo 3:3, 6:6 y leo 3
+
+"""
 
 
