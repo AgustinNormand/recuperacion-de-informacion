@@ -10,21 +10,18 @@ def mostrar_menu_configuracion():
     mostrar_menu_principal()
 
 def mostrar_menu_principal():
+    import time
     metadata = {}
     with open(METADATA_FILE, 'r') as fp:
         metadata = json.load(fp)
-    r = Retrieval(metadata, False)
+    r = Retrieval(metadata, False, True)
 
-    #print('Ingrese la query')
-    #user_input = input()
-    #for document_id in r.query(user_input):
-    #    print(document_id)
 
     print('Ingrese el término para obtener la skip-list')
     user_input = input()
-    print(r.get_skip(user_input))
-    #for document_id in r.query(user_input):
-    #    print(document_id)
+    results = r.get_skip(user_input)
+    for result in results:
+        print("{} {}".format(result[0], result[1]))
 
 
 mostrar_menu_configuracion()

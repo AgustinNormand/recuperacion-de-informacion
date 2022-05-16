@@ -17,7 +17,14 @@ def mostrar_menu_principal():
 
     print('Ingrese la query')
     user_input = input()
-    for document_id in r.query(user_input):
+
+    import time
+    start = time.time()
+    results = r.query(user_input)
+    end = time.time()
+    print(end - start)
+   
+    for document_id in results:
         print(document_id)
 
 mostrar_menu_configuracion()

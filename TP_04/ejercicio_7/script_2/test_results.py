@@ -1,19 +1,17 @@
 #RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test_ER2/collection_data.json"
 RESULTS_FILE = "/home/agustin/Desktop/Recuperacion/colecciones/collection_test/collection_data.json"
 
-
 import json
 from retrieval import Retrieval
 
 import sys
-#sys.path.append('../ejercicio_1/script_1')
 from constants import *
 
 metadata = {}
 with open(METADATA_FILE, 'r') as fp:
     metadata = json.load(fp)
 
-r = Retrieval(metadata)
+r = Retrieval(metadata, False, True)
 
 with open(RESULTS_FILE, "r") as f:
     data = json.load(f)
@@ -32,7 +30,8 @@ with open(RESULTS_FILE, "r") as f:
     print("My vocabulary")
     print(r.get_vocabulary())
 
-    
+    vocabulary["otorrino"] = []
+
 
     querys = 0
 
