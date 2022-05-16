@@ -21,7 +21,9 @@ def mostrar_menu_principal():
     user_input = input()
     results = r.get_skip(user_input)
     for result in results:
-        print("{} {}".format(result[0], result[1]))
+        #print("{} {}".format(result[0], result[1]))
+        print("{}".format(result[0]))
+
 
 
 mostrar_menu_configuracion()
