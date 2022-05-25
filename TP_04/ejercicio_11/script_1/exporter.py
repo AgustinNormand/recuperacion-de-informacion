@@ -7,8 +7,18 @@ import math
 
 import matplotlib.pyplot as plt
 import os
+import time
+from bitarray import bitarray
 
 class Exporter:
+
+    def __init__(self):
+        self.pointers = {}
+        self.pointers["gamma"] = {}
+        self.pointers["variable"] = {}
+        self.pointers["index"] = {}
+
+
     def metadata(self):
         metadata = {}
 #        metadata["DOCNAMES_SIZE"] = self.docnames_size
@@ -44,27 +54,113 @@ class Exporter:
         # Mejorar y no hacer escrituras repetidas, sino una sola escritura.
         # Mejorar, no usar el path absoluto. Incluso, no usar docNN.txt, solo almacenar el NN
 
+    def binario(self, doc_id):
+        return bin(doc_id).replace("0b", "")
+
+    def unario(self, doc_id):
+        return "1"*(doc_id-1)+"0"
+
+    def rmsb(self, bin_doc_id):
+        return bin_doc_id[1:]
+
+    def gamma_compress(self, doc_id):
+        #print("Docid: {}, en binario: {}, longitud: {}, unario de longitud: {}, rmsb: {}".format(doc_id, self.binario(doc_id), len(self.binario(doc_id)), self.unario(len(self.binario(doc_id))), self.rmsb(self.binario(doc_id))))
+        binario = self.binario(doc_id)
+        len_bin = len(self.binario(doc_id))
+        u = self.unario(len_bin)
+        rmsb = self.rmsb(binario)
+        return u+rmsb
+
+    def variable_length(self, bin_doc_id):
+        rest = len(bin_doc_id) % 7
+        if rest != 0:
+            padding = 7 - rest
+            bin_doc_id = ("0" * padding) + bin_doc_id
+        finished = False
+        #bytes = []
+        bits = ""
+        while not finished:
+            if len(bin_doc_id) <= 7:
+                #bytes.append("1" + bin_doc_id)
+                bits += "1" + bin_doc_id
+                finished = True
+            else:
+                #bytes.append("0" + bin_doc_id[0:7])
+                bits += "0" + bin_doc_id[0:7]
+                bin_doc_id = bin_doc_id[7:]
+        #return bytes
+        return bits
+
+    def variable_compress(self, doc_id):
+        binario = self.binario(doc_id)
+        return self.variable_length(binario)
+
+    def inverted_index_variable(self, inverted_index):
+        variable = open(BIN_INVERTED_INDEX_VARIABLE_FILEPATH, "wb")
+        variable_pointer_acumulator = 0
+        for term in inverted_index:
+            postings_lists = inverted_index[term]
+            variable_compressed_postings_lists = ""
+            for posting in postings_lists:
+                doc_id = posting[0]
+                frecuencia = posting[1] #TODO
+                variable_compressed_doc_id = self.variable_compress(doc_id)
+                variable_compressed_postings_lists += variable_compressed_doc_id
+
+            compressed_posting = bitarray(variable_compressed_postings_lists)
+
+            variable.write(compressed_posting)
+            self.pointers["variable"][term] = [variable_pointer_acumulator, len(compressed_posting)]
+            variable_pointer_acumulator += len(compressed_posting) // 8
+        #print(self.pointers["variable"])
+
+    def inverted_index_gamma(self, inverted_index):
+        gamma = open(BIN_INVERTED_INDEX_GAMMA_FILEPATH, "wb")
+        gamma_pointer_acumulator = 0
+
+        for term in inverted_index:
+            postings_lists = inverted_index[term]
+            gamma_compressed_postings_lists = ""
+            for posting in postings_lists:
+
+                doc_id = posting[0]
+                frecuencia = posting[1] #TODO
+                gamma_compressed_doc_id = self.gamma_compress(doc_id)
+                gamma_compressed_postings_lists += gamma_compressed_doc_id
+                if term == "1st":
+                    print(doc_id)
+                    print(self.gamma_compress(doc_id))
+                    print(gamma_compressed_postings_lists)
+
+
+            len_before_padding = len(gamma_compressed_postings_lists)
+            rest = len(gamma_compressed_postings_lists) % 8
+            if rest != 0:
+                padding = 8 - rest
+                gamma_compressed_postings_lists = ("0" * padding) + gamma_compressed_postings_lists
+            #if term == "german":
+                #print(postings_lists)
+                #print(gamma_compressed_postings_lists)
+                #print(len(gamma_compressed_postings_lists))
+                #print(gamma.tell())
+            compressed_posting = bitarray(gamma_compressed_postings_lists)
+            #print(len(compressed_posting))
+            gamma.write(compressed_posting)
+            self.pointers["gamma"][term] = [gamma_pointer_acumulator, len_before_padding]
+            gamma_pointer_acumulator += len(compressed_posting) // 8
+        #print(self.pointers["gamma"])
+
     def inverted_index(self, inverted_index):
-        self.inverted_index = inverted_index
         entry_string_format = "IHxx"
         with open(BIN_INVERTED_INDEX_FILEPATH, "wb") as f:
+            index_pointer_acumulator = 0
             for term in inverted_index:
                 postings_lists = inverted_index[term]
                 complete_string_format = entry_string_format*(len(postings_lists))
                 packed_data = struct.pack(complete_string_format, *list(chain(*postings_lists)))
                 f.write(packed_data)
-
-    def ids_norm(self, index):
-        with open(BIN_NORM_FILEPATH, "wb") as f:
-            for doc_id in index:
-                acum = 0
-                for term in index[doc_id]:
-                    frequency = index[doc_id][term]
-                    acum += math.pow(frequency, 2)
-                document_norm = math.sqrt(acum)
-                entry_string_format = "If"
-                packed_data = struct.pack(entry_string_format, doc_id, document_norm)
-                f.write(packed_data)
+                self.pointers["index"][term] = index_pointer_acumulator
+                index_pointer_acumulator += struct.calcsize(complete_string_format)
 
     def analize_terms_length(self, vocabulary):
         self.vocabulary = vocabulary
@@ -75,130 +171,11 @@ class Exporter:
 
     def vocabulary_file(self, vocabulary):
         self.analize_terms_length(vocabulary)
-        string_format = "{}s{}I{}I".format(self.terms_size, 1, 1)
-        last_df = 0
+        string_format = "{}sIIIIII".format(self.terms_size)
         with open(BIN_VOCABULARY_FILEPATH, "wb") as f:
             for key in vocabulary:
+                #print(self.pointers["gamma"][key][0], self.pointers["gamma"][key][1], self.pointers["variable"][key][0], self.pointers["variable"][key][1])
                 packed_data = struct.pack(
-                    string_format, bytes(key, "utf-8"), vocabulary[key], last_df 
+                    string_format, bytes(key, "utf-8"), vocabulary[key], self.pointers["index"][key], self.pointers["gamma"][key][0], self.pointers["gamma"][key][1], self.pointers["variable"][key][0], self.pointers["variable"][key][1]
                 )
                 f.write(packed_data)
-                last_df += vocabulary[key]
-
-    ## OVERHEAD AND STATISTICS
-
-    def export_statistics(
-        self, array, name, actual_length, xlabel, ylabel, plot_path, figure_number
-    ):
-        acum = 0
-        counter = 0
-        max_length = 0
-        lengths = []
-        for key in array:
-            length = len(key)
-            acum += length
-            counter += 1
-            if length > max_length:
-                max_length = length
-            lengths.append(length)
-        print("\r")
-        print("{} mean length: {}".format(name, acum / counter))
-        print("{} max length: {}".format(name, max_length))
-        print("{} actual length: {}".format(name, max_length))
-
-        plt.figure(figure_number)
-        plt.hist(lengths)
-        plt.xlabel(xlabel)
-        plt.ylabel(ylabel)
-        plt.axvline(actual_length, color="k", linestyle="dashed", linewidth=1)
-        plt.savefig(plot_path)
-        print("{} length distribution plot exported".format(name))
-
-    def export_all_statistics(self):
-        self.collection_overhead()
-        self.postings_distribution()
-        self.document_overhead()
-        self.export_statistics(
-            self.docnames_ids.keys(),
-            "Document titles",
-            self.docnames_size,
-            "Longitud del titulo",
-            "Cantidad de documentos",
-            "./human_files/title_length.png",
-            2)
-        self.export_statistics(
-            self.vocabulary.keys(),
-            "Terms",
-            self.terms_size,
-            "x",
-            "y",
-            "./human_files/term_length.png",
-            3,
-        )
-
-    def document_overhead(self):
-        docid_overhead = {}
-        overhead_count = {}
-        for key in self.docnames_ids.keys():
-            file_size = os.path.getsize(key)
-            file_id = self.docnames_ids[key]
-            counter = 0
-            for key in self.inverted_index:
-                if file_id in self.inverted_index[key]:
-                    counter += 1
-            total_size = counter * 4 + 4 + self.docnames_size + (2+2)
-            overhead = total_size / (total_size + file_size)
-            docid_overhead[file_id] = overhead
-            try:
-                overhead_count[round(overhead, 2)] += 1
-            except:
-                overhead_count[round(overhead, 2)] = 1
-        keys = sorted(overhead_count.keys())
-        values = []
-        for key in keys:
-            values.append(overhead_count[key])
-
-        plt.figure(0)
-        plt.plot(keys, values)
-        plt.xlabel("Overhead")
-        plt.ylabel("Cantidad de documentos")
-        plt.savefig("./human_files/documents_overhead.png")
-
-    def get_size(self, directory):
-        size = 0
-        for path, dirs, files in os.walk(directory):
-            for f in files:
-                fp = os.path.join(path, f)
-                size += os.path.getsize(fp)
-        return size
-
-    def collection_overhead(self):
-        corpus_size = self.get_size(DIRPATH)
-        index_size = self.get_size(INDEX_FILES_PATH)
-
-        print("\r")
-        print(
-            "Corpus Size: {} bytes, Index Size: {} bytes".format(
-                corpus_size, index_size
-            )
-        )
-        print("Overhead: {}".format(index_size / (corpus_size + index_size)))
-
-    def postings_distribution(self):
-        distribution = {}
-        for value in self.inverted_index:
-            try:
-                distribution[len(self.inverted_index[value]) * 4] += 1
-            except:
-                distribution[len(self.inverted_index[value]) * 4] = 1
-
-        keys = sorted(distribution.keys())
-        values = []
-        for key in keys:
-            values.append(distribution[key])
-
-        plt.figure(1)
-        plt.plot(keys, values)
-        plt.xlabel("Bytes")
-        plt.ylabel("Cantidad de postings")
-        plt.savefig("./human_files/postings_distribution.png")

@@ -92,8 +92,25 @@ class Indexer:
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
             
-            self.exporter.vocabulary_file(vocabulary)
+
+            start = time.time()
+            self.exporter.inverted_index_variable(inverted_index)
+            end = time.time()
+            print("inverted_index_variable: {} seconds.".format(end - start))
+
+            start = time.time()
+            self.exporter.inverted_index_gamma(inverted_index)
+            end = time.time()
+            print("inverted_index_gamma: {} seconds.".format(end - start))
+
+            start = time.time()
             self.exporter.inverted_index(inverted_index)
+            end = time.time()
+            print("inverted_index: {} seconds.".format(end - start))
+
+            self.exporter.vocabulary_file(vocabulary)
+
+
             #self.exporter.ids_norm(index)
             self.exporter.metadata()
 
