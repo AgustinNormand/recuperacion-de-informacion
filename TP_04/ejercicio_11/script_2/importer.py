@@ -58,7 +58,7 @@ class Importer:
             frequencies.append(self.decompress_unary(unary_part, False))
         return frequencies
 
-    def read_posting_variable(self, term, vocabulary):
+    def read_posting_variable(self, term, vocabulary, dgaps=False):
 
         with open(BIN_INVERTED_INDEX_VARIABLE_FILEPATH, "rb") as f:
             try:
@@ -72,8 +72,13 @@ class Importer:
             frequencies = self.decompress_frequencies(frequencies, len(doc_ids))
 
             postings_lists = []
+            last_doc_id = 0
             for i in range(len(doc_ids)):
-                postings_lists.append([doc_ids[i], frequencies[i]])
+                if dgaps:
+                    postings_lists.append([doc_ids[i]+last_doc_id, frequencies[i]])
+                    last_doc_id = doc_ids[i]
+                else:
+                    postings_lists.append([doc_ids[i], frequencies[i]])
 
             return postings_lists
 
@@ -115,7 +120,7 @@ class Importer:
             binary = binary[bits_to_read:]
         return doc_ids
 
-    def read_posting_gamma(self, term, vocabulary):
+    def read_posting_gamma(self, term, vocabulary, dgaps=False):
         with open(BIN_INVERTED_INDEX_GAMMA_FILEPATH, "rb") as f:
             try:
                 df, index_pointer, gamma_pointer, gamma_bits, gamma_frequencies_len, variable_pointer, variable_bits, variable_frequencies_len = vocabulary[term]
@@ -135,12 +140,17 @@ class Importer:
             frequencies = f.read(gamma_frequencies_len // 8)
             frequencies = self.decompress_frequencies(frequencies, len(doc_ids))
             postings_lists = []
+            last_doc_id = 0
             for i in range(len(doc_ids)):
-                postings_lists.append([doc_ids[i], frequencies[i]])
+                if dgaps:
+                    postings_lists.append([doc_ids[i]+last_doc_id, frequencies[i]])
+                    last_doc_id = doc_ids[i]
+                else:
+                    postings_lists.append([doc_ids[i], frequencies[i]])
 
             return postings_lists
 
-    def read_posting(self, term, vocabulary):
+    def read_posting(self, term, vocabulary, dgaps=False):
         with open(BIN_INVERTED_INDEX_FILEPATH, "rb") as f:
             try:
                 df, index_pointer, gamma_pointer, gamma_bits, gamma_frequencies_len, variable_pointer, variable_bits, variable_frequencies_len = vocabulary[term]
@@ -155,8 +165,12 @@ class Importer:
 
             postings_lists = []
             i = 0
+            last_doc_id = 0
             while i < len(unpacked_data):
-                postings_lists.append([unpacked_data[i], unpacked_data[i+1]])
+                if dgaps:
+                    postings_lists.append([unpacked_data[i]+last_doc_id, unpacked_data[i+1]])
+                    last_doc_id = unpacked_data[i]
+                else:
+                    postings_lists.append([unpacked_data[i], unpacked_data[i+1]])
                 i += 2
-            print(postings_lists)
             return postings_lists
