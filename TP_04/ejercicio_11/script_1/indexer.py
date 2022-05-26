@@ -47,9 +47,6 @@ class Indexer:
                 id_count += 1
             self.docnames_ids[str(file_name.resolve())] = doc_id
         
-        #self.exporter.save_docnames_ids_file(self.docnames_ids)
-        
-
     def index(self):
         with Manager() as manager:
             queue = Queue()
@@ -91,7 +88,9 @@ class Indexer:
             ) = merger.process_results(results)
             end = time.time()
             print("\rMergeing time: {} seconds.".format(end - start))
-            
+
+
+            #inverted_index = self.exporter.dgap_index(inverted_index)
 
             start = time.time()
             self.exporter.inverted_index_variable(inverted_index)
@@ -110,11 +109,7 @@ class Indexer:
 
             self.exporter.vocabulary_file(vocabulary)
 
-
-            #self.exporter.ids_norm(index)
             self.exporter.metadata()
-
-            #self.exporter.export_all_statistics()
 
             print("Files exported.")
 

@@ -1,8 +1,6 @@
 import struct
 from constants import *
-import binascii
-#from bitarray import bitarray
-from bitstring import BitStream, BitArray
+from bitstring import BitArray
 
 class Importer:
 
@@ -11,23 +9,23 @@ class Importer:
 
     def read_vocabulary(self):
         with open(BIN_VOCABULARY_FILEPATH, "rb") as f:
-            string_format = "{}s6I".format(self.terms_size)
+            string_format = "{}s8I".format(self.terms_size)
             read_size = struct.calcsize(string_format)
             vocabulary = {}
 
             content = f.read(read_size)
             while content != b'':
                 unpacked_data = struct.unpack(string_format, content)
-                term, df, index_pointer, gamma_pointer, gamma_bits, variable_pointer, variable_bits = unpacked_data
+                term, df, index_pointer, gamma_pointer, gamma_bits, gamma_frequencies_len, variable_pointer, variable_bits, variable_frequencies_len = unpacked_data
                 term = str(term, 'utf-8').rstrip('\x00')
-                vocabulary[term] = (df, index_pointer, gamma_pointer, gamma_bits, variable_pointer, variable_bits)
+                vocabulary[term] = (df, index_pointer, gamma_pointer, gamma_bits, gamma_frequencies_len, variable_pointer, variable_bits, variable_frequencies_len)
                 content = f.read(read_size)
 
         return vocabulary
 
     def decompress_variable(self, data):
-        hexa = binascii.hexlify(data)
-        binary = bin(int(hexa, 16)).replace("0b", "")
+        bin_data = BitArray(data)
+        binary = bin_data.bin
         doc_ids = []
         bin_acumulator = ""
         while binary != '':
@@ -39,27 +37,56 @@ class Importer:
                 bin_acumulator = ""
         return doc_ids
 
+    def decompress_frequencies(self, data, amount):
+        bin_data = BitArray(data)
+        binary = bin_data.bin
+
+        frequencies = []
+
+        while binary != "" and len(frequencies) < amount: #Por el padding
+            if int(binary[0]) == 0:
+                binary = binary[1:]
+                unary_part = "0"
+            else:
+                i = 0
+                unary_part = ""
+                while int(binary[i]) != 0:
+                    unary_part += binary[i]
+                    i += 1
+                binary = binary[i + 1:]
+                unary_part += "0"
+            frequencies.append(self.decompress_unary(unary_part, False))
+        return frequencies
+
     def read_posting_variable(self, term, vocabulary):
 
         with open(BIN_INVERTED_INDEX_VARIABLE_FILEPATH, "rb") as f:
             try:
-                df, index_pointer, gamma_pointer, gamma_bits, variable_pointer, variable_bits = vocabulary[term]
+                df, index_pointer, gamma_pointer, gamma_bits, gamma_frequencies_len, variable_pointer, variable_bits, variable_frequencies_len = vocabulary[term]
             except:
                 return []
             f.seek(variable_pointer)
             data = f.read(variable_bits // 8)
             doc_ids = self.decompress_variable(data)
-            #print(doc_ids)
-            return doc_ids
+            frequencies = f.read(variable_frequencies_len // 8)
+            frequencies = self.decompress_frequencies(frequencies, len(doc_ids))
 
-    def decompress_unary(self, data):
-        acum = 0
+            postings_lists = []
+            for i in range(len(doc_ids)):
+                postings_lists.append([doc_ids[i], frequencies[i]])
+
+            return postings_lists
+
+    def decompress_unary(self, data, zero=True):
+        if zero:
+            acum = 0
+        else:
+            acum = 1
         for i in data:
             if int(i) == 1:
                 acum += 1
             else:
                 return acum
-
 
     def decompress_gamma(self, data, padding):
         doc_ids = []
@@ -69,8 +96,6 @@ class Importer:
         binary = binary[padding:]
 
         while binary != "":
-            #print("Binary: "+binary)
-
             if int(binary[0]) == 0:
                 binary = binary[1:]
                 unary_part = "0"
@@ -82,28 +107,21 @@ class Importer:
                     i += 1
                 binary = binary[i+1:]
                 unary_part += "0"
-            #print("Unary part: "+unary_part)
-            #print("Binary rest: "+binary)
             bits_to_read = self.decompress_unary(unary_part)
-            #print("Bits to read: "+str(bits_to_read))
             rmsb = "1"
             for i in range(bits_to_read):
                 rmsb += binary[i]
-            #print("rmsb: "+rmsb)
-            #print("Int: "+str(int(rmsb, 2)))
             doc_ids.append(int(rmsb, 2))
             binary = binary[bits_to_read:]
         return doc_ids
 
-
     def read_posting_gamma(self, term, vocabulary):
         with open(BIN_INVERTED_INDEX_GAMMA_FILEPATH, "rb") as f:
             try:
-                df, index_pointer, gamma_pointer, gamma_bits, variable_pointer, variable_bits = vocabulary[term]
+                df, index_pointer, gamma_pointer, gamma_bits, gamma_frequencies_len, variable_pointer, variable_bits, variable_frequencies_len = vocabulary[term]
             except:
                 return []
             f.seek(gamma_pointer)
-            #print(gamma_bits)
 
             rest = (gamma_bits % 8)
             if rest != 0:
@@ -111,25 +129,25 @@ class Importer:
             else:
                 padding = 0
 
-            #print((gamma_bits + padding) // 8)
             data = f.read((gamma_bits + padding) // 8)
-            #print(data)
-            #print()
-            #sys.exit()
-            #print(data)
             doc_ids = self.decompress_gamma(data, padding)
-            #print(doc_ids)
-            return doc_ids
+
+            frequencies = f.read(gamma_frequencies_len // 8)
+            frequencies = self.decompress_frequencies(frequencies, len(doc_ids))
+            postings_lists = []
+            for i in range(len(doc_ids)):
+                postings_lists.append([doc_ids[i], frequencies[i]])
+
+            return postings_lists
 
     def read_posting(self, term, vocabulary):
         with open(BIN_INVERTED_INDEX_FILEPATH, "rb") as f:
             try:
-                df, index_pointer, gamma_pointer, gamma_bits, variable_pointer, variable_bits = vocabulary[term]
+                df, index_pointer, gamma_pointer, gamma_bits, gamma_frequencies_len, variable_pointer, variable_bits, variable_frequencies_len = vocabulary[term]
             except:
                 return []
 
             entry_string_format = "IHxx"
-            #df, pointer = vocabulary[term]
             complete_string_format = entry_string_format*df
             f.seek(index_pointer)
             content = f.read(struct.calcsize(complete_string_format))
@@ -138,7 +156,7 @@ class Importer:
             postings_lists = []
             i = 0
             while i < len(unpacked_data):
-                #postings_lists.append([unpacked_data[i], unpacked_data[i+1]])
-                postings_lists.append(unpacked_data[i])
+                postings_lists.append([unpacked_data[i], unpacked_data[i+1]])
                 i += 2
+            print(postings_lists)
             return postings_lists
