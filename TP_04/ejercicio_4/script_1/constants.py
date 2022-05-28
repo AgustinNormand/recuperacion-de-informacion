@@ -1,9 +1,9 @@
-EMPTY_WORDS_PATH = "./emptywords.txt"
+EMPTY_WORDS_PATH = "./palabrasvacias.txt"
 # "palabrasvacias.txt"
 # "emptywords.txt"
 # None
 
-DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
+DIRPATH = "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/RI-tknz-data/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-small/"
 # "/home/agustin/Desktop/Recuperacion/colecciones/wiki-txt/"
@@ -24,7 +24,7 @@ DOCNAMES_SIZE = 50
 TERMS_SIZE = 50
 
 
-STEMMING_LANGUAGE = "english"
+STEMMING_LANGUAGE = "spanish"
 # Depends with the collection used
 # english
 # spanish
@@ -34,7 +34,7 @@ STEMMING_LANGUAGE = "english"
 EXTRACT_ENTITIES = False
 #
 
-CORPUS_FILES_ENCODING = "ISO-8859-1"
+CORPUS_FILES_ENCODING = "UTF-8"
 # Wiki-Txt = "ISO-8859-1"
 # All = "UTF-8"
 

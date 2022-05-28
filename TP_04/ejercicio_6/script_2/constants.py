@@ -1,4 +1,4 @@
-EMPTY_WORDS_PATH = "./emptywords.txt"
+EMPTY_WORDS_PATH = "./palabrasvacias.txt"
 # "palabrasvacias.txt"
 # "emptywords.txt"
 # None
