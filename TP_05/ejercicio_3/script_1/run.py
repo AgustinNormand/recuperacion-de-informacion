@@ -1,5 +1,5 @@
 from constants import *
 from amazon_collector import *
+from amazon_crawler import *
 
-ac = Amazon_Collector()
-ac.collect_links()
+ac = Amazon_Crawler(100000)

@@ -26,7 +26,7 @@ class Links_Collector():
 
     def collect_links(self, url):
         # html_page = requests.get(url, proxies=self.proxies)
-        html_page = requests.get(url)
+        html_page = requests.get(url, timeout=5)
         parsed_uri = urlparse(url)
         host = '{uri.scheme}://{uri.netloc}'.format(uri=parsed_uri)
         soup = BeautifulSoup(html_page.text, "html5lib")

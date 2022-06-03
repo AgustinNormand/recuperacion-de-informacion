@@ -25,6 +25,9 @@ class Crawler():
 
         self.begin_crawl()
 
+        print("Crawl Ended")
+
+
         self.pageids = {}
         self.create_pageids()
 
@@ -38,6 +41,8 @@ class Crawler():
         while self.queue != [] and self.collected_pages < self.TOTAL_MAX_PAGES:
             try:
                 link, depth = self.queue.pop(0)
+
+                print("Collected Pages {}, Processing {}".format(self.collected_pages, link))
 
                 if depth > self.MAX_LOGICAL_DEPTH:
                     continue
