@@ -1,4 +1,7 @@
+*.json
+*.html
 *.book
+TP_05/ejercicio_3/script_1/btree.json
 collection_test/
 TP_02/ejercicio_6/wiki-small/*
 TP_02/ejercicio_6/test/*
